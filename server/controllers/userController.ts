@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { storage } from "../storage";
-import bcrypt from "from "bcryptjs"";
+import bcrypt from "bcrypt";
 
 class UserController {
   /**

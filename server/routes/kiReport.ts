@@ -1,6 +1,6 @@
-import { Router } from "from "express"";
-import { kiReportController } from "from "../controllers/kiReportController"";
-import { requireAuth } from "from "../middleware/auth"";
+import { Router } from "express";
+import { kiReportController } from "../controllers/kiReportController";
+import { requireAuth } from "../middleware/auth";
 
 const router = Router();
 

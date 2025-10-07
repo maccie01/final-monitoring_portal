@@ -1,11 +1,11 @@
-import { Router } from "from "express"";
-import { temperatureController } from "from "../controllers/temperatureController"";
-import { isAuthenticated } from "from "../middleware/auth"";
+import { Router } from "express";
+import { temperatureController } from "../controllers/temperatureController";
+import { requireAuth } from "../middleware/auth";
 
 const router = Router();
 
 // Alle Temperatur-Routen erfordern Authentifizierung
-router.use(isAuthenticated);
+router.use(requireAuth);
 
 // GET /api/settings/thresholds - Schwellwerte für Temperaturanalyse abrufen
 router.get('/settings/thresholds', temperatureController.getThresholds);
