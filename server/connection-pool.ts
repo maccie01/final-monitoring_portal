@@ -74,6 +74,20 @@ export class ConnectionPoolManager {
         keepAliveInitialDelayMillis: 10000, // Start keepalive after 10 seconds
       };
 
+      // SSL Configuration - only if URL indicates SSL should be used
+      // The sslmode in DATABASE_URL will control SSL behavior
+      // If database server supports SSL and sslmode=prefer/require, connection will use SSL
+      if (connectionString.includes('sslmode=require') || connectionString.includes('sslmode=verify')) {
+        poolConfig.ssl = {
+          rejectUnauthorized: process.env.NODE_ENV === 'production',
+          ca: process.env.DB_SSL_CERT, // Optional: Custom CA certificate
+        };
+        console.log('🔐 SSL enforcement enabled (sslmode=require detected)');
+      } else if (connectionString.includes('sslmode=prefer') || connectionString.includes('sslmode=allow')) {
+        // Let PostgreSQL driver handle SSL negotiation based on server capabilities
+        console.log('🔒 SSL preferred (will use SSL if server supports it)');
+      }
+
       this.pool = new PgPool(poolConfig);
 
       // Set up event handlers
