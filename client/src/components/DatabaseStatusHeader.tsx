@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "from "react"";
-import { Alert, AlertDescription } from "from "@/components/ui/alert"";
-import { Database, X } from "from "lucide-react"";
-import { getStatusIcon } from "from "./shared/energy-utils"";
-import { Button } from "from "@/components/ui/button"";
+import React, { useState, useEffect } from "react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Database, X } from "lucide-react";
+import { getStatusIcon } from "./shared/energy-utils";
+import { Button } from "@/components/ui/button";
 
 interface DatabaseStatus {
   settingdbOnline: boolean;

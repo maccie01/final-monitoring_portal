@@ -1,14 +1,14 @@
-import { useState, useEffect } from "from "react"";
-import { Button } from "from "@/components/ui/button"";
-import { Card, CardContent, CardHeader, CardTitle } from "from "@/components/ui/card"";
-import { Badge } from "from "@/components/ui/badge"";
-import { Input } from "from "@/components/ui/input"";
-import { Label } from "from "@/components/ui/label"";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "from "@/components/ui/tabs"";
-import { Textarea } from "from "@/components/ui/textarea"";
-import { useToast } from "from "@/hooks/use-toast"";
-import { Database, Key, Shield, CheckCircle, XCircle, Loader2, Settings, Save, RefreshCw } from "from "lucide-react"";
-import { api } from "from "@/lib/api-utils"";
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/hooks/use-toast";
+import { Database, Key, Shield, CheckCircle, XCircle, Loader2, Settings, Save, RefreshCw } from "lucide-react";
+import { api } from "@/lib/api-utils";
 
 interface FallbackConfig {
   host: string;
