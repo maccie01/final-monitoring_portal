@@ -1,10 +1,10 @@
-import { useState, useEffect } from "from "react"";
-import { Button } from "from "@/components/ui/button"";
-import { Card, CardContent, CardHeader, CardTitle } from "from "@/components/ui/card"";
-import { Badge } from "from "@/components/ui/badge"";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "from "@/components/ui/select"";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "from "@/components/ui/dialog"";
-import { useToast } from "from "@/hooks/use-toast"";
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { useToast } from "@/hooks/use-toast";
 import { 
   Database, 
   CheckCircle, 
@@ -19,9 +19,9 @@ import {
   Save,
   X,
   Settings
-} from "from "lucide-react"";
-import { getStatusIcon, getStatusColor } from "from "./shared/energy-utils"";
-import { api } from "from "@/lib/api-utils"";
+} from "lucide-react";
+import { getStatusIcon, getStatusColor } from "./shared/energy-utils";
+import { api } from "@/lib/api-utils";
 
 // Portal-Konfigurationen
 const newPortalConfig = {

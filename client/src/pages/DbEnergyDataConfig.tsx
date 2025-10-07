@@ -1,8 +1,8 @@
-import { useState, useEffect } from "from "react"";
-import { Card, CardContent, CardHeader, CardTitle } from "from "@/components/ui/card"";
-import { Button } from "from "@/components/ui/button"";
-import { Database, Copy, CheckCircle, AlertCircle } from "from "lucide-react"";
-import { useToast } from "from "@/hooks/use-toast"";
+import { useState, useEffect } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Database, Copy, CheckCircle, AlertCircle } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface DbEnergyDataConfigProps {}
 

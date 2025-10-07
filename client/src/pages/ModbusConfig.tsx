@@ -1,11 +1,11 @@
-import { useState } from "from "react"";
-import { Card, CardContent, CardHeader, CardTitle } from "from "@/components/ui/card"";
-import { Button } from "from "@/components/ui/button"";
-import { Input } from "from "@/components/ui/input"";
-import { Label } from "from "@/components/ui/label"";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "from "@/components/ui/select"";
-import { Trash2, Plus, Copy } from "from "lucide-react"";
-import { useToast } from "from "@/hooks/use-toast"";
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Trash2, Plus, Copy } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface ModbusCommand {
   id: string;

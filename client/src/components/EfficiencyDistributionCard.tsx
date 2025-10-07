@@ -1,4 +1,4 @@
-import { PieChart, Pie, Cell, ResponsiveContainer } from "from "recharts"";
+import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 
 interface ObjectEfficiency {
   objectId: number;

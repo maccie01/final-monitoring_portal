@@ -1,5 +1,5 @@
 import { Activity, Thermometer, Zap } from "lucide-react";
-import { buildGrafanaUrl } from "from "@/utils/grafanaConfig"";
+import { buildGrafanaUrl } from "@/utils/grafanaConfig";
 
 export interface GrafanaPanel {
   id: string;

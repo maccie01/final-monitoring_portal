@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronRight, AlertTriangle, XCircle, CheckCircle2, Search, Brain, Menu, X, Building2, Printer } from "lucide-react";
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "from "recharts"";
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts";
 import { Link } from "wouter";
 import TemperatureEfficiencyChart from "@/components/TemperatureEfficiencyChart";
 import EfficiencyDistributionCard from "@/components/EfficiencyDistributionCard";

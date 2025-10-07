@@ -16,9 +16,9 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
 // Fix for default markers in react-leaflet
-import markerIcon from "from "leaflet/dist/images/marker-icon.png"";
-import markerIcon2x from "from "leaflet/dist/images/marker-icon-2x.png"";
-import markerShadow from "from "leaflet/dist/images/marker-shadow.png"";
+import markerIcon from "leaflet/dist/images/marker-icon.png";
+import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
+import markerShadow from "leaflet/dist/images/marker-shadow.png";
 
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({

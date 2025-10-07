@@ -1,5 +1,5 @@
-import nodemailer from "from "nodemailer"";
-import { ConnectionPoolManager } from "from "./connection-pool"";
+import nodemailer from "nodemailer";
+import { ConnectionPoolManager } from "./connection-pool";
 
 interface EmailConfig {
   email: string;

@@ -1,8 +1,8 @@
-import React, { useState } from "from "react"";
-import { useQuery } from "from "@tanstack/react-query"";
-import { Zap, Brain } from "from "lucide-react"";
-import { KIEnergyAnalysisJahr } from "from "./KI_energy_jahr"";
-import { KIEnergyAnalysis } from "from "./KI_energy"";
+import React, { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { Zap, Brain } from "lucide-react";
+import { KIEnergyAnalysisJahr } from "./KI_energy_jahr";
+import { KIEnergyAnalysis } from "./KI_energy";
 
 type TimeRange = 'year-before-last' | 'last-year' | 'last-365-days';
 

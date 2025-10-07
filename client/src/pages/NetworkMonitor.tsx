@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { buildGrafanaUrl } from "from "@/utils/grafanaConfig"";
+import { buildGrafanaUrl } from "@/utils/grafanaConfig";
 import {
   Dialog,
   DialogContent,

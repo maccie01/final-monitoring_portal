@@ -1,7 +1,7 @@
-import React, { useState } from "from "react"";
-import { FileText, Brain, Leaf } from "from "lucide-react"";
-import { useMutation } from "from "@tanstack/react-query"";
-import { apiRequest } from "from "@/lib/queryClient"";
+import React, { useState } from "react";
+import { FileText, Brain, Leaf } from "lucide-react";
+import { useMutation } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
 import {
   getComponentType,
   getComponentProps,
@@ -14,7 +14,7 @@ import {
   groupMeterEntries,
   type MonthlyData,
   type EvaluationResult
-} from "from "./shared/energy-utils"";
+} from "./shared/energy-utils";
 
 interface MeterData {
   meterId: string;

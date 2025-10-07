@@ -1,9 +1,9 @@
-import React, { useState } from "from "react"";
-import { Card, CardContent, CardHeader, CardTitle } from "from "@/components/ui/card"";
-import { Input } from "from "@/components/ui/input"";
-import { Label } from "from "@/components/ui/label"";
-import { Button } from "from "@/components/ui/button"";
-import { buildGrafanaUrl } from "from "@/utils/grafanaConfig"";
+import React, { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { buildGrafanaUrl } from "@/utils/grafanaConfig";
 
 export default function Geraeteverwaltung() {
   const [id, setId] = useState('');

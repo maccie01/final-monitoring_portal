@@ -1,9 +1,9 @@
-import { useState, useEffect } from "from "react"";
-import { Card, CardContent, CardHeader, CardTitle } from "from "@/components/ui/card"";
-import { Badge } from "from "@/components/ui/badge"";
-import { Button } from "from "@/components/ui/button"";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "from "@/components/ui/collapsible"";
-import { Wifi, Database, AlertTriangle, Activity, ChevronDown } from "from "lucide-react"";
+import { useState, useEffect } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Wifi, Database, AlertTriangle, Activity, ChevronDown } from "lucide-react";
 
 interface DatabaseStatus {
   settingdbOnline: boolean;

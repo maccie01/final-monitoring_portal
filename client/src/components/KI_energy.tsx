@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "from "react"";
-import { Zap, Brain } from "from "lucide-react"";
+import React, { useState, useEffect } from "react";
+import { Zap, Brain } from "lucide-react";
 import { 
   getComponentType, 
   getComponentProps, 
@@ -11,7 +11,7 @@ import {
   groupMeterEntries,
   type DailyData,
   type EvaluationResult
-} from "from "./shared/energy-utils"";
+} from "./shared/energy-utils";
 
 interface DailyConsumption {
   [meterKey: string]: {
