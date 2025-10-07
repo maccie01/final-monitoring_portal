@@ -215,6 +215,59 @@ except ProcessError as e:
     print(f"Process error: {e}")
 ```
 
+## 🧠 Memory MCP Server
+
+The Memory MCP server (`mcp/memory`) provides persistent knowledge graph storage capabilities:
+
+### 📦 Installation
+```bash
+docker pull mcp/memory
+```
+
+### 🛠️ Available Tools (9 total)
+1. **`create_entities`** - Create multiple entities with observations
+2. **`create_relations`** - Create relations between entities (active voice)
+3. **`add_observations`** - Add observations to existing entities
+4. **`delete_entities`** - Remove entities and their relations
+5. **`delete_observations`** - Remove specific observations
+6. **`delete_relations`** - Remove relations between entities
+7. **`read_graph`** - Read entire knowledge graph
+8. **`search_nodes`** - Search entities by query
+9. **`open_nodes`** - Retrieve specific entities by name
+
+### 🔧 Integration with Claude Agent SDK
+```python
+from claude_agent_sdk import ClaudeAgentOptions, ClaudeSDKClient
+
+options = ClaudeAgentOptions(
+    mcp_servers={
+        "memory": {
+            "type": "stdio",
+            "command": "docker",
+            "args": ["run", "--rm", "mcp/memory"]
+        }
+    },
+    allowed_tools=[
+        "mcp__memory__create_entities",
+        "mcp__memory__create_relations",
+        "mcp__memory__add_observations",
+        "mcp__memory__read_graph",
+        "mcp__memory__search_nodes",
+        "mcp__memory__open_nodes"
+    ]
+)
+```
+
+### ✅ Status: FUNCTIONAL
+- **Docker Image**: ✅ Available and working
+- **MCP Protocol**: ✅ Responds to JSON-RPC requests
+- **Tool Discovery**: ✅ Provides complete tool list
+- **Claude Integration**: ✅ Connects successfully (tool naming needs verification)
+
+### ⚠️ Current Issues
+- **Tool Naming**: Claude attempts to use `kg_create_entities` instead of `create_entities`
+- **Prefix Convention**: Need to verify correct MCP tool prefix for this server
+
 ## 🔄 Migration Notes
 
 If upgrading from older Claude Code SDK versions:
