@@ -22,6 +22,7 @@
     "pr_labels": ["performance", "database", "P1"]
   },
 
+  "source_document": ".agents/agents/database-optimizer/tasks.md",
   "tasks_file": "tasks.json",
   "prompt_file": "prompt.md",
 
