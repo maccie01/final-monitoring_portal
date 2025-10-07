@@ -1,0 +1,38 @@
+{
+  "agent_id": "frontend-cleanup-agent",
+  "name": "Frontend Cleanup & Optimization Agent",
+  "version": "1.0.0",
+  "description": "Removes dead code, standardizes UI, optimizes bundle size",
+
+  "source_document": "../../todo/AGENT-A-FRONTEND-CLEANUP.md",
+  "priority": "P0",
+  "estimated_duration_weeks": 2,
+
+  "git": {
+    "branch": "cleanup/frontend-dead-code",
+    "base_branch": "main",
+    "commit_prefix": "refactor(cleanup)",
+    "auto_push": true
+  },
+
+  "working_directory": "../..",
+
+  "tools": ["Read", "Write", "Edit", "Bash", "Grep", "Glob"],
+
+  "verification": {
+    "before_commit": ["npm run type-check", "npm run lint"],
+    "after_task": ["npm run build"],
+    "bundle_analysis": "du -h dist/assets/*.js | sort -h"
+  },
+
+  "max_turns": 80,
+  "autonomy_level": "high",
+
+  "success_criteria": {
+    "dead_code_removed": true,
+    "bundle_size_reduced_by_kb": 350,
+    "all_imports_double_quotes": true,
+    "ui_components_used": 22,
+    "build_passing": true
+  }
+}

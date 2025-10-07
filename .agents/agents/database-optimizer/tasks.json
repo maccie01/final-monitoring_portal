@@ -1,0 +1,382 @@
+{
+  "agent_id": "database-optimizer-agent",
+  "total_tasks": 15,
+  "estimated_duration_hours": 40,
+
+  "tasks": [
+    {
+      "id": "DB-1.1",
+      "title": "Analyze current database schema and query patterns",
+      "priority": "P0",
+      "estimated_hours": 3,
+      "steps": [
+        "Read db/schema.ts and document all tables",
+        "Identify all foreign key relationships",
+        "Review all repository files for query patterns",
+        "Identify slow queries (>100ms)",
+        "Document frequently accessed fields"
+      ],
+      "success_criteria": [
+        "Schema fully documented",
+        "All queries cataloged",
+        "Slow queries identified",
+        "Optimization targets prioritized"
+      ],
+      "verification": "Analysis document created with query inventory"
+    },
+
+    {
+      "id": "DB-2.1",
+      "title": "Add indexes for frequently queried fields",
+      "priority": "P0",
+      "estimated_hours": 4,
+      "steps": [
+        "Identify fields used in WHERE clauses",
+        "Identify fields used in JOINs",
+        "Identify fields used in ORDER BY",
+        "Create migration to add indexes",
+        "Test migration on development database",
+        "Measure query performance improvement"
+      ],
+      "files_to_modify": [
+        "db/migrations/XXXX_add_performance_indexes.sql"
+      ],
+      "indexes_to_add": [
+        "users.email (unique)",
+        "users.username (unique)",
+        "users.mandantId",
+        "objects.mandantId",
+        "objects.objecttype",
+        "zlog.objectid",
+        "zlog.zlogid",
+        "day_comp.zlogid",
+        "day_comp.date",
+        "daily_outdoor_temperatures.postal_code",
+        "daily_outdoor_temperatures.date"
+      ],
+      "success_criteria": [
+        "All critical indexes added",
+        "Query performance improved 30-50%",
+        "Migration tested successfully"
+      ],
+      "verification": "Run EXPLAIN ANALYZE on key queries before/after"
+    },
+
+    {
+      "id": "DB-2.2",
+      "title": "Add composite indexes for common query combinations",
+      "priority": "P1",
+      "estimated_hours": 2,
+      "steps": [
+        "Identify multi-column WHERE clauses",
+        "Create composite indexes for common combinations",
+        "Test performance improvement",
+        "Document index usage"
+      ],
+      "composite_indexes": [
+        "(mandantId, objecttype) on objects",
+        "(zlogid, date) on day_comp",
+        "(postal_code, date) on daily_outdoor_temperatures",
+        "(objectid, zlogid) on zlog"
+      ],
+      "success_criteria": [
+        "Composite indexes created",
+        "Multi-column queries faster",
+        "Index usage documented"
+      ],
+      "verification": "pg_stat_user_indexes shows indexes being used"
+    },
+
+    {
+      "id": "DB-3.1",
+      "title": "Optimize N+1 query patterns in repositories",
+      "priority": "P0",
+      "estimated_hours": 4,
+      "steps": [
+        "Review all repository methods for N+1 patterns",
+        "Identify methods that fetch related data in loops",
+        "Rewrite using JOIN or batch fetching",
+        "Test query count reduction",
+        "Update unit tests"
+      ],
+      "files_to_modify": [
+        "server/src/modules/users/users.repository.ts",
+        "server/src/modules/objects/objects.repository.ts",
+        "server/src/modules/energy/energy.repository.ts"
+      ],
+      "success_criteria": [
+        "All N+1 patterns eliminated",
+        "Query count reduced by 50-99%",
+        "Tests passing"
+      ],
+      "verification": "Monitor query count for list operations"
+    },
+
+    {
+      "id": "DB-4.1",
+      "title": "Install and configure Redis for caching",
+      "priority": "P1",
+      "estimated_hours": 3,
+      "steps": [
+        "Add redis and ioredis to package.json",
+        "Create server/config/redis.config.ts",
+        "Implement Redis connection pool",
+        "Add health check for Redis",
+        "Test Redis connectivity"
+      ],
+      "files_to_create": [
+        "server/config/redis.config.ts",
+        "server/utils/cache.ts",
+        "server/middleware/cache.middleware.ts"
+      ],
+      "success_criteria": [
+        "Redis installed and configured",
+        "Connection pool working",
+        "Health check passing"
+      ],
+      "verification": "npm run dev && check Redis connection in logs"
+    },
+
+    {
+      "id": "DB-4.2",
+      "title": "Implement query result caching",
+      "priority": "P1",
+      "estimated_hours": 5,
+      "steps": [
+        "Identify expensive queries to cache",
+        "Implement cache wrapper for repository methods",
+        "Define cache TTL strategies (5min, 15min, 1hour)",
+        "Implement cache invalidation on updates",
+        "Add cache hit/miss metrics"
+      ],
+      "queries_to_cache": [
+        "getUsersList (15min TTL)",
+        "getObjectsList (5min TTL)",
+        "getEnergyConsumption (1hour TTL)",
+        "getTemperatureHistory (1hour TTL)",
+        "getSettings (15min TTL)"
+      ],
+      "success_criteria": [
+        "Caching implemented for expensive queries",
+        "Cache hit ratio >60% after warmup",
+        "Invalidation working correctly"
+      ],
+      "verification": "Monitor cache hit ratio in Redis metrics"
+    },
+
+    {
+      "id": "DB-5.1",
+      "title": "Optimize JOIN patterns in repositories",
+      "priority": "P1",
+      "estimated_hours": 3,
+      "steps": [
+        "Review all JOIN queries",
+        "Identify unnecessary JOINs",
+        "Optimize JOIN order for query planner",
+        "Add EXPLAIN ANALYZE for complex queries",
+        "Document optimal patterns"
+      ],
+      "success_criteria": [
+        "All JOINs optimized",
+        "Query plans improved",
+        "Documentation added"
+      ],
+      "verification": "EXPLAIN ANALYZE shows improved plans"
+    },
+
+    {
+      "id": "DB-6.1",
+      "title": "Implement connection pool monitoring",
+      "priority": "P1",
+      "estimated_hours": 2,
+      "steps": [
+        "Add metrics collection to ConnectionPoolManager",
+        "Track active connections over time",
+        "Track query duration distribution",
+        "Create /api/db/metrics endpoint",
+        "Add alerting for pool exhaustion"
+      ],
+      "files_to_modify": [
+        "server/connection-pool.ts"
+      ],
+      "success_criteria": [
+        "Metrics endpoint working",
+        "Real-time pool stats available",
+        "Alerting configured"
+      ],
+      "verification": "curl http://localhost:5000/api/db/metrics"
+    },
+
+    {
+      "id": "DB-6.2",
+      "title": "Create database performance dashboard",
+      "priority": "P2",
+      "estimated_hours": 4,
+      "steps": [
+        "Create admin dashboard page",
+        "Display connection pool stats",
+        "Display slow query log",
+        "Display cache hit ratios",
+        "Add export functionality"
+      ],
+      "files_to_create": [
+        "client/src/pages/admin/DatabaseDashboard.tsx"
+      ],
+      "success_criteria": [
+        "Dashboard displays real-time metrics",
+        "Slow queries highlighted",
+        "Cache performance visible"
+      ],
+      "verification": "Navigate to /admin/database and verify metrics"
+    },
+
+    {
+      "id": "DB-7.1",
+      "title": "Implement query result pagination",
+      "priority": "P1",
+      "estimated_hours": 3,
+      "steps": [
+        "Add pagination to large list queries",
+        "Implement cursor-based pagination for performance",
+        "Add limit/offset support",
+        "Update API endpoints to support pagination",
+        "Update frontend to use pagination"
+      ],
+      "endpoints_to_update": [
+        "GET /api/objects (500+ objects)",
+        "GET /api/users (100+ users)",
+        "GET /api/energy/history (large datasets)"
+      ],
+      "success_criteria": [
+        "Pagination implemented",
+        "Large lists load faster",
+        "Frontend pagination working"
+      ],
+      "verification": "Test loading 1000+ objects with pagination"
+    },
+
+    {
+      "id": "DB-8.1",
+      "title": "Optimize aggregation queries",
+      "priority": "P1",
+      "estimated_hours": 3,
+      "steps": [
+        "Identify aggregation queries (SUM, AVG, COUNT)",
+        "Use database-level aggregation instead of application-level",
+        "Add indexes for GROUP BY fields",
+        "Test performance improvement",
+        "Cache aggregation results"
+      ],
+      "queries_to_optimize": [
+        "Monthly energy consumption (SUM)",
+        "Average temperature by month",
+        "Object count by mandant",
+        "User count by role"
+      ],
+      "success_criteria": [
+        "Aggregations done in database",
+        "Query time reduced 50-80%",
+        "Results cached appropriately"
+      ],
+      "verification": "Time aggregation queries before/after"
+    },
+
+    {
+      "id": "DB-9.1",
+      "title": "Implement database query logging",
+      "priority": "P2",
+      "estimated_hours": 2,
+      "steps": [
+        "Add query logger middleware",
+        "Log slow queries (>100ms)",
+        "Log query parameters",
+        "Add query timing",
+        "Create query performance report"
+      ],
+      "success_criteria": [
+        "Slow queries logged",
+        "Query timing tracked",
+        "Performance report available"
+      ],
+      "verification": "Check logs for slow query entries"
+    },
+
+    {
+      "id": "DB-10.1",
+      "title": "Run comprehensive performance benchmarks",
+      "priority": "P0",
+      "estimated_hours": 3,
+      "steps": [
+        "Create benchmark script for all optimizations",
+        "Run before/after benchmarks",
+        "Document performance improvements",
+        "Create performance comparison report",
+        "Identify remaining bottlenecks"
+      ],
+      "benchmarks": [
+        "User list query",
+        "Object list query",
+        "Energy consumption query",
+        "Temperature history query",
+        "Aggregation queries",
+        "Complex JOIN queries"
+      ],
+      "success_criteria": [
+        "All benchmarks run successfully",
+        "30-50% average improvement",
+        "Report documents all changes"
+      ],
+      "verification": "npm run benchmark && compare with baseline"
+    },
+
+    {
+      "id": "DB-11.1",
+      "title": "Load testing and stress testing",
+      "priority": "P1",
+      "estimated_hours": 3,
+      "steps": [
+        "Set up load testing tool (Artillery or k6)",
+        "Create load test scenarios",
+        "Test with 100 concurrent users",
+        "Test with 500 concurrent users",
+        "Identify breaking points",
+        "Document performance under load"
+      ],
+      "success_criteria": [
+        "System handles 100 concurrent users smoothly",
+        "Graceful degradation under heavy load",
+        "No connection pool exhaustion"
+      ],
+      "verification": "Load test results show stable performance"
+    },
+
+    {
+      "id": "DB-12.1",
+      "title": "Create database optimization documentation",
+      "priority": "P1",
+      "estimated_hours": 2,
+      "steps": [
+        "Document all indexes added",
+        "Document caching strategy",
+        "Document query optimization patterns",
+        "Create troubleshooting guide",
+        "Add performance tuning recommendations"
+      ],
+      "success_criteria": [
+        "Documentation complete",
+        "All optimizations explained",
+        "Future optimization guidance provided"
+      ],
+      "verification": "docs/database-optimization.md created"
+    }
+  ],
+
+  "performance_targets": {
+    "query_time_reduction": "30-50%",
+    "cache_hit_ratio": ">60%",
+    "connection_pool_efficiency": "90%+",
+    "page_load_time": "<3 seconds",
+    "api_response_p95": "<400ms",
+    "concurrent_users_supported": "100+"
+  }
+}

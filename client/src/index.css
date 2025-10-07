@@ -1,0 +1,931 @@
+/* Import Tab Layout System */
+@import './components/TabLayout.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Pulsierende Animation für kritische Map-Marker */
+@keyframes pulse-red {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7);
+  }
+  70% {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 20px rgba(220, 38, 38, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(220, 38, 38, 0);
+  }
+}
+
+.pulse-critical {
+  animation: pulse-red 2s infinite;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out forwards;
+}
+
+@keyframes typewriter-word {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-typewriter {
+  opacity: 0;
+  animation-name: typewriter-word;
+  animation-duration: 0.6s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+}
+
+/* Custom border width utilities for 0.5px borders */
+@layer utilities {
+  .border-0\.5 {
+    border-width: 0.5px;
+  }
+  .border-t-0\.5 {
+    border-top-width: 0.5px;
+  }
+  .border-b-0\.5 {
+    border-bottom-width: 0.5px;
+  }
+  .border-l-0\.5 {
+    border-left-width: 0.5px;
+  }
+  .border-r-0\.5 {
+    border-right-width: 0.5px;
+  }
+  
+  /* Custom orange-150 for Portfolio table hover */
+  .bg-orange-150 {
+    background-color: #fde0bf; /* Between orange-100 (#ffedd5) and orange-200 (#fed7aa) */
+  }
+}
+
+/* Network Monitor - Alle Hintergründe vollständig entfernt */
+.temp-analysis-table tr.bg-green-50,
+.temp-analysis-table tr.bg-orange-50,
+.temp-analysis-table tr.bg-red-50,
+.temp-analysis-table tr.bg-blue-50,
+.temp-analysis-table tr.bg-gray-50,
+.temp-analysis-table tr.bg-white {
+  background-color: transparent !important;
+}
+
+/* Alternierende sehr hellgraue und weiße Hintergründe für Tabellen-Zeilen */
+.temp-analysis-container .temp-analysis-table tbody tr:nth-child(even) {
+  background-color: #ffffff !important; /* Weiß für gerade Zeilen */
+}
+
+.temp-analysis-container .temp-analysis-table tbody tr:nth-child(odd) {
+  background-color: #f9f9f9 !important; /* Sehr hellgrau für ungerade Zeilen */
+}
+
+/* Hover-Effekt überschreibt alternierende Hintergründe temporär */
+.temp-analysis-container .temp-analysis-table tbody tr:hover {
+  background-color: #dbeafe !important; /* Hellblau beim Hover */
+}
+
+/* Temperaturwerte behalten transparente Hintergründe */
+.temp-analysis-container .temp-value-critical,
+.temp-analysis-container .temp-value-warning, 
+.temp-analysis-container .temp-value-normal,
+.temp-analysis-container div[class*="temp-"],
+.temp-analysis-container span {
+  background-color: transparent !important;
+}
+
+/* Network Monitor Tabellen - Komplett ohne Borders und Container */
+.temp-analysis-table,
+.temp-analysis-table *,
+.temp-analysis-table th,
+.temp-analysis-table td,
+.temp-analysis-table tr,
+.temp-analysis-table tbody,
+.temp-analysis-table thead {
+  border: none !important; /* Keine Borders für alle Tabellenelemente */
+  border-top: none !important;
+  border-bottom: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-collapse: collapse !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* Spaltenbreiten für Temperaturanalyse-Tabelle optimieren */
+.temp-analysis-table {
+  width: 100% !important;
+  table-layout: fixed !important;
+}
+
+.temp-analysis-table th:nth-child(1),
+.temp-analysis-table td:nth-child(1) {
+  width: auto !important; /* OBJEKT Spalte - nimmt verbleibenden Platz */
+  min-width: 180px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.temp-analysis-table th:nth-child(2),
+.temp-analysis-table td:nth-child(2) {
+  width: 45% !important; /* TEMPERATUR-KI-ANALYSE Spalte - 45% Breite */
+  min-width: 290px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  padding-right: 15px !important;
+}
+
+.temp-analysis-table th:nth-child(3),
+.temp-analysis-table td:nth-child(3) {
+  width: 100px !important; /* UPDATE-ZEIT Spalte - feste Breite 100px */
+  min-width: 100px !important;
+  max-width: 100px !important;
+  text-align: left !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+}
+
+/* Temperaturwerte mit farbigen Hintergründen */
+.temp-value-critical {
+  background-color: transparent !important; /* Kein Hintergrund */
+  color: #dc2626 !important; /* Rote Schrift */
+  padding: 0 !important;
+  border-radius: 3px !important;
+  font-weight: 500 !important;
+}
+
+.temp-value-warning {
+  background-color: transparent !important; /* Kein Hintergrund */
+  color: #ea580c !important; /* Orange Schrift */
+  padding: 0 !important;
+  border-radius: 3px !important;
+  font-weight: 500 !important;
+}
+
+.temp-value-normal {
+  background-color: transparent !important; /* Kein Hintergrund */
+  color: #16a34a !important; /* Grüne Schrift */
+  padding: 0 !important;
+  border-radius: 0 !important;
+  font-weight: 500 !important;
+}
+
+/* Objektnamen in Tabellen - Medium 14px Schrift mit dunklem Blau */
+.temp-analysis-table td b {
+  font-weight: 500 !important; /* Medium weight */
+  font-size: 14px !important; /* 14px Schriftgröße */
+  color: #1e40af !important; /* Dunkles Blau */
+}
+
+/* Alternierende Tabellen-Zeilen - ALLE ENTFERNT für transparente Hintergründe */
+/* .bg-red-50, .bg-orange-50, .bg-blue-50, .bg-gray-50, .bg-green-50 wurden entfernt */
+/* um Standard-Tailwind-Klassen nicht zu überschreiben und transparente Hintergründe zu gewährleisten */
+
+/* Entferne alle Borders von Tabellen und Container-Elementen */
+.temp-analysis-container,
+.temp-analysis-container *,
+.temp-analysis-container table,
+.temp-analysis-container tbody,
+.temp-analysis-container thead,
+.temp-analysis-container tr,
+.temp-analysis-container td,
+.temp-analysis-container th {
+  border: none !important;
+  border-top: none !important;
+  border-bottom: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* Äußere Container-Borders mit 0.5px in entsprechenden Farben */
+div[class*="bg-red-100"] {
+  border: 0.5px solid #fecaca !important; /* hellrot */
+}
+
+div[class*="bg-orange-100"] {
+  border: 0.5px solid #fed7aa !important; /* hellorange */
+}
+
+div[class*="bg-blue-100"] {
+  border: 0.5px solid #dbeafe !important; /* hellblau */
+}
+
+div[class*="bg-gray-100"] {
+  border: 0.5px solid #f3f4f6 !important; /* hellgrau */
+}
+
+div[class*="bg-green-100"] {
+  border: 0.5px solid #dcfce7 !important; /* hellgrün */
+}
+
+/* Modern Tab Navigation Styles - wie in Bild 2 */
+.modern-tab-nav {
+  @apply relative;
+  border-bottom: 1px solid #e5e7eb; /* gray-200 */
+}
+
+.modern-tab-button {
+  @apply relative px-6 py-3 text-sm font-medium transition-colors duration-200;
+  border-bottom: 2px solid transparent;
+  color: #6b7280; /* gray-500 */
+  background: #ffffff; /* weiß für inaktive Tabs */
+}
+
+.modern-tab-button:hover {
+  color: #374151; /* gray-700 */
+  background: #e5e7eb; /* gray-200 */
+}
+
+.modern-tab-button.active {
+  color: #3b82f6; /* blue-500 */
+  border-bottom-color: #3b82f6; /* blue-500 */
+  background: #e5e7eb; /* grau für aktive Tabs */
+}
+
+/* UserManagement Tab Overrides - Stärkere Selektoren */
+button[data-state="active"][value="users"],
+button[data-state="active"][value="mandates"], 
+button[data-state="active"][value="objectgroups"],
+button[data-state="active"][value="profiles"] {
+  background-color: #e5e7eb !important; /* Grau für aktive Tabs */
+  color: #2563eb !important; /* blue-600 */
+}
+
+button[value="users"]:not([data-state="active"]),
+button[value="mandates"]:not([data-state="active"]), 
+button[value="objectgroups"]:not([data-state="active"]),
+button[value="profiles"]:not([data-state="active"]) {
+  background-color: #ffffff !important; /* Weiß für inaktive Tabs */
+  color: #6b7280 !important; /* gray-500 */
+}
+
+.modern-tab-button.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #3b82f6; /* blue-500 */
+}
+
+/* Dashboard Type Button Styles - Modern Rounded Buttons */
+.dashboard-type-button {
+  @apply px-4 py-2 transition-all text-sm font-medium;
+  border: 0.5px solid #d1d5db; /* gray-300 */
+  border-radius: 6px; /* leichte Rundung */
+  background: white;
+  color: #374151; /* gray-700 */
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.dashboard-type-button:hover {
+  border-color: #9ca3af; /* gray-400 */
+  background: #f9fafb; /* gray-50 */
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+.dashboard-type-button.active {
+  background: #3b82f6; /* blue-500 */
+  color: white;
+  font-weight: 500;
+  border-color: #2563eb; /* blue-600 */
+  box-shadow: 0 2px 4px 0 rgba(59, 130, 246, 0.3);
+}
+
+/* Print styles - nur rechter Bereich ohne Sidebar */
+@media print {
+  /* Sidebar ausblenden */
+  .print-hide-sidebar {
+    display: none !important;
+  }
+  
+  /* Hauptinhalt für Vollbreite beim Drucken */
+  .print-full-width {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 20px !important;
+  }
+  
+  /* Header für Druck optimieren */
+  .print-header {
+    margin-bottom: 20px !important;
+    border-bottom: 1px solid #e5e7eb !important;
+    padding-bottom: 10px !important;
+  }
+  
+  /* Buttons und interaktive Elemente beim Drucken ausblenden */
+  .print-hide {
+    display: none !important;
+  }
+}
+
+:root {
+  --background: hsl(210, 5%, 96%);
+  --foreground: hsl(20, 14.3%, 4.1%);
+  --muted: hsl(60, 4.8%, 95.9%);
+  --muted-foreground: hsl(25, 5.3%, 44.7%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(20, 14.3%, 4.1%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(20, 14.3%, 4.1%);
+  --border: hsl(20, 5.9%, 90%);
+  --input: hsl(20, 5.9%, 90%);
+  --primary: hsl(210, 75%, 50%);
+  --primary-foreground: hsl(0, 0%, 100%);
+  --secondary: hsl(60, 4.8%, 95.9%);
+  --secondary-foreground: hsl(24, 9.8%, 10%);
+  --accent: hsl(25, 85%, 55%);
+  --accent-foreground: hsl(0, 0%, 100%);
+  --destructive: hsl(0, 84.2%, 60.2%);
+  --destructive-foreground: hsl(60, 9.1%, 97.8%);
+  --warning: hsl(45, 100%, 51%);
+  --warning-foreground: hsl(0, 0%, 0%);
+  --ring: hsl(20, 14.3%, 4.1%);
+  --radius: 0.5rem;
+  
+  /* Custom colors for heating system app */
+  --gray-10: hsl(0, 0%, 95.7%);
+  --gray-20: hsl(0, 0%, 87.8%);
+  --gray-50: hsl(0, 0%, 55.3%);
+  --gray-80: hsl(0, 0%, 22.4%);
+  --sidebar-bg: hsl(210, 20%, 12%);
+  --error: hsl(0, 72%, 51%);
+  --success: hsl(140, 60%, 45%);
+  
+  /* Heating system specific colors */
+  --heating-orange: hsl(25, 85%, 55%);
+  --heating-red: hsl(10, 75%, 50%);
+  --energy-green: hsl(120, 60%, 45%);
+  --efficiency-blue: hsl(210, 75%, 50%);
+  
+  /* Strawa brand colors */
+  --strawa-blue: #0064A7;
+  --strawa-gray: #f2f2f2;
+}
+
+.dark {
+  --background: hsl(240, 10%, 3.9%);
+  --foreground: hsl(0, 0%, 98%);
+  --muted: hsl(240, 3.7%, 15.9%);
+  --muted-foreground: hsl(240, 5%, 64.9%);
+  --popover: hsl(240, 10%, 3.9%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --card: hsl(240, 10%, 3.9%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --border: hsl(240, 3.7%, 15.9%);
+  --input: hsl(240, 3.7%, 15.9%);
+  --primary: hsl(217, 100%, 53%);
+  --primary-foreground: hsl(0, 0%, 100%);
+  --secondary: hsl(240, 3.7%, 15.9%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --accent: hsl(140, 60%, 45%);
+  --accent-foreground: hsl(0, 0%, 100%);
+  --destructive: hsl(0, 62.8%, 30.6%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --warning: hsl(45, 100%, 51%);
+  --warning-foreground: hsl(0, 0%, 0%);
+  --ring: hsl(240, 4.9%, 83.9%);
+  --radius: 0.5rem;
+  
+  /* Custom colors for dark mode */
+  --gray-10: hsl(240, 3.7%, 15.9%);
+  --gray-20: hsl(240, 3.7%, 25.9%);
+  --gray-50: hsl(240, 5%, 64.9%);
+  --gray-80: hsl(0, 0%, 98%);
+  --sidebar-bg: hsl(240, 10%, 3.9%);
+  --error: hsl(0, 72%, 51%);
+  --success: hsl(140, 60%, 45%);
+  
+  /* Strawa brand colors - dark mode */
+  --strawa-blue: #0064A7; /* 4A90E2 */
+  --strawa-gray: #2a2a2a;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold;
+  }
+}
+
+@layer utilities {
+  .text-gray-10 {
+    color: hsl(var(--gray-10));
+  }
+  
+  .text-gray-20 {
+    color: hsl(var(--gray-20));
+  }
+  
+  .text-gray-50 {
+    color: hsl(var(--gray-50));
+  }
+  
+  .text-gray-80 {
+    color: hsl(var(--gray-80));
+  }
+  
+  .bg-gray-10 {
+    background-color: hsl(var(--gray-10));
+  }
+  
+  .bg-gray-20 {
+    background-color: hsl(var(--gray-20));
+  }
+  
+  .bg-gray-50 {
+    background-color: hsl(var(--gray-50));
+  }
+  
+  .bg-gray-80 {
+    background-color: hsl(var(--gray-80));
+  }
+
+  /* Tab Navigation Container */
+  .tab-navigation-container {
+    margin-top: 0px !important;
+    padding-top: 0px !important;
+    border-top: none !important;
+  }
+
+  .tab-navigation-header {
+    margin-top: 0px !important;
+    padding-top: 0px !important;
+    border-top: none !important;
+  }
+
+  /* Ensure tabs have proper Netzwächter styling */
+  [role="tablist"] {
+    background: transparent !important;
+    border-radius: 0 !important;
+  }
+
+  [role="tab"] {
+    background: transparent !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  [role="tab"][data-state="active"] {
+    background: transparent !important;
+    border-bottom: 2px solid rgb(37 99 235) !important;
+    color: rgb(37 99 235) !important;
+  }
+
+  [role="tab"][data-state="inactive"] {
+    background: transparent !important;
+    border-bottom: 2px solid transparent !important;
+    color: rgb(75 85 99) !important;
+  }
+  
+  .bg-sidebar {
+    background-color: hsl(215, 85%, 15%);
+  }
+  
+  .text-error {
+    color: hsl(var(--error));
+  }
+  
+  .bg-error {
+    background-color: hsl(var(--error));
+  }
+  
+  .text-warning {
+    color: hsl(var(--warning));
+  }
+  
+  .bg-warning {
+    background-color: hsl(var(--warning));
+  }
+  
+  .text-success {
+    color: hsl(var(--success));
+  }
+  
+  .bg-success {
+    background-color: hsl(var(--success));
+  }
+
+  .border-gray-20 {
+    border-color: hsl(var(--gray-20));
+  }
+  
+  .hover\:bg-gray-600:hover {
+    background-color: hsl(215, 75%, 22%);
+  }
+  
+  .text-heating-orange {
+    color: hsl(var(--heating-orange));
+  }
+  
+  .bg-heating-orange {
+    background-color: hsl(var(--heating-orange));
+  }
+  
+  .text-energy-green {
+    color: hsl(var(--energy-green));
+  }
+  
+  .bg-energy-green {
+    background-color: hsl(var(--energy-green));
+  }
+  
+  .text-efficiency-blue {
+    color: hsl(var(--efficiency-blue));
+  }
+  
+  .bg-efficiency-blue {
+    background-color: hsl(var(--efficiency-blue));
+  }
+
+  /* Grafana Integration Styles */
+  .grafana-container {
+    @apply bg-white border border-gray-200 rounded-lg shadow-sm;
+  }
+  
+  .grafana-iframe {
+    @apply w-full h-full border-0 rounded-lg;
+    background: transparent;
+  }
+  
+  .grafana-split-container {
+    @apply flex gap-[1px] bg-gray-100;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .grafana-panel-left {
+    @apply bg-white overflow-hidden;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+  }
+  
+  .grafana-panel-right {
+    @apply bg-white overflow-hidden flex-1;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+
+  /* Triple Panel Layout (Layout3) */
+  .grafana-triple-container {
+    @apply flex gap-[1px] bg-gray-100;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .grafana-panel-left-triple {
+    @apply bg-white overflow-hidden;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+  }
+  
+  .grafana-panel-right-stack {
+    @apply bg-white overflow-hidden flex-1 flex flex-col gap-[1px];
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+  
+  .grafana-panel-right-top {
+    @apply bg-white overflow-hidden flex-1;
+    border-top-right-radius: 8px;
+  }
+  
+  .grafana-panel-right-bottom {
+    @apply bg-white overflow-hidden flex-1;
+    border-bottom-right-radius: 8px;
+  }
+  
+  .grafana-histogram-grid {
+    @apply grid grid-cols-1 md:grid-cols-3 gap-2;
+  }
+  
+  .grafana-histogram-panel {
+    @apply bg-white border border-gray-200 rounded-md overflow-hidden shadow-sm;
+  }
+  
+  .grafana-tab-active {
+    @apply bg-blue-600 text-white shadow-md;
+  }
+  
+  .grafana-tab-inactive {
+    @apply bg-gray-200 text-gray-700 hover:bg-gray-300;
+  }
+  
+  .grafana-counter-button-active {
+    @apply bg-blue-600 text-white border-blue-600;
+  }
+  
+  .grafana-counter-button-inactive {
+    @apply bg-white text-gray-700 border-gray-300 hover:bg-gray-50;
+  }
+  
+  .grafana-object-selection {
+    @apply bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg;
+  }
+  
+  .grafana-status-badge {
+    @apply bg-green-100 border-green-300 text-green-800;
+  }
+  
+  /* Grafana Tab Styling (like screenshot) */
+  .grafana-tab-container {
+    @apply border-b border-gray-200 bg-white;
+  }
+  
+  .grafana-tab-base {
+    @apply px-4 py-2 border-b-2 transition-all duration-200 font-medium text-sm;
+    margin-bottom: -1px;
+    border-radius: 0;
+  }
+  
+  .grafana-tab-active {
+    @apply bg-white border-blue-500 text-blue-700;
+    border-radius: 0;
+  }
+  
+  .grafana-tab-inactive {
+    @apply bg-gray-50 border-transparent text-gray-600 hover:bg-gray-100 hover:text-gray-800;
+    border-radius: 0;
+  }
+
+  /* Eliminate gap between tabs and content */
+  .tab-content-seamless {
+    margin-top: -1px !important;
+    margin-bottom: 0 !important;
+    padding-top: 0 !important;
+    border-top: 0 !important;
+    gap: 0 !important;
+  }
+  
+  .tab-container-seamless {
+    margin-bottom: 0 !important;
+    margin-top: 0 !important;
+    padding-bottom: 0 !important;
+    border-bottom: 0 !important;
+    gap: 0 !important;
+  }
+
+  /* Force seamless connection */
+  .tab-container-seamless + .tab-content-seamless {
+    margin-top: -2px !important;
+  }
+  
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Strawa-Grau */
+  .bg-strawa-gray {
+    background-color: var(--strawa-gray);
+  }
+
+  /* Strawa-Blau */
+  .bg-strawa-blue {
+    background-color: var(--strawa-blue);
+  }
+
+  .border-strawa-blue {
+    border-color: var(--strawa-blue);
+  }
+
+  .text-strawa-blue {
+    color: var(--strawa-blue);
+  }
+
+  .hover\:bg-strawa-gray:hover {
+    background-color: var(--strawa-gray);
+  }
+}
+
+/* PDF Print Styles - nur Detail-Content ohne Sidebar */
+@media print {
+  /* Sidebar komplett ausblenden */
+  .print-hide-sidebar,
+  nav,
+  aside,
+  .sidebar {
+    display: none !important;
+  }
+  
+  /* Hauptinhalt auf volle Breite */
+  .print-full-width,
+  main,
+  .main-content {
+    width: 100% !important;
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+    max-width: none !important;
+  }
+  
+  /* Navigation und Buttons ausblenden */
+  .print-hide,
+  button:not(.print-keep),
+  .btn,
+  .navigation,
+  .header-actions {
+    display: none !important;
+  }
+  
+  /* Header für PDF optimieren */
+  .print-header {
+    margin-bottom: 20px !important;
+    padding-bottom: 10px !important;
+    border-bottom: 1px solid #e5e7eb !important;
+  }
+  
+  /* Content-Container für PDF */
+  .print-content {
+    padding: 20px !important;
+    margin: 0 !important;
+  }
+  
+  /* Grafana iframes für PDF anpassen */
+  .print-grafana iframe {
+    width: 100% !important;
+    height: 400px !important;
+    border: 1px solid #e5e7eb !important;
+    margin-bottom: 15px !important;
+  }
+  
+  /* Tabellen für PDF optimieren */
+  .print-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+  }
+  
+  .print-table th,
+  .print-table td {
+    border: 1px solid #e5e7eb !important;
+    padding: 8px !important;
+    text-align: left !important;
+  }
+  
+  /* Seitebreaks vermeiden */
+  .print-no-break {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+}
+
+/* Panel container styles - no borders anywhere */
+.panel-container,
+.panel-container > * {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.panel-content {
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Force no borders on all Grafana containers */
+.grafana-container,
+.grafana-iframe,
+.grafana-split-container,
+.grafana-panel-left,
+.grafana-panel-right,
+.grafana-histogram-panel {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Remove borders from Card components in Grafana dashboard */
+[class*="panel-card"],
+[class*="Card"],
+.card {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Counter selection container spacing */
+.counter-selection-container {
+  margin-bottom: 0 !important;
+}
+
+.counter-selection-container + div {
+  margin-top: 0 !important;
+}
+
+/* Tab font size - all tabs should be 14px */
+.tab-button span,
+.tab-container button span,
+[role="tab"] span {
+  font-size: 14px !important;
+}
+
+/* Counter selection buttons - exact same style as main tabs */
+.counter-selection-buttons {
+  border-bottom: 0.5px solid #e5e7eb;
+  display: flex;
+  gap: 0;
+}
+
+.counter-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-bottom: 0.5px solid transparent;
+  transition: all 0.2s ease-in-out;
+  background: white;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.counter-button:hover {
+  background-color: #f9fafb;
+  color: #374151;
+}
+
+.counter-button-active {
+  background-color: #e5e7eb !important;
+  border-bottom-color: #2563eb !important;
+  color: #1d4ed8 !important;
+  font-weight: 500;
+}
+
+.counter-button-inactive {
+  background: white;
+  color: #6b7280;
+  border-bottom-color: transparent;
+}
+
+.counter-button-inactive:hover {
+  background-color: #f9fafb;
+  color: #374151;
+}
+
+/* Print Styles - nur Chart-Bereich drucken */
+@media print {
+  /* Verstecke alles per Default */
+  body.print-chart-only * {
+    visibility: hidden;
+  }
+  
+  /* Zeige nur den Chart-Bereich */
+  body.print-chart-only #chart-print-area,
+  body.print-chart-only #chart-print-area * {
+    visibility: visible;
+  }
+  
+  /* Positioniere Chart-Bereich für Print */
+  body.print-chart-only #chart-print-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 20px;
+  }
+  
+  /* Print-spezifische Anpassungen */
+  body.print-chart-only {
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Chart-spezifische Print-Anpassungen */
+  #chart-print-area .print\\:hidden {
+    display: none !important;
+  }
+  
+  #chart-print-area .print\\:mb-4 {
+    margin-bottom: 1rem !important;
+  }
+}

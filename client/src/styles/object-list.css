@@ -1,0 +1,161 @@
+/* 
+ * Objektlisten CSS-Vorlage
+ * Konsistentes Design für alle Objektlisten in der Anwendung
+ * Basiert auf ObjectManagement.tsx Design
+ */
+
+/* Container für Objektlisten */
+.object-list-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+}
+
+/* Tabellenkopf - fixiert */
+.object-list-header {
+  flex-shrink: 0;
+  background-color: rgb(239 246 255); /* bg-blue-50 */
+}
+
+.object-list-header-row {
+  display: flex;
+  padding: 12px 24px 5px 12px;
+}
+
+.object-list-header-cell {
+  font-weight: 600;
+  color: rgb(30 58 138); /* text-blue-900 */
+  font-size: 0.875rem; /* text-sm */
+  text-align: left;
+}
+
+.object-list-header-cell--name {
+  width: 60%;
+}
+
+.object-list-header-cell--location {
+  width: 40%;
+}
+
+/* Scrollbarer Tabellenbereich */
+.object-list-body {
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* Objektzeile */
+.object-list-row {
+  display: flex;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  position: relative;
+  border-right: 6px solid;
+  border-bottom: 0.5px solid rgb(209 213 219); /* border-b-gray-300 */
+}
+
+/* Alternierend Zeilenhintergrund */
+.object-list-row--even {
+  background-color: rgba(255, 255, 255, 0.65);
+  border-right-color: rgb(244 245 245); /* #f4f5f5 */
+}
+
+.object-list-row--odd {
+  background-color: rgba(255, 255, 255, 0.8);
+  border-right-color: rgb(244 245 245); /* #f4f5f5 */
+}
+
+/* Markierte Zeile */
+.object-list-row--selected {
+  background-color: rgb(219 234 254) !important; /* bg-blue-100 */
+  padding-left: 16px;
+  border-right-color: rgb(59 130 246) !important; /* border-r-blue-500 */
+}
+
+/* Hover-Effekt (wird per JavaScript gesteuert) */
+.object-list-row--hover {
+  background-color: rgb(147 197 253) !important; /* blue-300 */
+}
+
+/* Zelleninhalte */
+.object-list-cell {
+  display: flex;
+  flex-direction: column;
+}
+
+.object-list-cell--name {
+  width: 60%;
+}
+
+.object-list-cell--location {
+  width: 40%;
+}
+
+/* Textformatierung */
+.object-list-text--primary {
+  font-weight: 500;
+  color: rgb(17 24 39); /* text-gray-900 */
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.object-list-text--secondary {
+  color: rgb(107 114 128); /* text-gray-500 */
+  font-size: 12px;
+}
+
+.object-list-text--mono {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+}
+
+/* Responsive Anpassungen */
+@media (max-width: 768px) {
+  .object-list-header-row,
+  .object-list-row {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+  
+  .object-list-text--primary {
+    font-size: 13px;
+  }
+  
+  .object-list-text--secondary {
+    font-size: 11px;
+  }
+}
+
+/* Utility-Klassen für JavaScript-Interaktion */
+.object-list-selectable {
+  cursor: pointer;
+}
+
+.object-list-loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Leere Zustandsanzeige */
+.object-list-empty {
+  text-align: center;
+  padding: 2rem;
+  color: rgb(107 114 128); /* text-gray-500 */
+}
+
+.object-list-empty-icon {
+  height: 3rem;
+  width: 3rem;
+  margin: 0 auto 1rem;
+  color: rgb(209 213 219); /* text-gray-300 */
+}
+
+.object-list-empty-title {
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.object-list-empty-subtitle {
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}

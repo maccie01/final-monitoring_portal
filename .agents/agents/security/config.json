@@ -1,0 +1,75 @@
+{
+  "agent_id": "security-agent",
+  "name": "Security Hardening Agent",
+  "version": "1.0.0",
+  "description": "Fixes all critical security vulnerabilities in Netzwächter backend",
+
+  "source_document": "../../todo/AGENT-B-BACKEND-SECURITY.md",
+  "priority": "P0",
+  "estimated_duration_weeks": 3,
+
+  "git": {
+    "branch": "security/backend-hardening",
+    "base_branch": "main",
+    "commit_prefix": "fix(security)",
+    "auto_push": true,
+    "create_pr_on_complete": true
+  },
+
+  "working_directory": "../..",
+
+  "tools": [
+    "Read",
+    "Write",
+    "Edit",
+    "Bash",
+    "Grep",
+    "Glob"
+  ],
+
+  "permissions": {
+    "can_install_packages": true,
+    "can_modify_env": true,
+    "can_run_migrations": true,
+    "can_restart_services": false
+  },
+
+  "verification": {
+    "before_commit": [
+      "npm run type-check",
+      "npm run lint"
+    ],
+    "after_task": [
+      "npm test",
+      "npm run build"
+    ],
+    "security_scan": "npm audit"
+  },
+
+  "max_turns": 100,
+  "autonomy_level": "high",
+
+  "communication": {
+    "report_interval_minutes": 30,
+    "notify_on_blocked": true,
+    "request_human_approval": [
+      "before_password_migration",
+      "before_changing_session_secret",
+      "before_deploying_to_production"
+    ]
+  },
+
+  "error_handling": {
+    "max_retries": 3,
+    "retry_delay_seconds": 60,
+    "escalate_after_retries": true
+  },
+
+  "success_criteria": {
+    "all_tasks_complete": true,
+    "zero_critical_vulnerabilities": true,
+    "all_tests_passing": true,
+    "security_scan_clean": true,
+    "documentation_updated": true
+  }
+}

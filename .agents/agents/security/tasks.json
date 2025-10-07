@@ -1,0 +1,571 @@
+{
+  "phase": "Phase 1: Critical Security Fixes",
+  "total_tasks": 12,
+  "estimated_weeks": 3,
+
+  "tasks": [
+    {
+      "id": "SEC-1.1",
+      "title": "Implement bcrypt password hashing",
+      "priority": "P0",
+      "severity": "CRITICAL",
+      "estimated_hours": 3,
+      "week": 1,
+
+      "description": "Replace plaintext password validation with bcrypt hashing",
+
+      "files_to_modify": [
+        "server/storage.ts:3342-3369"
+      ],
+
+      "steps": [
+        {
+          "step": 1,
+          "action": "Install bcrypt",
+          "command": "npm install bcrypt @types/bcrypt"
+        },
+        {
+          "step": 2,
+          "action": "Create password migration script",
+          "file": "server/scripts/migrate-passwords.ts",
+          "template": "../../prompts/security-tasks.md#password-migration"
+        },
+        {
+          "step": 3,
+          "action": "Update validateUserCredentials method",
+          "file": "server/storage.ts",
+          "lines": "3342-3369",
+          "replace_with": "bcrypt.compare() implementation"
+        },
+        {
+          "step": 4,
+          "action": "Update createUser method",
+          "file": "server/storage.ts",
+          "add": "Hash password before storing"
+        },
+        {
+          "step": 5,
+          "action": "Update updateUser method",
+          "file": "server/storage.ts",
+          "add": "Hash password before updating"
+        },
+        {
+          "step": 6,
+          "action": "Run migration script",
+          "command": "npx tsx server/scripts/migrate-passwords.ts",
+          "require_human_approval": true
+        },
+        {
+          "step": 7,
+          "action": "Test login with hashed passwords",
+          "verify": "Login successful with existing credentials"
+        },
+        {
+          "step": 8,
+          "action": "Verify all passwords are hashed",
+          "query": "SELECT username, LEFT(password, 10) FROM users LIMIT 5",
+          "expected": "All passwords start with $2b$12$"
+        }
+      ],
+
+      "success_criteria": [
+        "bcrypt installed and imported",
+        "Migration script created and tested",
+        "All passwords in DB start with $2b$",
+        "validateUserCredentials uses bcrypt.compare",
+        "createUser hashes passwords",
+        "updateUser hashes passwords",
+        "Login tests pass",
+        "Security scan shows no plaintext password issues"
+      ],
+
+      "verification_commands": [
+        "npm test -- auth",
+        "npm audit | grep -i password"
+      ],
+
+      "rollback_procedure": "Restore database from pre-migration snapshot",
+
+      "documentation": "docs/SECURITY.md#password-hashing"
+    },
+
+    {
+      "id": "SEC-1.2",
+      "title": "Remove hardcoded admin bypass",
+      "priority": "P0",
+      "severity": "CRITICAL",
+      "estimated_hours": 0.5,
+      "week": 1,
+
+      "description": "Delete hardcoded admin/admin123 authentication bypass",
+
+      "files_to_modify": [
+        "server/controllers/authController.ts:114-125"
+      ],
+
+      "steps": [
+        {
+          "step": 1,
+          "action": "Locate hardcoded bypass",
+          "file": "server/controllers/authController.ts",
+          "lines": "114-125"
+        },
+        {
+          "step": 2,
+          "action": "Delete bypass code block",
+          "verify": "if (username.toLowerCase() === 'admin' && password === 'admin123') removed"
+        },
+        {
+          "step": 3,
+          "action": "Ensure real admin exists",
+          "query": "SELECT id, username, role FROM users WHERE role = 'admin'",
+          "expected": "At least one admin user exists"
+        },
+        {
+          "step": 4,
+          "action": "Test login with admin/admin123",
+          "expected": "Login FAILS with 401"
+        },
+        {
+          "step": 5,
+          "action": "Test login with real admin credentials",
+          "expected": "Login succeeds"
+        }
+      ],
+
+      "success_criteria": [
+        "Hardcoded bypass code removed",
+        "Real admin user exists in database",
+        "admin/admin123 login fails",
+        "Real admin login works",
+        "Authentication tests pass"
+      ],
+
+      "verification_commands": [
+        "grep -n 'admin123' server/controllers/authController.ts",
+        "npm test -- auth.test"
+      ],
+
+      "documentation": "docs/SECURITY.md#authentication"
+    },
+
+    {
+      "id": "SEC-1.3",
+      "title": "Enable SSL for database connection",
+      "priority": "P0",
+      "severity": "CRITICAL",
+      "estimated_hours": 1,
+      "week": 1,
+
+      "description": "Enable SSL/TLS encryption for PostgreSQL connection",
+
+      "files_to_modify": [
+        ".env",
+        "server/connection-pool.ts"
+      ],
+
+      "steps": [
+        {
+          "step": 1,
+          "action": "Update DATABASE_URL in .env",
+          "change": "sslmode=disable → sslmode=require"
+        },
+        {
+          "step": 2,
+          "action": "Update connection-pool.ts SSL config",
+          "file": "server/connection-pool.ts",
+          "add": "ssl: { rejectUnauthorized: true }"
+        },
+        {
+          "step": 3,
+          "action": "Test database connection",
+          "command": "npm run dev",
+          "verify": "Database connects successfully with SSL"
+        },
+        {
+          "step": 4,
+          "action": "Verify SSL enabled",
+          "query": "SELECT current_setting('ssl') as ssl_enabled",
+          "expected": "ssl_enabled = 'on'"
+        }
+      ],
+
+      "success_criteria": [
+        "DATABASE_URL uses sslmode=require",
+        "connection-pool.ts enforces SSL",
+        "Database connection successful",
+        "SSL verified in query",
+        "Server starts without errors"
+      ],
+
+      "verification_commands": [
+        "grep 'sslmode=require' .env",
+        "npm run dev | grep -i ssl"
+      ],
+
+      "documentation": "docs/SECURITY.md#database-ssl"
+    },
+
+    {
+      "id": "SEC-1.4",
+      "title": "Generate strong SESSION_SECRET",
+      "priority": "P0",
+      "severity": "CRITICAL",
+      "estimated_hours": 0.25,
+      "week": 1,
+
+      "description": "Replace weak SESSION_SECRET with cryptographically secure random value",
+
+      "files_to_modify": [
+        ".env"
+      ],
+
+      "steps": [
+        {
+          "step": 1,
+          "action": "Generate strong secret",
+          "command": "node -e \"console.log(require('crypto').randomBytes(64).toString('hex'))\""
+        },
+        {
+          "step": 2,
+          "action": "Update SESSION_SECRET in .env",
+          "verify": "Secret is 128 characters (64 bytes hex)"
+        },
+        {
+          "step": 3,
+          "action": "Restart server",
+          "note": "This will invalidate all existing sessions"
+        },
+        {
+          "step": 4,
+          "action": "Test session creation",
+          "verify": "Login creates session cookie"
+        }
+      ],
+
+      "success_criteria": [
+        "SESSION_SECRET is 128+ characters",
+        "Server starts successfully",
+        "Login creates session",
+        "Session persists across requests",
+        "No session security warnings"
+      ],
+
+      "verification_commands": [
+        "echo $SESSION_SECRET | wc -c",
+        "npm test -- session"
+      ],
+
+      "documentation": "docs/SECURITY.md#session-management",
+
+      "warnings": [
+        "Will invalidate all active user sessions",
+        "Users will need to log in again"
+      ]
+    },
+
+    {
+      "id": "SEC-2.1",
+      "title": "Protect 13 unprotected endpoints",
+      "priority": "P0",
+      "severity": "CRITICAL",
+      "estimated_hours": 2,
+      "week": 2,
+
+      "description": "Add authentication middleware to all unprotected management endpoints",
+
+      "files_to_modify": [
+        "server/routes/users.ts",
+        "server/routes/db.ts",
+        "server/routes/monitoring.ts",
+        "server/routes/portal.ts",
+        "server/routes/settings.ts"
+      ],
+
+      "endpoints_to_protect": [
+        {
+          "endpoint": "GET /api/user-profiles",
+          "file": "server/routes/users.ts",
+          "middleware": "requireAuth"
+        },
+        {
+          "endpoint": "POST /api/user-profiles",
+          "file": "server/routes/users.ts",
+          "middleware": "requireAdmin"
+        },
+        {
+          "endpoint": "PUT /api/user-profiles/:id",
+          "file": "server/routes/users.ts",
+          "middleware": "requireAdmin"
+        },
+        {
+          "endpoint": "DELETE /api/user-profiles/:id",
+          "file": "server/routes/users.ts",
+          "middleware": "requireAdmin"
+        },
+        {
+          "endpoint": "GET /api/settings/all",
+          "file": "server/routes/settings.ts",
+          "middleware": "requireAuth"
+        },
+        {
+          "endpoint": "PUT /api/settings/mandant/:mandantId",
+          "file": "server/routes/settings.ts",
+          "middleware": "requireAdmin"
+        },
+        {
+          "endpoint": "GET /api/settings/ui-mode",
+          "file": "server/routes/settings.ts",
+          "middleware": "requireAuth"
+        },
+        {
+          "endpoint": "PUT /api/settings/ui-mode",
+          "file": "server/routes/settings.ts",
+          "middleware": "requireAuth"
+        },
+        {
+          "endpoint": "GET /api/db/test-connection",
+          "file": "server/routes/db.ts",
+          "middleware": "requireAuth"
+        },
+        {
+          "endpoint": "GET /api/db/pool-stats",
+          "file": "server/routes/db.ts",
+          "middleware": "requireAdmin"
+        },
+        {
+          "endpoint": "POST /api/monitoring/manual-check",
+          "file": "server/routes/monitoring.ts",
+          "middleware": "requireAuth"
+        },
+        {
+          "endpoint": "GET /api/monitoring/alerts",
+          "file": "server/routes/monitoring.ts",
+          "middleware": "requireAuth"
+        },
+        {
+          "endpoint": "GET /api/portal/mandants",
+          "file": "server/routes/portal.ts",
+          "middleware": "requireAuth"
+        }
+      ],
+
+      "steps": [
+        {
+          "step": 1,
+          "action": "Create verification script",
+          "file": "server/scripts/verify-auth-protection.sh"
+        },
+        {
+          "step": 2,
+          "action": "Add middleware to each endpoint",
+          "note": "Process one route file at a time"
+        },
+        {
+          "step": 3,
+          "action": "Test without auth (should return 401)",
+          "command": "./server/scripts/verify-auth-protection.sh"
+        },
+        {
+          "step": 4,
+          "action": "Test with auth (should return 200)",
+          "verify": "All endpoints accessible with valid session"
+        }
+      ],
+
+      "success_criteria": [
+        "All 13 endpoints have requireAuth or requireAdmin",
+        "Unauthenticated requests return 401",
+        "Authenticated requests succeed",
+        "Admin-only endpoints require admin role",
+        "No endpoints accessible without authentication"
+      ],
+
+      "verification_commands": [
+        "./server/scripts/verify-auth-protection.sh",
+        "npm test -- routes"
+      ],
+
+      "documentation": "docs/API_DOCUMENTATION.md#authentication"
+    },
+
+    {
+      "id": "SEC-2.2",
+      "title": "Implement rate limiting",
+      "priority": "P1",
+      "severity": "HIGH",
+      "estimated_hours": 1,
+      "week": 2,
+
+      "description": "Add rate limiting to prevent brute force and DDoS attacks",
+
+      "files_to_create": [
+        "server/middleware/rate-limit.ts"
+      ],
+
+      "files_to_modify": [
+        "server/routes/auth.ts",
+        "server/index.ts"
+      ],
+
+      "steps": [
+        {
+          "step": 1,
+          "action": "Install rate limiting library",
+          "command": "npm install express-rate-limit"
+        },
+        {
+          "step": 2,
+          "action": "Create rate-limit middleware",
+          "file": "server/middleware/rate-limit.ts",
+          "template": "../../prompts/security-tasks.md#rate-limiting"
+        },
+        {
+          "step": 3,
+          "action": "Apply to auth endpoints",
+          "file": "server/routes/auth.ts",
+          "config": "5 attempts per 15 minutes"
+        },
+        {
+          "step": 4,
+          "action": "Apply to general API",
+          "file": "server/index.ts",
+          "config": "100 requests per minute"
+        },
+        {
+          "step": 5,
+          "action": "Test rate limiting",
+          "verify": "6th login attempt blocked"
+        }
+      ],
+
+      "success_criteria": [
+        "express-rate-limit installed",
+        "Rate limiters configured",
+        "Auth endpoints protected (5/15min)",
+        "API endpoints protected (100/min)",
+        "Test shows blocking after limit",
+        "Error messages user-friendly"
+      ],
+
+      "verification_commands": [
+        "./server/scripts/test-rate-limit.sh",
+        "npm test -- rate-limit"
+      ],
+
+      "documentation": "docs/SECURITY.md#rate-limiting"
+    },
+
+    {
+      "id": "SEC-2.3",
+      "title": "Secure email service configuration",
+      "priority": "P1",
+      "severity": "MEDIUM",
+      "estimated_hours": 0.5,
+      "week": 2,
+
+      "description": "Enable TLS for email service and secure credentials",
+
+      "files_to_modify": [
+        "server/email-service.ts"
+      ],
+
+      "steps": [
+        {
+          "step": 1,
+          "action": "Update email transporter config",
+          "file": "server/email-service.ts",
+          "add": "TLS configuration with rejectUnauthorized: true"
+        },
+        {
+          "step": 2,
+          "action": "Test email sending",
+          "command": "npx tsx server/scripts/test-email.ts"
+        }
+      ],
+
+      "success_criteria": [
+        "Email credentials in environment variables",
+        "SMTP uses TLS 1.2+",
+        "Certificate verification enabled",
+        "Test email sends successfully"
+      ],
+
+      "verification_commands": [
+        "npx tsx server/scripts/test-email.ts"
+      ],
+
+      "documentation": "docs/SECURITY.md#email-configuration"
+    },
+
+    {
+      "id": "SEC-3.1",
+      "title": "Security audit and final verification",
+      "priority": "P0",
+      "severity": "CRITICAL",
+      "estimated_hours": 2,
+      "week": 3,
+
+      "description": "Final security scan and verification of all fixes",
+
+      "steps": [
+        {
+          "step": 1,
+          "action": "Run npm audit",
+          "command": "npm audit",
+          "expected": "0 vulnerabilities"
+        },
+        {
+          "step": 2,
+          "action": "Verify all endpoints protected",
+          "command": "./server/scripts/verify-auth-protection.sh"
+        },
+        {
+          "step": 3,
+          "action": "Test authentication flows",
+          "verify": "All auth scenarios work correctly"
+        },
+        {
+          "step": 4,
+          "action": "Run security checklist",
+          "file": "docs/SECURITY_CHECKLIST.md"
+        },
+        {
+          "step": 5,
+          "action": "Update security documentation",
+          "file": "docs/SECURITY.md"
+        }
+      ],
+
+      "success_criteria": [
+        "npm audit: 0 critical/high vulnerabilities",
+        "All endpoints require authentication",
+        "All passwords bcrypt hashed",
+        "Database uses SSL",
+        "Strong SESSION_SECRET in place",
+        "Rate limiting functional",
+        "Email service uses TLS",
+        "Documentation complete"
+      ],
+
+      "deliverables": [
+        "docs/SECURITY.md",
+        "server/scripts/migrate-passwords.ts",
+        "server/scripts/verify-auth-protection.sh",
+        "Git tag: v1.1.0-security-hardened"
+      ]
+    }
+  ],
+
+  "rollback_plan": {
+    "phase_1_security": "Restore database snapshot, revert commits",
+    "password_migration": "server/scripts/rollback-passwords.sh",
+    "session_changes": "Restore old SESSION_SECRET, restart server"
+  },
+
+  "human_checkpoints": [
+    "Before running password migration (SEC-1.1)",
+    "Before changing SESSION_SECRET (SEC-1.4)",
+    "After completing all security fixes (SEC-3.1)"
+  ]
+}

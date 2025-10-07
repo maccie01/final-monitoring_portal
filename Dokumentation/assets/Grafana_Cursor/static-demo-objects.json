@@ -1,0 +1,79 @@
+[
+  {
+    "objectId": "207210094",
+    "name": "Voltastr. 25",
+    "gruppe": "Unbekannt",
+    "status": "critical",
+    "vl": 62,
+    "rl": 57,
+    "update": "2025-06-29 14:02",
+    "location": "Hannover",
+    "type": ""
+  },
+  {
+    "objectId": "207210027",
+    "name": "Wallensteinstrasse 108",
+    "gruppe": "Unbekannt",
+    "status": "critical",
+    "vl": 61,
+    "rl": 47,
+    "update": "2025-06-29 14:02",
+    "location": "Hannover",
+    "type": ""
+  },
+  {
+    "objectId": "296528096",
+    "name": "Nordfeldstr.18A",
+    "gruppe": "Unbekannt",
+    "status": "critical",
+    "vl": 59,
+    "rl": 46,
+    "update": "2025-06-29 14:01",
+    "location": "Hannover",
+    "type": ""
+  },
+  {
+    "objectId": "207315038",
+    "name": "Ahornstraße 10",
+    "gruppe": "Unbekannt",
+    "status": "critical",
+    "vl": 55,
+    "rl": 51,
+    "update": "2025-06-29 14:02",
+    "location": "Hannover",
+    "type": ""
+  },
+  {
+    "objectId": "207315064",
+    "name": "Wallensteinstr. 106",
+    "gruppe": "Unbekannt",
+    "status": "critical",
+    "vl": 57,
+    "rl": 42,
+    "update": "2025-06-29 14:02",
+    "location": "Hannover",
+    "type": ""
+  },
+  {
+    "objectId": "208106016",
+    "name": "Lauhof 1",
+    "gruppe": "Unbekannt",
+    "status": "warning",
+    "vl": 52,
+    "rl": 38,
+    "update": "2025-06-29 14:02",
+    "location": "Hannover",
+    "type": ""
+  },
+  {
+    "objectId": "272605196",
+    "name": "Walter-Gropius Str. 32-34",
+    "gruppe": "Unbekannt",
+    "status": "warning",
+    "vl": 54,
+    "rl": 45,
+    "update": "2025-06-29 14:01",
+    "location": "Neustadt",
+    "type": ""
+  }
+]

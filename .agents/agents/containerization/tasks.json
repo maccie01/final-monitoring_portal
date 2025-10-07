@@ -1,0 +1,539 @@
+{
+  "agent_id": "containerization-agent",
+  "total_tasks": 20,
+  "estimated_duration_hours": 60,
+
+  "tasks": [
+    {
+      "id": "DCK-1.1",
+      "title": "Create multi-stage Dockerfile for backend",
+      "priority": "P0",
+      "estimated_hours": 3,
+      "steps": [
+        "Create infrastructure/docker/Dockerfile.backend",
+        "Stage 1: Build stage with full Node.js and build tools",
+        "Stage 2: Production stage with minimal Node.js runtime",
+        "Copy only necessary files to production stage",
+        "Configure non-root user for security",
+        "Add health check",
+        "Test build"
+      ],
+      "file_to_create": "infrastructure/docker/Dockerfile.backend",
+      "success_criteria": [
+        "Multi-stage build works",
+        "Production image <300MB",
+        "Build time <5 minutes",
+        "Container starts successfully"
+      ],
+      "verification": "docker build -f infrastructure/docker/Dockerfile.backend -t netzwaechter-backend . && docker images | grep netzwaechter-backend"
+    },
+
+    {
+      "id": "DCK-1.2",
+      "title": "Create multi-stage Dockerfile for frontend",
+      "priority": "P0",
+      "estimated_hours": 3,
+      "steps": [
+        "Create infrastructure/docker/Dockerfile.frontend",
+        "Stage 1: Build stage with Node.js and Vite",
+        "Stage 2: Nginx stage with built assets",
+        "Configure nginx.conf for SPA routing",
+        "Add gzip compression",
+        "Configure caching headers",
+        "Test build"
+      ],
+      "file_to_create": "infrastructure/docker/Dockerfile.frontend",
+      "success_criteria": [
+        "Multi-stage build works",
+        "Production image <200MB (nginx + assets)",
+        "Build time <5 minutes",
+        "SPA routing works"
+      ],
+      "verification": "docker build -f infrastructure/docker/Dockerfile.frontend -t netzwaechter-frontend . && docker run -d -p 8080:80 netzwaechter-frontend"
+    },
+
+    {
+      "id": "DCK-2.1",
+      "title": "Create .dockerignore files",
+      "priority": "P0",
+      "estimated_hours": 1,
+      "steps": [
+        "Create .dockerignore in project root",
+        "Exclude node_modules",
+        "Exclude .git",
+        "Exclude development files",
+        "Exclude logs and temp files",
+        "Test that build uses .dockerignore"
+      ],
+      "file_to_create": ".dockerignore",
+      "success_criteria": [
+        ".dockerignore created",
+        "Build context size reduced >50%",
+        "Build faster due to smaller context"
+      ],
+      "verification": "docker build context size comparison"
+    },
+
+    {
+      "id": "DCK-3.1",
+      "title": "Create docker-compose.yml for local development",
+      "priority": "P0",
+      "estimated_hours": 4,
+      "steps": [
+        "Create infrastructure/docker/docker-compose.yml",
+        "Define backend service with hot reload",
+        "Define frontend service with hot reload",
+        "Define PostgreSQL service",
+        "Define Redis service (optional)",
+        "Configure networks",
+        "Configure volumes for data persistence",
+        "Configure environment variables",
+        "Test full stack startup"
+      ],
+      "file_to_create": "infrastructure/docker/docker-compose.yml",
+      "services": [
+        "backend (Node.js with nodemon)",
+        "frontend (Vite dev server)",
+        "postgres (PostgreSQL 15)",
+        "redis (Redis 7)"
+      ],
+      "success_criteria": [
+        "All services start successfully",
+        "Services can communicate",
+        "Hot reload works for backend and frontend",
+        "Data persists across restarts"
+      ],
+      "verification": "docker-compose up && curl http://localhost:5000/api/health"
+    },
+
+    {
+      "id": "DCK-3.2",
+      "title": "Create docker-compose.prod.yml for production",
+      "priority": "P1",
+      "estimated_hours": 3,
+      "steps": [
+        "Create infrastructure/docker/docker-compose.prod.yml",
+        "Use production Docker images",
+        "Configure production environment variables",
+        "Add restart policies",
+        "Configure resource limits",
+        "Add logging configuration",
+        "Remove development-only services"
+      ],
+      "file_to_create": "infrastructure/docker/docker-compose.prod.yml",
+      "success_criteria": [
+        "Production compose file complete",
+        "Restart policies configured",
+        "Resource limits set",
+        "Logging configured"
+      ],
+      "verification": "docker-compose -f docker-compose.prod.yml config"
+    },
+
+    {
+      "id": "DCK-4.1",
+      "title": "Configure PostgreSQL container",
+      "priority": "P0",
+      "estimated_hours": 2,
+      "steps": [
+        "Add postgres service to docker-compose",
+        "Configure persistent volume for data",
+        "Set up initialization scripts",
+        "Configure health check",
+        "Add pgAdmin service (optional, for development)",
+        "Test database connectivity from backend"
+      ],
+      "success_criteria": [
+        "PostgreSQL starts successfully",
+        "Data persists across restarts",
+        "Backend can connect",
+        "Migrations can run"
+      ],
+      "verification": "docker-compose exec postgres psql -U postgres -c '\\l'"
+    },
+
+    {
+      "id": "DCK-4.2",
+      "title": "Configure Redis container",
+      "priority": "P1",
+      "estimated_hours": 1,
+      "steps": [
+        "Add redis service to docker-compose",
+        "Configure persistent volume for Redis data",
+        "Configure health check",
+        "Test Redis connectivity from backend"
+      ],
+      "success_criteria": [
+        "Redis starts successfully",
+        "Backend can connect",
+        "Caching works"
+      ],
+      "verification": "docker-compose exec redis redis-cli PING"
+    },
+
+    {
+      "id": "DCK-5.1",
+      "title": "Configure networking between services",
+      "priority": "P0",
+      "estimated_hours": 2,
+      "steps": [
+        "Define custom bridge network",
+        "Configure service discovery (service names as hostnames)",
+        "Set up internal network for backend/db communication",
+        "Set up public network for frontend access",
+        "Test service-to-service communication"
+      ],
+      "success_criteria": [
+        "Services can reach each other by name",
+        "Backend can connect to postgres and redis",
+        "Frontend can proxy to backend",
+        "Security groups properly configured"
+      ],
+      "verification": "docker-compose exec backend ping postgres"
+    },
+
+    {
+      "id": "DCK-6.1",
+      "title": "Implement health checks for all services",
+      "priority": "P1",
+      "estimated_hours": 2,
+      "steps": [
+        "Add health check to backend Dockerfile",
+        "Add health check to postgres service",
+        "Add health check to redis service",
+        "Add health check to frontend service",
+        "Configure health check intervals and retries",
+        "Test health checks"
+      ],
+      "health_checks": [
+        "backend: GET /api/health",
+        "frontend: GET /",
+        "postgres: pg_isready",
+        "redis: redis-cli PING"
+      ],
+      "success_criteria": [
+        "All health checks pass",
+        "Unhealthy services detected",
+        "docker-compose ps shows health status"
+      ],
+      "verification": "docker-compose ps"
+    },
+
+    {
+      "id": "DCK-7.1",
+      "title": "Configure volume persistence",
+      "priority": "P0",
+      "estimated_hours": 2,
+      "steps": [
+        "Create named volume for postgres data",
+        "Create named volume for redis data",
+        "Create bind mount for logs (development)",
+        "Test data persistence across restarts",
+        "Document volume management"
+      ],
+      "volumes": [
+        "postgres_data (named volume)",
+        "redis_data (named volume)",
+        "./logs:/app/logs (bind mount for dev)"
+      ],
+      "success_criteria": [
+        "Data persists after docker-compose down/up",
+        "Volumes can be backed up",
+        "Logs accessible on host"
+      ],
+      "verification": "docker-compose down && docker-compose up && verify data still exists"
+    },
+
+    {
+      "id": "DCK-8.1",
+      "title": "Configure environment variables",
+      "priority": "P0",
+      "estimated_hours": 2,
+      "steps": [
+        "Create .env.docker.example",
+        "Define all required environment variables",
+        "Configure docker-compose to use .env file",
+        "Add environment variable validation",
+        "Document all variables"
+      ],
+      "file_to_create": ".env.docker.example",
+      "success_criteria": [
+        "All environment variables documented",
+        ".env.docker.example has safe defaults",
+        "Services use environment variables correctly"
+      ],
+      "verification": "docker-compose config shows interpolated values"
+    },
+
+    {
+      "id": "DCK-9.1",
+      "title": "Optimize Docker layer caching",
+      "priority": "P1",
+      "estimated_hours": 2,
+      "steps": [
+        "Order Dockerfile commands for optimal caching",
+        "Copy package.json and package-lock.json first",
+        "Run npm install before copying source code",
+        "Use .dockerignore effectively",
+        "Test build time with and without cache"
+      ],
+      "success_criteria": [
+        "Cached builds <30 seconds",
+        "Full builds <5 minutes",
+        "Layer caching working effectively"
+      ],
+      "verification": "Time docker builds with and without cache"
+    },
+
+    {
+      "id": "DCK-10.1",
+      "title": "Create nginx configuration for frontend",
+      "priority": "P0",
+      "estimated_hours": 2,
+      "steps": [
+        "Create infrastructure/nginx/nginx.conf",
+        "Configure SPA routing (fallback to index.html)",
+        "Configure gzip compression",
+        "Configure caching headers for static assets",
+        "Configure proxy_pass for /api requests to backend",
+        "Add security headers",
+        "Test configuration"
+      ],
+      "file_to_create": "infrastructure/nginx/nginx.conf",
+      "success_criteria": [
+        "SPA routing works (no 404 on refresh)",
+        "Static assets cached properly",
+        "API requests proxied to backend",
+        "Security headers present"
+      ],
+      "verification": "curl -I http://localhost:8080 && check headers"
+    },
+
+    {
+      "id": "DCK-11.1",
+      "title": "Create deployment scripts",
+      "priority": "P1",
+      "estimated_hours": 3,
+      "steps": [
+        "Create infrastructure/scripts/deploy.sh",
+        "Create infrastructure/scripts/backup-db.sh",
+        "Create infrastructure/scripts/restore-db.sh",
+        "Create infrastructure/scripts/logs.sh",
+        "Make all scripts executable",
+        "Test all scripts"
+      ],
+      "scripts_to_create": [
+        "deploy.sh (build and deploy)",
+        "backup-db.sh (backup database)",
+        "restore-db.sh (restore database)",
+        "logs.sh (tail logs for all services)"
+      ],
+      "success_criteria": [
+        "All scripts executable",
+        "Scripts work correctly",
+        "Scripts documented"
+      ],
+      "verification": "Run each script and verify output"
+    },
+
+    {
+      "id": "DCK-12.1",
+      "title": "Implement SSL/TLS with Let's Encrypt",
+      "priority": "P2",
+      "estimated_hours": 3,
+      "steps": [
+        "Add certbot container to docker-compose",
+        "Configure nginx for SSL",
+        "Create SSL certificate renewal script",
+        "Test SSL certificate generation",
+        "Document SSL setup"
+      ],
+      "success_criteria": [
+        "SSL certificates generated",
+        "HTTPS working",
+        "Auto-renewal configured"
+      ],
+      "verification": "curl https://localhost"
+    },
+
+    {
+      "id": "DCK-13.1",
+      "title": "Create comprehensive Docker documentation",
+      "priority": "P0",
+      "estimated_hours": 3,
+      "steps": [
+        "Create docs/deployment/docker.md",
+        "Document prerequisites",
+        "Document local development setup",
+        "Document production deployment",
+        "Document troubleshooting",
+        "Add architecture diagram"
+      ],
+      "file_to_create": "docs/deployment/docker.md",
+      "success_criteria": [
+        "Documentation complete",
+        "All commands documented",
+        "Troubleshooting guide added"
+      ],
+      "verification": "docs/deployment/docker.md exists and is comprehensive"
+    },
+
+    {
+      "id": "DCK-14.1",
+      "title": "Test local development workflow",
+      "priority": "P0",
+      "estimated_hours": 2,
+      "steps": [
+        "Start fresh with docker-compose up",
+        "Verify all services start",
+        "Test hot reload for backend",
+        "Test hot reload for frontend",
+        "Make code changes and verify auto-reload",
+        "Test database connectivity",
+        "Test redis connectivity"
+      ],
+      "success_criteria": [
+        "All services start successfully",
+        "Hot reload works for backend and frontend",
+        "Development experience is smooth"
+      ],
+      "verification": "Full development workflow tested"
+    },
+
+    {
+      "id": "DCK-15.1",
+      "title": "Test production build and deployment",
+      "priority": "P0",
+      "estimated_hours": 3,
+      "steps": [
+        "Build production Docker images",
+        "Start production compose",
+        "Run smoke tests",
+        "Test API endpoints",
+        "Test frontend loads",
+        "Verify performance",
+        "Test graceful shutdown"
+      ],
+      "success_criteria": [
+        "Production images build successfully",
+        "Production deployment works",
+        "All tests pass",
+        "Performance acceptable"
+      ],
+      "verification": "docker-compose -f docker-compose.prod.yml up && run tests"
+    },
+
+    {
+      "id": "DCK-16.1",
+      "title": "Implement container monitoring",
+      "priority": "P2",
+      "estimated_hours": 3,
+      "steps": [
+        "Add container health monitoring",
+        "Configure log aggregation",
+        "Add metrics collection (optional: Prometheus)",
+        "Create monitoring dashboard (optional: Grafana)",
+        "Test monitoring"
+      ],
+      "success_criteria": [
+        "Container health visible",
+        "Logs aggregated",
+        "Metrics collected (if implemented)"
+      ],
+      "verification": "docker stats && docker-compose logs"
+    },
+
+    {
+      "id": "DCK-17.1",
+      "title": "Create CI/CD integration",
+      "priority": "P2",
+      "estimated_hours": 4,
+      "steps": [
+        "Create .github/workflows/docker-build.yml",
+        "Configure automated Docker builds on PR",
+        "Add image scanning for vulnerabilities",
+        "Configure automated deployment to staging",
+        "Test CI/CD pipeline"
+      ],
+      "file_to_create": ".github/workflows/docker-build.yml",
+      "success_criteria": [
+        "CI/CD pipeline builds Docker images",
+        "Security scanning runs",
+        "Deployment to staging automated"
+      ],
+      "verification": "Create PR and verify CI/CD runs"
+    },
+
+    {
+      "id": "DCK-18.1",
+      "title": "Performance optimization",
+      "priority": "P1",
+      "estimated_hours": 2,
+      "steps": [
+        "Optimize Docker image sizes",
+        "Reduce build times",
+        "Optimize container startup times",
+        "Configure resource limits",
+        "Test under load"
+      ],
+      "success_criteria": [
+        "Backend image <300MB",
+        "Frontend image <200MB",
+        "Startup time <10 seconds",
+        "Resource usage reasonable"
+      ],
+      "verification": "docker images && docker stats"
+    },
+
+    {
+      "id": "DCK-19.1",
+      "title": "Create troubleshooting guide",
+      "priority": "P1",
+      "estimated_hours": 2,
+      "steps": [
+        "Document common issues",
+        "Add solutions for each issue",
+        "Add debugging commands",
+        "Create FAQ section",
+        "Add links to Docker documentation"
+      ],
+      "file_to_create": "docs/deployment/docker-troubleshooting.md",
+      "success_criteria": [
+        "Troubleshooting guide complete",
+        "Common issues documented",
+        "Solutions provided"
+      ],
+      "verification": "docs/deployment/docker-troubleshooting.md exists"
+    },
+
+    {
+      "id": "DCK-20.1",
+      "title": "Final verification and PR creation",
+      "priority": "P0",
+      "estimated_hours": 2,
+      "steps": [
+        "Run full test suite in Docker",
+        "Verify development workflow",
+        "Verify production deployment",
+        "Review all documentation",
+        "Create comprehensive PR",
+        "Request reviews"
+      ],
+      "success_criteria": [
+        "All tests passing in Docker",
+        "Documentation complete",
+        "PR created and reviewed"
+      ],
+      "verification": "PR created with comprehensive description"
+    }
+  ],
+
+  "docker_targets": {
+    "backend_image_size": "<300MB",
+    "frontend_image_size": "<200MB",
+    "build_time": "<5 minutes",
+    "startup_time": "<10 seconds",
+    "development_experience": "Hot reload working",
+    "production_ready": "Optimized and secure"
+  }
+}

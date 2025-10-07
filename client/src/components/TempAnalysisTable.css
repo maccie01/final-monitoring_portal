@@ -1,0 +1,159 @@
+/* Temperatur-Analyse Tabellen CSS basierend auf ws-view-portal.html */
+
+.temp-analysis-container {
+  max-height: 300px; /* Platz für Header + ca. 5 Zeilen */
+  overflow-y: auto;
+  border: 1px solid #f0ad4e;
+  border-radius: 4px;
+  background: transparent !important;
+}
+
+.temp-analysis-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.temp-analysis-container::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+.temp-analysis-container::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.temp-analysis-container::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.temp-analysis-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  table-layout: fixed;
+  background: transparent !important;
+}
+
+/* Spaltenbreiten: OBJEKT (25%), TEMPERATUR-KI-ANALYSE (45%), UPDATE-ZEIT (fest) */
+.temp-analysis-table th:nth-child(1),
+.temp-analysis-table td:nth-child(1) {
+  width: 25%;
+}
+
+.temp-analysis-table th:nth-child(2),
+.temp-analysis-table td:nth-child(2) {
+  width: calc(100% - 25% - 120px); /* Flexibel, aber lässt Platz für UPDATE-ZEIT */
+}
+
+.temp-analysis-table th:nth-child(3),
+.temp-analysis-table td:nth-child(3) {
+  width: 120px; /* Feste Breite für "UPDATE-ZEIT" Text */
+  min-width: 120px;
+  max-width: 120px;
+}
+
+.temp-analysis-table th,
+.temp-analysis-table td {
+  text-align: left;
+  padding: 2px 5px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.temp-analysis-table td:nth-child(2) {
+  font-family: monospace;
+  line-height: 1.2;
+  padding: 3px 8px;
+}
+
+.temp-analysis-table td:nth-child(1) b {
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.temp-analysis-table th {
+  background: #f0f0f0;
+  font-weight: 600;
+  color: #374151;
+  font-size: 11px;
+  text-transform: uppercase;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  border: 1px solid #ddd;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Kritische Anlagen - Keine Hintergründe mehr */
+.temp-analysis-table.critical tbody tr:nth-child(even) {
+  background: transparent !important;
+}
+
+.temp-analysis-table.critical tbody tr:nth-child(odd) {
+  background: transparent !important;
+}
+
+.temp-analysis-table.critical td {
+  border-bottom: 0.5px solid #dc2626;
+  background: transparent !important;
+}
+
+/* Warnungen - Keine Hintergründe mehr */
+.temp-analysis-table.warning tbody tr:nth-child(even) {
+  background: transparent !important;
+}
+
+.temp-analysis-table.warning tbody tr:nth-child(odd) {
+  background: transparent !important;
+}
+
+.temp-analysis-table.warning td {
+  border-bottom: 0.5px solid #f59e0b;
+  background: transparent !important;
+}
+
+.temp-analysis-table tbody tr:hover {
+  background: #f8fafc;
+  cursor: pointer;
+}
+
+.temp-critical {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+.temp-warning {
+  color: #f59e0b;
+  font-weight: 600;
+}
+
+.temp-normal {
+  color: #059669;
+  font-weight: 600;
+}
+
+.temp-value-critical {
+  color: #dc2626;
+  font-weight: 600;
+  border: none !important;
+  background: none !important;
+  background-color: transparent !important;
+}
+
+.temp-value-warning {
+  color: #f59e0b;
+  font-weight: 600;
+  border: none !important;
+  background: none !important;
+  background-color: transparent !important;
+}
+
+.object-id {
+  font-size: 10px;
+  color: #6b7280;
+}
+
+.update-time {
+  text-align: right;
+  font-size: 11px;
+  color: #6b7280;
+}

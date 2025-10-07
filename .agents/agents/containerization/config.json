@@ -1,0 +1,97 @@
+{
+  "agent_id": "containerization-agent",
+  "name": "Containerization Agent",
+  "version": "1.0.0",
+  "description": "Creates complete Docker containerization with multi-stage builds, docker-compose orchestration, and production-ready deployment",
+
+  "priority": "P1",
+  "estimated_duration_weeks": 2,
+  "actual_duration_hours": null,
+
+  "dependencies": {
+    "blocks_on": [],
+    "reason": "Can run in parallel with DB Optimizer",
+    "must_wait_for_merge": false,
+    "recommended_after": ["backend-modularization-agent"]
+  },
+
+  "git": {
+    "branch": "docker/containerization",
+    "base_branch": "main",
+    "commit_prefix": "docker",
+    "pr_title": "Docker Containerization: Multi-stage Builds, Compose, Production Ready",
+    "pr_labels": ["infrastructure", "docker", "P1", "deployment"]
+  },
+
+  "tasks_file": "tasks.json",
+  "prompt_file": "prompt.md",
+
+  "verification": {
+    "before_commit": [
+      "docker build -f infrastructure/docker/Dockerfile.backend .",
+      "docker build -f infrastructure/docker/Dockerfile.frontend .",
+      "docker-compose config"
+    ],
+    "after_containerization": [
+      "docker-compose up -d",
+      "docker-compose ps",
+      "curl http://localhost:5000/api/health",
+      "curl http://localhost:5173"
+    ],
+    "final_verification": [
+      "docker-compose down",
+      "docker-compose up -d",
+      "run smoke tests",
+      "docker-compose logs"
+    ]
+  },
+
+  "success_criteria": {
+    "backend_dockerfile": "Multi-stage, optimized, <300MB",
+    "frontend_dockerfile": "Multi-stage, optimized, <200MB",
+    "docker_compose_works": "Full stack starts with single command",
+    "hot_reload_working": "Development mode supports hot reload",
+    "production_ready": "Production builds tested and optimized",
+    "health_checks_passing": "All container health checks work",
+    "networking_configured": "Services communicate correctly",
+    "volumes_configured": "Data persistence works",
+    "documentation_complete": "Setup and deployment docs written"
+  },
+
+  "rollback": {
+    "strategy": "no-rollback-needed",
+    "reason": "New files only, no code changes",
+    "commands": [
+      "docker-compose down",
+      "docker system prune -a",
+      "git checkout main -- infrastructure/"
+    ],
+    "data_changes": false,
+    "migration_required": false
+  },
+
+  "monitoring": {
+    "report_interval_minutes": 30,
+    "metrics": [
+      "dockerfiles_created",
+      "image_size_mb",
+      "build_time_seconds",
+      "container_start_time"
+    ]
+  },
+
+  "tools": [
+    "Read",
+    "Write",
+    "Edit",
+    "Bash",
+    "Grep",
+    "Glob"
+  ],
+
+  "autonomy_level": "high",
+  "approval_required_for": [
+    "production deployment configuration",
+    "environment variable structure changes"
+  ]
+}

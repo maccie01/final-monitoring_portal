@@ -1,0 +1,2223 @@
+{
+  "exportDate": "2025-07-26T04:22:27.068Z",
+  "totalObjects": 25,
+  "objects": [
+    {
+      "id": 1,
+      "objectid": "272605182",
+      "title": "Dragonerstr. 2",
+      "ort": "Hannover",
+      "plz": "30161",
+      "objdata": {
+        "NE": 205,
+        "area": 18286
+      },
+      "objanlage": {
+        "Typ": "WP+Kessel"
+      },
+      "portdata": null,
+      "meter": {
+        "Z20130": "20535677",
+        "Z20141": "55280140",
+        "Z20142": "55263805",
+        "Z20143": "55263804",
+        "Z20221": "11000736",
+        "Z20222": "11000708",
+        "Z20241": "55270564",
+        "Z20242": "55270563",
+        "Z20541": 55369880,
+        "Z20542": 55369881
+      },
+      "dashboard": {},
+      "alarm": {
+        "active": false,
+        "conditions": [],
+        "lastTriggered": null,
+        "notifications": []
+      },
+      "kianalyse": {
+        "anomalies": [],
+        "predictions": [],
+        "recommendations": []
+      },
+      "status": {
+        "errors": [],
+        "online": false,
+        "signal": null,
+        "battery": null,
+        "lastSeen": null
+      },
+      "analyse": {},
+      "auswertung": {},
+      "report": {},
+      "diagramm": {},
+      "fltemp": {
+        "20541": 58,
+        "20542": 58
+      },
+      "rttemp": {
+        "20541": 48,
+        "20542": 51
+      },
+      "energy": {},
+      "created_at": "2025-06-13T13:16:18.471Z",
+      "updated_at": "2025-06-29T14:01:59.205Z"
+    },
+    {
+      "id": 2,
+      "objectid": "296748099",
+      "title": "Heinrich-Heine-Str. 1",
+      "ort": "Hannover",
+      "plz": "30161",
+      "objdata": {
+        "NE": 69,
+        "GEG": 75,
+        "GSM": "0172-5603675",
+        "area": 7621,
+        "objnr": 100002
+      },
+      "objanlage": {
+        "Typ": "WP+Kessel"
+      },
+      "portdata": null,
+      "meter": {
+        "Z20141": 61643174,
+        "Z20142": 58908512,
+        "Z20221": 230055,
+        "Z20241": 61640291,
+        "Z20541": 58908539,
+        "Z40011": 296748099
+      },
+      "dashboard": {},
+      "alarm": {
+        "active": false,
+        "conditions": [],
+        "lastTriggered": null,
+        "notifications": []
+      },
+      "kianalyse": {
+        "anomalies": [],
+        "predictions": [],
+        "recommendations": []
+      },
+      "status": {
+        "errors": [],
+        "online": false,
+        "signal": null,
+        "battery": null,
+        "lastSeen": null
+      },
+      "analyse": {},
+      "auswertung": {},
+      "report": {},
+      "diagramm": {},
+      "fltemp": {
+        "20541": 56,
+        "updateTime": "2025-07-12T11:21:30.290Z"
+      },
+      "rttemp": {
+        "20541": 46,
+        "updateTime": "2025-07-12T11:21:30.109Z"
+      },
+      "energy": {},
+      "created_at": "2025-06-13T13:16:18.471Z",
+      "updated_at": "2025-06-29T14:01:53.896Z"
+    },
+    {
+      "id": 3,
+      "objectid": "296528096",
+      "title": "Nordfeldstr.18A",
+      "ort": "Hannover",
+      "plz": "30161",
+      "objdata": {
+        "NE": 87,
+        "GEG": 75,
+        "GSM": "0152-08911108",
+        "area": 8732,
+        "objnr": 100002
+      },
+      "objanlage": {
+        "Typ": "WP+Kessel"
+      },
+      "portdata": {
+        "dia": "GQgZkLcVz/35110-dia",
+        "dashbord": "I6VrtPcVk/35110-dashbord",
+        "auswertung": "I6VrtPcVk/35110-dashbord",
+        "auswertung_tab1": 28,
+        "auswertung_tab2": 43,
+        "auswertung_tab3": 44,
+        "energieverteilung": 68
+      },
+      "meter": {
+        "Z20130": 32550498,
+        "Z20141": 58158876,
+        "Z20142": 58158875,
+        "Z20221": 452249,
+        "Z20241": 58154476,
+        "Z20541": 58152848,
+        "Z40011": 116528096
+      },
+      "dashboard": {},
+      "alarm": {
+        "active": false,
+        "conditions": [],
+        "lastTriggered": null,
+        "notifications": []
+      },
+      "kianalyse": {
+        "anomalies": [],
+        "predictions": [],
+        "recommendations": []
+      },
+      "status": {
+        "errors": [],
+        "online": false,
+        "signal": null,
+        "battery": null,
+        "lastSeen": null
+      },
+      "analyse": {},
+      "auswertung": {},
+      "report": {},
+      "diagramm": {},
+      "fltemp": {
+        "20541": 59
+      },
+      "rttemp": {
+        "20541": 46
+      },
+      "energy": {},
+      "created_at": "2025-06-13T13:16:18.471Z",
+      "updated_at": "2025-06-29T14:01:55.266Z"
+    },
+    {
+      "id": 4,
+      "objectid": "207147062",
+      "title": "Peinerstr. 45",
+      "ort": "Hannover",
+      "plz": "30161",
+      "objdata": {
+        "NE": 116,
+        "GEG": 75,
+        "area": 7806,
+        "Portal": "Puffertemp prüfen"
+      },
+      "objanlage": {
+        "Typ": "WP+Kessel"
+      },
+      "portdata": {
+        "dia": "GQgZkLcVz/35110-dia",
+        "dashbord": "I6VrtPcVk/35110-dashbord",
+        "auswertung": "I6VrtPcVk/35110-dashbord",
+        "auswertung_tab1": 28,
+        "auswertung_tab2": 43,
+        "auswertung_tab3": 44,
+        "energieverteilung": 68
+      },
+      "meter": {
+        "Z20141": 22265036,
+        "Z20142": 22265037,
+        "Z20241": 44802076,
+        "Z20411": 10120,
+        "Z20541": 22165204
+      },
+      "dashboard": {},
+      "alarm": {
+        "active": false,
+        "conditions": [],
+        "lastTriggered": null,
+        "notifications": []
+      },
+      "kianalyse": {
+        "anomalies": [],
+        "predictions": [],
+        "recommendations": []
+      },
+      "status": {
+        "errors": [],
+        "online": false,
+        "signal": null,
+        "battery": null,
+        "lastSeen": null
+      },
+      "analyse": {},
+      "auswertung": {},
+      "report": {},
+      "diagramm": {},
+      "fltemp": null,
+      "rttemp": null,
+      "energy": {},
+      "created_at": "2025-06-13T13:16:18.471Z",
+      "updated_at": "2025-06-29T14:02:03.080Z"
+    },
+    {
+      "id": 5,
+      "objectid": "207125085",
+      "title": "Kammweg 1",
+      "ort": "Hannover",
+      "plz": "30161",
+      "objdata": {
+        "NE": 209,
+        "area": 13076,
+        "Nutzfläche": 13076,
+        "Wohneinheiten": 209
+      },
+      "objanlage": {
+        "Typ": "WP+Kessel"
+      },
+      "portdata": null,
+      "meter": {
+        "Z20141": "12203181",
+        "Z20142": "12205129",
+        "Z20143": "12205127",
+        "Z20241": "12203182",
+        "Z20541": "12205151"
+      },
+      "dashboard": {},
+      "alarm": {
+        "active": false,
+        "conditions": [],
+        "lastTriggered": null,
+        "notifications": []
+      },
+      "kianalyse": {
+        "anomalies": [],
+        "predictions": [],
+        "recommendations": []
+      },
+      "status": {
+        "errors": [],
+        "online": false,
+        "signal": null,
+        "battery": null,
+        "lastSeen": null
+      },
+      "analyse": {},
+      "auswertung": {},
+      "report": {},
+      "diagramm": {},
+      "fltemp": {
+        "20541": 64,
+        "updateTime": "2025-07-26T04:04:01.732Z"
+      },
+      "rttemp": {
+        "20541": 57,
+        "updateTime": "2025-07-26T04:04:01.735Z"
+      },
+      "energy": {},
+      "created_at": "2025-06-13T13:16:18.471Z",
+      "updated_at": "2025-06-29T14:02:03.310Z"
+    },
+    {
+      "id": 7,
+      "objectid": "208106016",
+      "title": "Lauhof 1",
+      "ort": "Hannover",
+      "plz": "30161",
+      "objdata": {
+        "NE": 24,
+        "area": 2315
+      },
+      "objanlage": {
+        "Typ": "WP+Kessel"
+      },
+      "portdata": null,
+      "meter": {
+        "Z20141": 10909319,
+        "Z20241": 10883054,
+        "Z20541": 10883055
+      },
+      "dashboard": {
+        "site": [
+          {
+            "id": "49736179",
+            "label": "Wärmezähler Netz Ahorn dashbord 6",
+            "panelId": "16",
+            "interval": "&from=now-4d&to=now",
+            "panelId2": "3",
+            "histogram": [
+              4,
+              5,
+              7
+            ],
+            "panelIdWidth": "180px"
+          },
+          {
+            "label": "Wärmezähler Kessel ",
+            "auswahl": [
+              {
+                "id": "49733048",
+                "idlabel": "Kessel1"
+              },
+              {
+                "id": "49741341",
+                "idlabel": "Kessel2"
+              }
+            ],
+            "panelId": "19",
+            "panelId2": "3",
+            "histogram": [
+              4,
+              5,
+              7
+            ],
+            "panelIdWidth": "180px"
+          }
+        ],
+        "grafana": "https://graf.heatcare.one",
+        "interval": "&from=now-14d&to=now",
+        "dashboard": "d-solo/eelav0ybil2wwd/ws-heatcare"
+      },
+      "alarm": {
+        "active": false,
+        "conditions": [],
+        "lastTriggered": null,
+        "notifications": []
+      },
+      "kianalyse": {
+        "anomalies": [],
+        "predictions": [],
+        "recommendations": []
+      },
+      "status": {
+        "errors": [],
+        "online": false,
+        "signal": null,
+        "battery": null,
+        "lastSeen": null
+      },
+      "analyse": {},
+      "auswertung": {},
+      "report": {},
+      "diagramm": {},
+      "fltemp": {
+        "20541": 51,
+        "updateTime": "2025-07-26T04:04:01.541Z"
+      },
+      "rttemp": {
+        "20541": 37,
+        "updateTime": "2025-07-26T04:04:01.736Z"
+      },
+      "energy": {},
+      "created_at": "2025-06-13T13:16:18.471Z",
+      "updated_at": "2025-06-29T14:02:00.594Z"
+    },
+    {
+      "id": 9,
+      "objectid": "207210027",
+      "title": "Wallensteinstrasse 108",
+      "ort": "Hannover",
+      "plz": "30161",
+      "objdata": {
+        "NE": 18,
+        "GEG": 75,
+        "area": 98
+      },
+      "objanlage": {
+        "Typ": "WP+Kessel"
+      },
+      "portdata": null,
+      "meter": {
+        "Z20130": 31751964,
+        "Z20141": 51256854,
+        "Z20221": 110176,
+        "Z20241": 51779053,
+        "Z20541": 51754077,
+        "Z40011": 207210027
+      },
+      "dashboard": {},
+      "alarm": {
+        "active": false,
+        "conditions": [],
+        "lastTriggered": null,
+        "notifications": []
+      },
+      "kianalyse": {
+        "anomalies": [],
+        "predictions": [],
+        "recommendations": []
+      },
+      "status": {
+        "errors": [],
+        "online": false,
+        "signal": null,
+        "battery": null,
+        "lastSeen": null
+      },
+      "analyse": {},
+      "auswertung": {},
+      "report": {},
+      "diagramm": {},
+      "fltemp": {
+        "20541": 56,
+        "updateTime": "2025-07-26T04:04:01.728Z"
+      },
+      "rttemp": {
+        "20541": 43,
+        "updateTime": "2025-07-26T04:04:01.728Z"
+      },
+      "energy": {},
+      "created_at": "2025-06-13T13:16:18.471Z",
+      "updated_at": "2025-06-29T14:02:02.856Z"
+    },
+    {
+      "id": 10,
+      "objectid": "207210093",
+      "title": "Altenbekener - Damm 52",
+      "ort": "Hannover",
+      "plz": "30161",
+      "objdata": {
+        "NE": 205,
+        "area": 14529,
+        "Portal": 101
+      },
+      "objanlage": {
+        "Typ": "WP+Kessel"
+      },
+      "portdata": {
+        "site": [
+          {
+            "id": "12205151",
+            "label": "Wärmezähler Haus",
+            "panelId": "10",
+            "panelId2": "3",
+            "histogram": [
+              4,
+              5,
+              7
+            ],
+            "panelIdWidth": "300px"
+          },
+          {
+            "id": "12205151",
+            "label": "Wärmezähler Kessel 1",
+            "height": "180px",
+            "panelId": "16",
+            "panelId2": "3",
+            "panelIdWidth": "180px"
+          },
+          {
+            "id": "12205151",
+            "label": "Wärmezähler neuer Kessel 2",
+            "panel": "show",
+            "height": "180px",
+            "auswahl": [
+              {
+                "id": "12205151",
+                "idlabel": "Netz"
+              },
+              {
+                "id": "12203181",
+                "idlabel": "Kessel1 alter Kessel (150kW)"
+              },
+              {
+                "id": "12205127",
+                "idlabel": "Kessel2 (150kW)"
+              }
+            ],
+            "panelId": "16",
+            "panelId2": "3",
+            "panelIdWidth": "180px"
+          }
+        ],
+        "grafana": "https://graf.heatcare.one",
+        "interval": "&from=now-7d&to=now",
+        "dashboard": "d-solo/eelav0ybil2wwd/ws-heatcare",
+        "sitelabel": "Diagramm"
+      },
+      "meter": {
+        "Z20141": "47443537",
+        "Z20142": "47453095",
+        "Z20143": "47453096",
+        "Z20241": "47443536",
+        "Z20541": "47495101"
+      },
+      "dashboard": {},
+      "alarm": {
+        "active": false,
+        "conditions": [],
+        "lastTriggered": null,
+        "notifications": []
+      },
+      "kianalyse": {
+        "anomalies": [],
+        "predictions": [],
+        "recommendations": []
+      },
+      "status": {
+        "errors": [],
+        "online": false,
+        "signal": null,
+        "battery": null,
+        "lastSeen": null
+      },
+      "analyse": {},
+      "auswertung": {},
+      "report": {},
+      "diagramm": {},
+      "fltemp": {
+        "20541": 63,
+        "updateTime": "2025-07-26T04:04:01.729Z"
+      },
+      "rttemp": {
+        "20541": 55,
+        "updateTime": "2025-07-26T04:04:01.728Z"
+      },
+      "energy": {},
+      "created_at": "2025-06-13T13:16:18.471Z",
+      "updated_at": "2025-06-29T14:02:02.392Z"
+    },
+    {
+      "id": 11,
+      "objectid": "274609033",
+      "title": "Ahornstr. 4",
+      "ort": "Hannover",
+      "plz": "30161",
+      "objdata": {
+        "NE": 148,
+        "area": 10555,
+        "objnr": 100007
+      },
+      "objanlage": {
+        "Typ": "WP+Kessel"
+      },
+      "portdata": [
+        {
+          "site": [
+            {
+              "id": "Z20541",
+              "label": "Wärmezähler Netz Ahornweg",
+              "panelId": "16",
+              "interval": "&from=now-4d&to=now",
+              "panelId2": "3",
+              "histogram": [
+                4,
+                5,
+                7
+              ],
+              "panelIdWidth": "180px"
+            },
+            {
+              "label": "Wärmezähler ",
+              "auswahl": [
+                {
+                  "id": "Z20541",
+                  "idlabel": "netz"
+                },
+                {
+                  "id": "Z20141",
+                  "idlabel": "Kessel1"
+                },
+                {
+                  "id": "Z20142",
+                  "idlabel": "Kessel2"
+                }
+              ],
+              "panelId": "19",
+              "panelId2": "3",
+              "panelIdWidth": "180px"
+            }
+          ],
+          "grafana": "https://graf.heatcare.one",
+          "interval": "&from=now-14d&to=now",
+          "dashboard": "d-solo/eelav0ybil2wwd/ws-heatcare",
+          "sitelabel": "Diagramm"
+        },
+        {
+          "site": [
+            {
+              "label": "Wärmezähler Objekt",
+              "auswahl": [
+                {
+                  "id": "Z20541",
+                  "idlabel": "Netz"
+                },
+                {
+                  "id": "Z20141",
+                  "idlabel": "Kessel1"
+                },
+                {
+                  "id": "Z20142",
+                  "idlabel": "Kessel2"
+                }
+              ],
+              "panelId": "13"
+            },
+            {
+              "label": "Wärmezähler Anteil ",
+              "auswahl": [
+                {
+                  "id": "Z20541",
+                  "idlabel": "Netz"
+                },
+                {
+                  "id": "Z20141",
+                  "idlabel": "Kessel1"
+                },
+                {
+                  "id": "Z20142",
+                  "idlabel": "Kessel2"
+                }
+              ],
+              "panelId": "14"
+            }
+          ],
+          "grafana": "https://graf.heatcare.one",
+          "interval": "&from=now-12M&to=now",
+          "dashboard": "d-solo/eelav0ybil2wwd/ws-heatcare",
+          "sitelabel": "Auswertung"
+        }
+      ],
+      "meter": {
+        "Z20141": "51557959",
+        "Z20142": "51527708",
+        "Z20143": "51527709",
+        "Z20241": 51265804,
+        "Z20242": 51522791,
+        "Z20541": "51515810",
+        "Z40011": 274609033
+      },
+      "dashboard": {},
+      "alarm": {
+        "active": false,
+        "conditions": [],
+        "lastTriggered": null,
+        "notifications": []
+      },
+      "kianalyse": {
+        "anomalies": [],
+        "predictions": [],
+        "recommendations": []
+      },
+      "status": {
+        "errors": [],
+        "online": false,
+        "signal": null,
+        "battery": null,
+        "lastSeen": null
+      },
+      "analyse": {},
+      "auswertung": {},
+      "report": {},
+      "diagramm": {},
+      "fltemp": {
+        "20541": 59,
+        "updateTime": "2025-07-26T04:04:01.729Z"
+      },
+      "rttemp": {
+        "20541": 53,
+        "updateTime": "2025-07-26T04:04:01.732Z"
+      },
+      "energy": {},
+      "created_at": "2025-06-13T13:16:18.471Z",
+      "updated_at": "2025-06-29T14:01:57.806Z"
+    },
+    {
+      "id": 14,
+      "objectid": "207315038",
+      "title": "Ahornstraße 10",
+      "ort": "Hannover",
+      "plz": "30161",
+      "objdata": {
+        "NE": 69,
+        "area": 5787
+      },
+      "objanlage": {
+        "Typ": "WP+Kessel"
+      },
+      "portdata": [
+        {
+          "site": [
+            {
+              "id": "Z20541",
+              "label": "Wärmezähler Netz Ahornweg",
+              "panelId": "16",
+              "interval": "&from=now-4d&to=now",
+              "panelId2": "3",
+              "histogram": [
+                4,
+                5,
+                7
+              ],
+              "panelIdWidth": "180px"
+            },
+            {
+              "label": "Wärmezähler ",
+              "auswahl": [
+                {
+                  "id": "Z20541",
+                  "idlabel": "netz"
+                },
+                {
+                  "id": "Z20141",
+                  "idlabel": "Kessel1"
+                },
+                {
+                  "id": "Z20142",
+                  "idlabel": "Kessel2"
+                }
+              ],
+              "panelId": "19",
+              "panelId2": "3",
+              "panelIdWidth": "180px"
+            }
+          ],
+          "grafana": "https://graf.heatcare.one",
+          "interval": "&from=now-14d&to=now",
+          "dashboard": "d-solo/eelav0ybil2wwd/ws-heatcare",
+          "sitelabel": "Diagramm"
+        },
+        {
+          "site": [
+            {
+              "label": "Wärmezähler Objekt",
+              "auswahl": [
+                {
+                  "id": "Z20541",
+                  "idlabel": "Netz"
+                },
+                {
+                  "id": "Z20141",
+                  "idlabel": "Kessel1"
+                },
+                {
+                  "id": "Z20142",
+                  "idlabel": "Kessel2"
+                }
+              ],
+              "panelId": "13"
+            },
+            {
+              "label": "Wärmezähler Anteil ",
+              "auswahl": [
+                {
+                  "id": "Z20541",
+                  "idlabel": "Netz"
+                },
+                {
+                  "id": "Z20141",
+                  "idlabel": "Kessel1"
+                },
+                {
+                  "id": "Z20142",
+                  "idlabel": "Kessel2"
+                }
+              ],
+              "panelId": "14"
+            }
+          ],
+          "grafana": "https://graf.heatcare.one",
+          "interval": "&from=now-12M&to=now",
+          "dashboard": "d-solo/eelav0ybil2wwd/ws-heatcare",
+          "sitelabel": "Auswertung"
+        }
+      ],
+      "meter": {
+        "Z20141": 51090484,
+        "Z20142": 49774783,
+        "Z20221": 11012548,
+        "Z20241": 51022099,
+        "Z20541": 49785048
+      },
+      "dashboard": {
+        "site": [
+          {
+            "label": "Wärmezähler  Dashbord 2",
+            "auswahl": [
+              {
+                "id": "49785048",
+                "idlabel": "Netz"
+              },
+              {
+                "id": "51090484",
+                "idlabel": "Kessel1.1 dash 51090484"
+              },
+              {
+                "id": "49774783",
+                "idlabel": "Kessel2-Buderus"
+              }
+            ],
+            "panelId": "10",
+            "panelId2": "3",
+            "panelIdWidth": "250px"
+          }
+        ],
+        "grafana": "https://graf.heatcare.one",
+        "interval": "&from=now-7d&to=now",
+        "dashboard": "d-solo/eelav0ybil2wwd/ws-heatcare"
+      },
+      "alarm": {
+        "active": false,
+        "conditions": [],
+        "lastTriggered": null,
+        "notifications": []
+      },
+      "kianalyse": {
+        "anomalies": [],
+        "predictions": [],
+        "recommendations": []
+      },
+      "status": {
+        "errors": [],
+        "online": false,
+        "signal": null,
+        "battery": null,
+        "lastSeen": null
+      },
+      "analyse": {},
+      "auswertung": {},
+      "report": {
+        "site": [
+          {
+            "label": "Wärmezähler  report",
+            "auswahl": [
+              {
+                "id": "49785048",
+                "idlabel": "Netz"
+              },
+              {
+                "id": "51090484",
+                "idlabel": "Kessel1.2.report 51090484"
+              },
+              {
+                "id": "49774783",
+                "idlabel": "Kessel2-Buderus"
+              }
+            ],
+            "panelId": "10",
+            "panelId2": "3",
+            "panelIdWidth": "250px"
+          }
+        ],
+        "grafana": "https://graf.heatcare.one",
+        "interval": "&from=now-7d&to=now",
+        "dashboard": "d-solo/eelav0ybil2wwd/ws-heatcare"
+      },
+      "diagramm": null,
+      "fltemp": {
+        "20541": 52,
+        "updateTime": "2025-07-26T04:04:01.735Z"
+      },
+      "rttemp": {
+        "20541": 50,
+        "updateTime": "2025-07-26T04:04:01.735Z"
+      },
+      "energy": {},
+      "created_at": "2025-06-13T13:16:18.471Z",
+      "updated_at": "2025-06-29T14:02:01.265Z"
+    },
+    {
+      "id": 18,
+      "objectid": "207210094",
+      "title": "Voltastr. 25",
+      "ort": "Hannover",
+      "plz": "30161",
+      "objdata": {
+        "NE": 73,
+        "area": 6327
+      },
+      "objanlage": {
+        "Typ": "WP+Kessel"
+      },
+      "portdata": null,
+      "meter": {
+        "Z20130": "32022070",
+        "Z20141": "51684947",
+        "Z20142": "51710780",
+        "Z20241": "51684946",
+        "Z20541": "51699126"
+      },
+      "dashboard": {},
+      "alarm": {
+        "active": false,
+        "conditions": [],
+        "lastTriggered": null,
+        "notifications": []
+      },
+      "kianalyse": {
+        "anomalies": [],
+        "predictions": [],
+        "recommendations": []
+      },
+      "status": {
+        "errors": [],
+        "online": false,
+        "signal": null,
+        "battery": null,
+        "lastSeen": null
+      },
+      "analyse": {},
+      "auswertung": {},
+      "report": {},
+      "diagramm": {},
+      "fltemp": {
+        "20541": 61,
+        "updateTime": "2025-07-26T04:04:01.550Z"
+      },
+      "rttemp": {
+        "20541": 55,
+        "updateTime": "2025-07-26T04:04:01.691Z"
+      },
+      "energy": {},
+      "created_at": "2025-06-13T13:16:18.471Z",
+      "updated_at": "2025-06-29T14:02:02.163Z"
+    },
+    {
+      "id": 21,
+      "objectid": "272605197",
+      "title": "Röntgenstr. 9",
+      "ort": "Hannover",
+      "plz": "35510",
+      "objdata": {
+        "NE": 86,
+        "area": 6630
+      },
+      "objanlage": {
+        "Typ": "Solar+BHKW"
+      },
+      "portdata": {
+        "dia": "_bR_yEoVz/35610-dia",
+        "dashbord": "y6vlxDA4z/35610-dashbord",
+        "auswertung": "y6vlxDA4z/35610-dashbord",
+        "auswertung_tab1": 171,
+        "auswertung_tab3": 173
+      },
+      "meter": {
+        "Z20441": 41455906,
+        "Z20541": 41535729,
+        "Z20841": 41497615,
+        "Z20842": 41575747
+      },
+      "dashboard": {},
+      "alarm": {
+        "active": false,
+        "conditions": [],
+        "lastTriggered": null,
+        "notifications": []
+      },
+      "kianalyse": {
+        "anomalies": [],
+        "predictions": [],
+        "recommendations": []
+      },
+      "status": {
+        "errors": [],
+        "online": false,
+        "signal": null,
+        "battery": null,
+        "lastSeen": null
+      },
+      "analyse": {},
+      "auswertung": {},
+      "report": {},
+      "diagramm": {},
+      "fltemp": {
+        "20541": 62
+      },
+      "rttemp": {
+        "20541": 56
+      },
+      "energy": {},
+      "created_at": "2025-06-13T13:16:18.471Z",
+      "updated_at": "2025-06-29T14:01:58.266Z"
+    },
+    {
+      "id": 22,
+      "objectid": "207315002",
+      "title": "Garkenburgstr 52",
+      "ort": "Hannover",
+      "plz": "30161",
+      "objdata": {
+        "NE": 71,
+        "GEG": 75,
+        "area": 5690,
+        "objnr": 100002
+      },
+      "objanlage": {
+        "Typ": "WP+Kessel"
+      },
+      "portdata": {
+        "dia": "GQgZkLcVz/35110-dia",
+        "dashbord": "I6VrtPcVk/35110-dashbord",
+        "auswertung": "I6VrtPcVk/35110-dashbord",
+        "auswertung_tab1": 28,
+        "auswertung_tab2": 43,
+        "auswertung_tab3": 44,
+        "energieverteilung": 68
+      },
+      "meter": {
+        "Z788": 78,
+        "Z20141": 49801963,
+        "Z20142": 49783046,
+        "Z20221": 11012547,
+        "Z20241": 49801969,
+        "Z20541": 49808998,
+        "Z40011": 117315002
+      },
+      "dashboard": {
+        "Z20541": "Netz Gartenburg"
+      },
+      "alarm": {
+        "active": false,
+        "conditions": [],
+        "lastTriggered": null,
+        "notifications": []
+      },
+      "kianalyse": {
+        "anomalies": [],
+        "predictions": [],
+        "recommendations": []
+      },
+      "status": {
+        "errors": [],
+        "online": false,
+        "signal": null,
+        "battery": null,
+        "lastSeen": null
+      },
+      "analyse": {},
+      "auswertung": {},
+      "report": {},
+      "diagramm": {},
+      "fltemp": {
+        "20541": 60
+      },
+      "rttemp": {
+        "20541": 49
+      },
+      "energy": {},
+      "created_at": "2025-06-13T13:16:18.471Z",
+      "updated_at": "2025-06-29T14:02:01.713Z"
+    },
+    {
+      "id": 25,
+      "objectid": "207315064",
+      "title": "Wallensteinstr. 106",
+      "ort": "Hannover",
+      "plz": "30161",
+      "objdata": {
+        "NE": 18,
+        "GEG": 75,
+        "area": 982
+      },
+      "objanlage": {
+        "Typ": "WP+Kessel"
+      },
+      "portdata": [
+        {
+          "site": [
+            {
+              "id": "50087485",
+              "label": "Wärmezähler Netz und hof",
+              "panelId": "16",
+              "panelId2": "3",
+              "histogram": [
+                4,
+                5,
+                7
+              ],
+              "panelIdWidth": "180px"
+            }
+          ],
+          "grafana": "https://graf.heatcare.one",
+          "interval": "&from=now-7d&to=now",
+          "dashboard": "d-solo/eelav0ybil2wwd/ws-heatcare",
+          "sitelabel": "Diagramm"
+        },
+        {
+          "site": [
+            {
+              "label": "Wärmezähler Haus 1e",
+              "auswahl": [
+                {
+                  "id": "50087485",
+                  "idlabel": "Kessel1 alter Kessel (50kW)"
+                },
+                {
+                  "id": "12203181",
+                  "idlabel": "Wärmezähler Hof"
+                }
+              ],
+              "panelId": "13"
+            },
+            {
+              "id": "12205127",
+              "label": "Wärmezähler Wärmepumpe (regenerativer Anteil",
+              "panelId": "14"
+            }
+          ],
+          "grafana": "https://graf.heatcare.one",
+          "interval": "&from=now-12M&to=now",
+          "dashboard": "d-solo/eelav0ybil2wwd/ws-heatcare",
+          "sitelabel": "Auswertung"
+        },
+        {
+          "site": [
+            {
+              "label": "Histogramm Netze",
+              "auswahl": [
+                {
+                  "id": "50087485",
+                  "idlabel": "Netz1"
+                },
+                {
+                  "id": "12205151",
+                  "idlabel": "Netz2"
+                },
+                {
+                  "id": "12203181",
+                  "idlabel": "Netz3"
+                }
+              ],
+              "panelId": "3",
+              "histogram": [
+                4,
+                5,
+                7
+              ]
+            },
+            {
+              "label": "Heizung Zentral",
+              "auswahl": [
+                {
+                  "id": "12205151",
+                  "idlabel": "Netz"
+                },
+                {
+                  "id": "12203181",
+                  "idlabel": "Kessel1 alter Kessel (150kW)"
+                },
+                {
+                  "id": "12205127",
+                  "idlabel": "Kessel2 (150kW)"
+                }
+              ],
+              "panelId": "10",
+              "panelId2": "3",
+              "histogram": [
+                4,
+                5,
+                7
+              ],
+              "panelIdWidth": "250px"
+            },
+            {
+              "id": "12205151",
+              "label": "Wärmezähler Netz",
+              "panelId": "10"
+            }
+          ],
+          "grafana": "https://graf.heatcare.one",
+          "interval": "&from=now-3d&to=now",
+          "dashboard": "d-solo/eelav0ybil2wwd/ws-heatcare",
+          "sitelabel": "Analyse"
+        }
+      ],
+      "meter": {
+        "Z20130": 31101815,
+        "Z20141": 50087484,
+        "Z20221": 11000059,
+        "Z20241": 50084735,
+        "Z20541": 50087485,
+        "Z40011": 207315064
+      },
+      "dashboard": {},
+      "alarm": {
+        "active": false,
+        "conditions": [],
+        "lastTriggered": null,
+        "notifications": []
+      },
+      "kianalyse": {
+        "anomalies": [],
+        "predictions": [],
+        "recommendations": []
+      },
+      "status": {
+        "errors": [],
+        "online": false,
+        "signal": null,
+        "battery": null,
+        "lastSeen": null
+      },
+      "analyse": {},
+      "auswertung": {},
+      "report": {},
+      "diagramm": {},
+      "fltemp": {
+        "20541": 54,
+        "updateTime": "2025-07-26T04:04:01.531Z"
+      },
+      "rttemp": {
+        "20541": 41,
+        "updateTime": "2025-07-26T04:04:01.729Z"
+      },
+      "energy": {},
+      "created_at": "2025-06-13T13:16:18.471Z",
+      "updated_at": "2025-06-29T14:02:01.041Z"
+    },
+    {
+      "id": 28,
+      "objectid": "272605178",
+      "title": "Guts - Muths Str. 10",
+      "ort": "Hannover",
+      "plz": "30161",
+      "objdata": {
+        "NE": 59,
+        "GEG": 75,
+        "area": 3972,
+        "Portal": "fertig",
+        "neueSuchefeld": "wert1"
+      },
+      "objanlage": {
+        "Typ": "WP+Kessel"
+      },
+      "portdata": {
+        "dia": "GQgZkLcVz/35110-dia",
+        "dashbord": "I6VrtPcVk/35110-dashbord",
+        "auswertung": "I6VrtPcVk/35110-dashbord",
+        "auswertung_tab1": 28,
+        "auswertung_tab2": 43,
+        "auswertung_tab3": 44,
+        "energieverteilung": 68
+      },
+      "meter": {
+        "Z20130": "32022071",
+        "Z20141": "58023012",
+        "Z20142": "58023025",
+        "Z20241": "55910945",
+        "Z20541": "58023028"
+      },
+      "dashboard": {},
+      "alarm": {
+        "active": false,
+        "conditions": [],
+        "lastTriggered": null,
+        "notifications": []
+      },
+      "kianalyse": {
+        "anomalies": [],
+        "predictions": [],
+        "recommendations": []
+      },
+      "status": {
+        "errors": [],
+        "online": false,
+        "signal": null,
+        "battery": null,
+        "lastSeen": null
+      },
+      "analyse": {},
+      "auswertung": {},
+      "report": {},
+      "diagramm": {},
+      "fltemp": null,
+      "rttemp": null,
+      "energy": {},
+      "created_at": "2025-06-13T13:16:18.471Z",
+      "updated_at": "2025-06-29T14:01:59.446Z"
+    },
+    {
+      "id": 29,
+      "objectid": "275716197",
+      "title": "Husarenstr. 6",
+      "ort": "Hannover",
+      "plz": "30161",
+      "objdata": {
+        "NE": 51,
+        "GEG": 75,
+        "area": 6379,
+        "objnr": 100002
+      },
+      "objanlage": {
+        "Typ": "WP+Kessel"
+      },
+      "portdata": {
+        "site": [
+          {
+            "id": "12205151",
+            "label": "Wärmezähler Haus",
+            "panelId": "10",
+            "panelId2": "3",
+            "panelIdWidth": "300px"
+          },
+          {
+            "id": "12205151",
+            "label": "Wärmezähler Kessel 1",
+            "height": "180px",
+            "panelId": "16",
+            "panelId2": "3",
+            "panelIdWidth": "180px"
+          },
+          {
+            "id": "12205151",
+            "label": "Wärmezähler neuer Kessel 2",
+            "panel": "show",
+            "height": "180px",
+            "auswahl": [
+              {
+                "id": "12205151",
+                "idlabel": "Netz"
+              },
+              {
+                "id": "12203181",
+                "idlabel": "Kessel1 alter Kessel (150kW)"
+              },
+              {
+                "id": "12205127",
+                "idlabel": "Kessel2 (150kW)"
+              }
+            ],
+            "panelId": "16",
+            "panelId2": "3",
+            "panelIdWidth": "180px"
+          }
+        ],
+        "grafana": "https://graf.heatcare.one",
+        "interval": "&from=now-7d&to=now",
+        "dashboard": "d-solo/eelav0ybil2wwd/ws-heatcare",
+        "sitelabel": "Diagramm"
+      },
+      "meter": {
+        "Z20130": 35083290,
+        "Z20141": 65456830,
+        "Z20221": 19450893,
+        "Z20241": 65478431,
+        "Z20541": 64756397,
+        "Z40011": 275716197
+      },
+      "dashboard": {},
+      "alarm": {
+        "active": false,
+        "conditions": [],
+        "lastTriggered": null,
+        "notifications": []
+      },
+      "kianalyse": {
+        "anomalies": [],
+        "predictions": [],
+        "recommendations": []
+      },
+      "status": {
+        "errors": [],
+        "online": false,
+        "signal": null,
+        "battery": null,
+        "lastSeen": null
+      },
+      "analyse": {},
+      "auswertung": {},
+      "report": {},
+      "diagramm": {},
+      "fltemp": {
+        "20541": 60,
+        "updateTime": "2025-07-26T04:04:01.729Z"
+      },
+      "rttemp": {
+        "20541": 51,
+        "updateTime": "2025-07-26T04:04:01.728Z"
+      },
+      "energy": {},
+      "created_at": "2025-06-13T13:16:18.471Z",
+      "updated_at": "2025-06-29T14:01:55.962Z"
+    },
+    {
+      "id": 30,
+      "objectid": "207306310",
+      "title": "Voltastr. 38",
+      "ort": "Hannover",
+      "plz": "30161",
+      "objdata": {
+        "NE": 53,
+        "area": 4990
+      },
+      "objanlage": {
+        "Typ": "WP+Kessel"
+      },
+      "portdata": {
+        "dia": "GQgZkLcVz/35110-dia",
+        "energy": 17,
+        "dashbord": "I6VrtPcVk/35110-dashbord",
+        "auswertung": "I6VrtPcVk/35110-dashbord",
+        "auswertung_tab1": 28,
+        "auswertung_tab2": 43,
+        "auswertung_tab3": 44
+      },
+      "meter": {
+        "Z20130": 18072687,
+        "Z20141": 46209351,
+        "Z20142": 47637689,
+        "Z20241": 46209346,
+        "Z20541": 46029826
+      },
+      "dashboard": {},
+      "alarm": {
+        "active": false,
+        "conditions": [],
+        "lastTriggered": null,
+        "notifications": []
+      },
+      "kianalyse": {
+        "anomalies": [],
+        "predictions": [],
+        "recommendations": []
+      },
+      "status": {
+        "errors": [],
+        "online": false,
+        "signal": null,
+        "battery": null,
+        "lastSeen": null
+      },
+      "analyse": {},
+      "auswertung": {},
+      "report": {},
+      "diagramm": {},
+      "fltemp": {
+        "20541": 56
+      },
+      "rttemp": {
+        "20541": 52
+      },
+      "energy": {},
+      "created_at": "2025-06-13T13:16:18.471Z",
+      "updated_at": "2025-06-29T14:02:01.937Z"
+    },
+    {
+      "id": 33,
+      "objectid": "296748003",
+      "title": "Heinrich-Heine-Str. 22",
+      "ort": "Hannover",
+      "plz": "30161",
+      "objdata": {
+        "NE": 62,
+        "GEG": 75,
+        "GSM": "0174-1668359",
+        "area": 7377,
+        "objnr": 100002
+      },
+      "objanlage": {
+        "Typ": "WP+Kessel"
+      },
+      "portdata": null,
+      "meter": {
+        "Z20141": 58940972,
+        "Z20142": 58908390,
+        "Z20221": 230043,
+        "Z20241": 58824749,
+        "Z20541": 58908359,
+        "Z40011": 116748003
+      },
+      "dashboard": {},
+      "alarm": {
+        "active": false,
+        "conditions": [],
+        "lastTriggered": null,
+        "notifications": []
+      },
+      "kianalyse": {
+        "anomalies": [],
+        "predictions": [],
+        "recommendations": []
+      },
+      "status": {
+        "errors": [],
+        "online": false,
+        "signal": null,
+        "battery": null,
+        "lastSeen": null
+      },
+      "analyse": {},
+      "auswertung": {},
+      "report": {},
+      "diagramm": {},
+      "fltemp": {
+        "20541": 58,
+        "updateTime": "2025-07-26T04:04:01.734Z"
+      },
+      "rttemp": {
+        "20541": 46,
+        "updateTime": "2025-07-26T04:04:01.729Z"
+      },
+      "energy": {},
+      "created_at": "2025-06-13T13:16:18.471Z",
+      "updated_at": "2025-06-29T14:01:54.575Z"
+    },
+    {
+      "id": 35,
+      "objectid": "208110028",
+      "title": "Lauhof 2",
+      "ort": "Hannover",
+      "plz": "30161",
+      "objdata": {
+        "NE": 24,
+        "area": 2273
+      },
+      "objanlage": {
+        "Typ": "WP+Kessel"
+      },
+      "portdata": null,
+      "meter": {
+        "Z20141": 11144429,
+        "Z20241": 11144426,
+        "Z20242": 11144428,
+        "Z20541": 11146377,
+        "Z20542": 56147020
+      },
+      "dashboard": {
+        "site": [
+          {
+            "id": "49736179",
+            "label": "Wärmezähler Netz Ahorn dashbord 6",
+            "panelId": "16",
+            "interval": "&from=now-4d&to=now",
+            "panelId2": "3",
+            "histogram": [
+              4,
+              5,
+              7
+            ],
+            "panelIdWidth": "180px"
+          },
+          {
+            "label": "Wärmezähler Kessel ",
+            "auswahl": [
+              {
+                "id": "49733048",
+                "idlabel": "Kessel1"
+              },
+              {
+                "id": "49741341",
+                "idlabel": "Kessel2"
+              }
+            ],
+            "panelId": "19",
+            "panelId2": "3",
+            "histogram": [
+              4,
+              5,
+              7
+            ],
+            "panelIdWidth": "180px"
+          }
+        ],
+        "grafana": "https://graf.heatcare.one",
+        "interval": "&from=now-14d&to=now",
+        "dashboard": "d-solo/eelav0ybil2wwd/ws-heatcare"
+      },
+      "alarm": {
+        "active": false,
+        "conditions": [],
+        "lastTriggered": null,
+        "notifications": []
+      },
+      "kianalyse": {
+        "anomalies": [],
+        "predictions": [],
+        "recommendations": []
+      },
+      "status": {
+        "errors": [],
+        "online": false,
+        "signal": null,
+        "battery": null,
+        "lastSeen": null
+      },
+      "analyse": {},
+      "auswertung": {},
+      "report": {},
+      "diagramm": {},
+      "fltemp": null,
+      "rttemp": null,
+      "energy": {},
+      "created_at": "2025-06-13T13:16:18.471Z",
+      "updated_at": "2025-06-29T14:02:00.366Z"
+    },
+    {
+      "id": 37,
+      "objectid": "207315013",
+      "title": "Grimmstr. 2",
+      "ort": "Hannover",
+      "plz": "30161",
+      "objdata": {
+        "NE": 30,
+        "GEG": 75,
+        "area": 3085,
+        "objnr": 100002
+      },
+      "objanlage": {
+        "Typ": "WP+Kessel"
+      },
+      "portdata": {
+        "co2": 19,
+        "dia": "9Ouhos5Vk/35100-dia",
+        "dashbord": "8VmOLNmVk/35100-dashbord",
+        "auswertung": "8VmOLNmVk/35100-dashbord",
+        "auswertung_tab1": 28,
+        "auswertung_tab2": 43,
+        "auswertung_tab3": 44,
+        "energieverteilung": 71
+      },
+      "meter": {
+        "Z20130": 18072716,
+        "Z20141": 47635926,
+        "Z20221": 110168,
+        "Z20241": 47868468,
+        "Z20541": 47635938,
+        "Z40011": 107315013
+      },
+      "dashboard": {},
+      "alarm": {
+        "active": false,
+        "conditions": [],
+        "lastTriggered": null,
+        "notifications": []
+      },
+      "kianalyse": {
+        "anomalies": [],
+        "predictions": [],
+        "recommendations": []
+      },
+      "status": {
+        "errors": [],
+        "online": false,
+        "signal": null,
+        "battery": null,
+        "lastSeen": null
+      },
+      "analyse": {},
+      "auswertung": {},
+      "report": {},
+      "diagramm": {},
+      "fltemp": {
+        "20541": 44
+      },
+      "rttemp": {
+        "20541": 40
+      },
+      "energy": {},
+      "created_at": "2025-06-13T13:16:18.471Z",
+      "updated_at": "2025-06-29T14:02:01.491Z"
+    },
+    {
+      "id": 38,
+      "objectid": "272605171",
+      "title": "Posenerstr. 10",
+      "ort": "Hannover",
+      "plz": "30161",
+      "objdata": {
+        "NE": 41,
+        "area": 3803
+      },
+      "objanlage": {
+        "Typ": "WP+Kessel"
+      },
+      "portdata": {
+        "dia": "u2-uZUoVk/35240-dia",
+        "dashbord": "yM3Xi8T4z/35240-dashbord",
+        "auswertung": "yM3Xi8T4z/35240-dashbord",
+        "zaehler_tab1": 0,
+        "auswertung_tab1": 28,
+        "auswertung_tab2": 43,
+        "auswertung_tab3": 44,
+        "energieverteilung": 71
+      },
+      "meter": {
+        "Z20130": 32550494,
+        "Z20141": 53885946,
+        "Z20142": 53878825,
+        "Z20221": 23008152,
+        "Z20222": 23008153,
+        "Z20241": 53885947,
+        "Z20242": 53885945,
+        "Z20411": 112605171,
+        "Z20541": 53903760,
+        "Z20542": 53903757,
+        "Z20543": 53903756,
+        "Z20544": 53903758,
+        "Z20545": 53903759
+      },
+      "dashboard": {},
+      "alarm": {
+        "active": false,
+        "conditions": [],
+        "lastTriggered": null,
+        "notifications": []
+      },
+      "kianalyse": {
+        "anomalies": [],
+        "predictions": [],
+        "recommendations": []
+      },
+      "status": {
+        "errors": [],
+        "online": false,
+        "signal": null,
+        "battery": null,
+        "lastSeen": null
+      },
+      "analyse": {},
+      "auswertung": {},
+      "report": {},
+      "diagramm": {},
+      "fltemp": null,
+      "rttemp": null,
+      "energy": {},
+      "created_at": "2025-06-13T13:16:18.471Z",
+      "updated_at": "2025-06-29T14:01:59.674Z"
+    },
+    {
+      "id": 39,
+      "objectid": "269517140",
+      "title": "Aegidiendamm 7",
+      "ort": "Hannover",
+      "plz": "30161",
+      "objdata": {
+        "NE": 1,
+        "area": 1000,
+        "objnr": 100007
+      },
+      "objanlage": {
+        "Typ": "TWW+Fernwärme"
+      },
+      "portdata": null,
+      "meter": {
+        "Z20141": 64627733,
+        "Z20541": 65738456,
+        "Z20542": 65738526,
+        "Z20741": 65229903
+      },
+      "dashboard": {},
+      "alarm": {
+        "active": false,
+        "conditions": [],
+        "lastTriggered": null,
+        "notifications": []
+      },
+      "kianalyse": {
+        "anomalies": [],
+        "predictions": [],
+        "recommendations": []
+      },
+      "status": {
+        "errors": [],
+        "online": false,
+        "signal": null,
+        "battery": null,
+        "lastSeen": null
+      },
+      "analyse": {},
+      "auswertung": {},
+      "report": {},
+      "diagramm": {},
+      "fltemp": null,
+      "rttemp": null,
+      "energy": {},
+      "created_at": "2025-06-13T13:16:18.471Z",
+      "updated_at": "2025-06-29T14:02:00.122Z"
+    },
+    {
+      "id": 40,
+      "objectid": "275716104",
+      "title": "Liebrechtstr. 3",
+      "ort": "Hannover",
+      "plz": "30161",
+      "objdata": {
+        "NE": 33,
+        "GEG": 75,
+        "GSM": "01734095635",
+        "area": 2820,
+        "objnr": 100002
+      },
+      "objanlage": {
+        "Typ": "WP+Kessel"
+      },
+      "portdata": {
+        "dia": "9Ouhos5Vk/35100-dia",
+        "dashbord": "8VmOLNmVk/35100-dashbord",
+        "auswertung": "8VmOLNmVk/35100-dashbord",
+        "auswertung_tab1": 28,
+        "auswertung_tab2": 43,
+        "auswertung_tab3": 44,
+        "energieverteilung": 71
+      },
+      "meter": {
+        "Z20141": 64585532,
+        "Z20221": 19450904,
+        "Z20241": 61768384,
+        "Z20541": 64585538,
+        "Z40011": 275716104
+      },
+      "dashboard": {},
+      "alarm": {
+        "active": false,
+        "conditions": [],
+        "lastTriggered": null,
+        "notifications": []
+      },
+      "kianalyse": {
+        "anomalies": [],
+        "predictions": [],
+        "recommendations": []
+      },
+      "status": {
+        "errors": [],
+        "online": false,
+        "signal": null,
+        "battery": null,
+        "lastSeen": null
+      },
+      "analyse": {},
+      "auswertung": {},
+      "report": {},
+      "diagramm": {},
+      "fltemp": {
+        "20541": 57,
+        "updateTime": "2025-07-26T04:04:01.735Z"
+      },
+      "rttemp": {
+        "20541": 47,
+        "updateTime": "2025-07-26T04:04:01.531Z"
+      },
+      "energy": {},
+      "created_at": "2025-06-13T13:16:18.471Z",
+      "updated_at": "2025-06-29T14:01:57.563Z"
+    },
+    {
+      "id": 44,
+      "objectid": "272605196",
+      "title": "Walter-Gropius Str. 32-34",
+      "ort": "Neustadt",
+      "plz": "30161",
+      "objdata": {
+        "NE": 18,
+        "GEG": 75,
+        "area": 964,
+        "kdNr": 8989,
+        "objnr": 100001
+      },
+      "objanlage": {
+        "Typ": "WP+Kessel"
+      },
+      "portdata": {
+        "co2": 19,
+        "dia": "BNDJmpAVk/35140-dia",
+        "dashbord": "jUp4wGT4k/35140-dashbord",
+        "auswertung": "jUp4wGT4k/35140-dashbord",
+        "grafanaurl": "https://graf80.monitoring.direct/",
+        "auswertung_tab1": 28,
+        "auswertung_tab2": 43,
+        "auswertung_tab3": 44,
+        "energieverteilung": 71
+      },
+      "meter": {
+        "Z20130": 27692,
+        "Z20141": 53055109,
+        "Z20221": 101327,
+        "Z20241": 53055110,
+        "Z20541": 51928046,
+        "Z20542": 51906991,
+        "Z40011": 117306246
+      },
+      "dashboard": {},
+      "alarm": {
+        "active": false,
+        "conditions": [],
+        "lastTriggered": null,
+        "notifications": []
+      },
+      "kianalyse": {
+        "anomalies": [],
+        "predictions": [],
+        "recommendations": []
+      },
+      "status": {
+        "errors": [],
+        "online": false,
+        "signal": null,
+        "battery": null,
+        "lastSeen": null
+      },
+      "analyse": {},
+      "auswertung": {},
+      "report": {},
+      "diagramm": {},
+      "fltemp": {
+        "20541": 54,
+        "20542": 49
+      },
+      "rttemp": {
+        "20541": 45,
+        "20542": 36
+      },
+      "energy": {},
+      "created_at": "2025-06-13T13:16:18.471Z",
+      "updated_at": "2025-06-29T14:01:58.532Z"
+    },
+    {
+      "id": 52,
+      "objectid": "207315076",
+      "title": "Ahornstraße 18",
+      "ort": "Hannover",
+      "plz": "30161",
+      "objdata": {
+        "NE": 70,
+        "area": 5667
+      },
+      "objanlage": {
+        "WP": "Hersteller Striebel",
+        "Typ": "WP+2Kessel",
+        "schema": "schema_tpl_35110.jpg"
+      },
+      "portdata": [
+        {
+          "site": [
+            {
+              "id": "Z20541",
+              "label": "Wärmezähler Netz Ahornweg",
+              "panelId": "16",
+              "interval": "&from=now-4d&to=now",
+              "panelId2": "3",
+              "histogram": [
+                4,
+                5,
+                7
+              ],
+              "panelIdWidth": "180px"
+            },
+            {
+              "label": "Wärmezähler ",
+              "auswahl": [
+                {
+                  "id": "Z20541",
+                  "idlabel": "netz"
+                },
+                {
+                  "id": "Z20141",
+                  "idlabel": "Kessel1"
+                },
+                {
+                  "id": "Z20142",
+                  "idlabel": "Kessel2"
+                }
+              ],
+              "panelId": "19",
+              "panelId2": "3",
+              "panelIdWidth": "180px"
+            }
+          ],
+          "grafana": "https://graf.heatcare.one",
+          "interval": "&from=now-14d&to=now",
+          "dashboard": "d-solo/eelav0ybil2wwd/ws-heatcare",
+          "sitelabel": "Diagramm"
+        },
+        {
+          "site": [
+            {
+              "label": "Wärmezähler Objekt",
+              "auswahl": [
+                {
+                  "id": "Z20541",
+                  "idlabel": "Netz"
+                },
+                {
+                  "id": "Z20141",
+                  "idlabel": "Kessel1"
+                },
+                {
+                  "id": "Z20142",
+                  "idlabel": "Kessel2"
+                }
+              ],
+              "panelId": "13"
+            },
+            {
+              "label": "Wärmezähler Anteil ",
+              "auswahl": [
+                {
+                  "id": "Z20541",
+                  "idlabel": "Netz"
+                },
+                {
+                  "id": "Z20141",
+                  "idlabel": "Kessel1"
+                },
+                {
+                  "id": "Z20142",
+                  "idlabel": "Kessel2"
+                }
+              ],
+              "panelId": "14"
+            }
+          ],
+          "grafana": "https://graf.heatcare.one",
+          "interval": "&from=now-12M&to=now",
+          "dashboard": "d-solo/eelav0ybil2wwd/ws-heatcare",
+          "sitelabel": "Auswertung"
+        }
+      ],
+      "meter": {
+        "Z20130": 10157626,
+        "Z20141": 49733048,
+        "Z20142": 49741341,
+        "Z20221": 11012549,
+        "Z20241": 49733049,
+        "Z20541": 49736179
+      },
+      "dashboard": {
+        "site": [
+          {
+            "id": "49736179",
+            "label": "Wärmezähler Netz Ahorn dashbord 6",
+            "panelId": "16",
+            "interval": "&from=now-4d&to=now",
+            "panelId2": "3",
+            "histogram": [
+              4,
+              5,
+              7
+            ],
+            "panelIdWidth": "180px"
+          },
+          {
+            "label": "Wärmezähler Kessel ",
+            "panel": "show",
+            "auswahl": [
+              {
+                "id": "49733048",
+                "idlabel": "Kessel1"
+              },
+              {
+                "id": "49741341",
+                "idlabel": "Kessel2"
+              }
+            ],
+            "3spaltig": [
+              4,
+              5,
+              7
+            ],
+            "panelIdWidth": "180px"
+          }
+        ],
+        "grafana": "https://graf.heatcare.one",
+        "interval": "&from=now-14d&to=now",
+        "dashboard": "d-solo/eelav0ybil2wwd/ws-heatcare"
+      },
+      "alarm": {
+        "active": false,
+        "conditions": [],
+        "lastTriggered": null,
+        "notifications": []
+      },
+      "kianalyse": {
+        "anomalies": [],
+        "predictions": [],
+        "recommendations": []
+      },
+      "status": {
+        "errors": [],
+        "online": false,
+        "signal": null,
+        "battery": null,
+        "lastSeen": null
+      },
+      "analyse": {},
+      "auswertung": {},
+      "report": {
+        "site": [
+          {
+            "id": "49736179",
+            "label": "Wärmezähler Netz Ahorn report",
+            "panelId": "16",
+            "interval": "&from=now-4d&to=now",
+            "panelId2": "3",
+            "histogram": [
+              4,
+              5,
+              7
+            ],
+            "panelIdWidth": "180px"
+          }
+        ],
+        "grafana": "https://graf.heatcare.one",
+        "interval": "&from=now-14d&to=now",
+        "dashboard": "d-solo/eelav0ybil2wwd/ws-heatcare"
+      },
+      "diagramm": {
+        "site": [
+          {
+            "id": "49736179",
+            "label": "Wärmezähler Netz diagramm",
+            "panelId": "16",
+            "interval": "&from=now-4d&to=now",
+            "panelId2": "3",
+            "panelIdWidth": "180px"
+          },
+          {
+            "label": "Wärmezähler Netz Histo",
+            "auswahl": [
+              {
+                "id": "49733048",
+                "idlabel": "Kessel1 (150kW) Buderus"
+              },
+              {
+                "id": "49741341",
+                "idlabel": "Kessel2"
+              }
+            ],
+            "3spaltig": [
+              4,
+              5,
+              7
+            ]
+          },
+          {
+            "label": "Wärmezähler Kessel ",
+            "auswahl": [
+              {
+                "id": "49733048",
+                "idlabel": "Kessel1 (150kW) Buderus"
+              },
+              {
+                "id": "49741341",
+                "idlabel": "Kessel2"
+              }
+            ],
+            "panelId": "19",
+            "panelId2": "3",
+            "panelIdWidth": "180px"
+          },
+          {
+            "label": "Wärmezähler Alle Diagramme ",
+            "auswahl": [
+              {
+                "id": "49733048",
+                "idlabel": "Kessel1 (150kW) Buderus"
+              },
+              {
+                "id": "49741341",
+                "idlabel": "Kessel2"
+              }
+            ],
+            "panelId": "3"
+          }
+        ],
+        "grafana": "https://graf.heatcare.one",
+        "interval": "&from=now-14d&to=now",
+        "dashboard": "d-solo/eelav0ybil2wwd/ws-heatcare"
+      },
+      "fltemp": {
+        "20541": 56,
+        "updateTime": "2025-07-26T04:04:01.735Z"
+      },
+      "rttemp": {
+        "20541": 54,
+        "updateTime": "2025-07-26T04:04:01.729Z"
+      },
+      "energy": {},
+      "created_at": "2025-06-13T13:16:18.471Z",
+      "updated_at": "2025-06-29T14:02:00.815Z"
+    }
+  ]
+}

@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Grafana Integration - ID</title>
+    <!-- 
+    ========================================
+    GRAFANA-TABS-ID.HTML - BUTTONS & FUNKTIONEN
+    ========================================
+    
+    URL-Parameter:
+    - objid oder id: Objekt-ID (z.B. 207315076)
+    - typ=waechter: Wächter-Modus - ignoriert portdata und erstellt Tabs basierend auf meter.json
+    
+    Beispiele:
+    - Normal: grafana-tabs-id.html?objid=207315076
+    - Wächter-Modus: grafana-tabs-id.html?objid=207315076&typ=waechter
+    
+    ========================================
+    BUTTONS & AKTIONEN
+    ========================================
+    
+    1. HEADER-BUTTONS:
+    ------------------
+    🔧 JSON-Code Icon (oben rechts)
+    - Funktion: showPortdataModal()
+    - Aktion: Öffnet Modal mit Objekt-Debug-Daten
+    - Parameter: Keine
+    
+    2. MODAL-BUTTONS:
+    -----------------
+    📊 portdata Button
+    - Funktion: showDebugData('portdata')
+    - Aktion: Zeigt portdata JSON-Daten an
+    - Parameter: 'portdata'
+    
+    📈 meter Button  
+    - Funktion: showDebugData('meter')
+    - Aktion: Zeigt meter.json Daten an
+    - Parameter: 'meter'
+    
+    📋 Alle Daten Button
+    - Funktion: showDebugData('full')
+    - Aktion: Zeigt alle Objekt-Daten an
+    - Parameter: 'full'
+    
+    ❌ Close Button (X)
+    - Funktion: closePortdataModal()
+    - Aktion: Schließt das Modal
+    - Parameter: Keine
+    
+    3. TAB-NAVIGATION:
+    -------------------
+    📑 Tab-Buttons (Netzwächter, Kesselwächter, etc.)
+    - Funktion: selectTab(tapId, objid)
+    - Aktion: Wechselt zwischen verschiedenen Tabs
+    - Parameter: tapId (Tab-Index), objid (Objekt-ID)
+    
+    4. ZEITRAUM-AUSWAHL:
+    ---------------------
+    ⏰ letzte 24h
+    - Funktion: setTime1('1d', '', 'letzte 24h')
+    - Aktion: Setzt Zeitraum auf letzte 24 Stunden
+    - Parameter: '1d', '', 'letzte 24h'
+    
+    ⏰ letzte 3 Tage
+    - Funktion: setTime1('3d', '', 'letzte 3 Tage')
+    - Aktion: Setzt Zeitraum auf letzte 3 Tage
+    - Parameter: '3d', '', 'letzte 3 Tage'
+    
+    ⏰ letzte 7 Tage
+    - Funktion: setTime1('7d', '', 'letzte 7 Tage')
+    - Aktion: Setzt Zeitraum auf letzte 7 Tage
+    - Parameter: '7d', '', 'letzte 7 Tage'
+    
+    ⏰ letzte 14 Tage
+    - Funktion: setTime1('14d', '', 'letzte 14 Tage')
+    - Aktion: Setzt Zeitraum auf letzte 14 Tage
+    - Parameter: '14d', '', 'letzte 14 Tage'
+    
+    ⏰ letzter Monat
+    - Funktion: setTime1('1M', '', 'letzter Monat')
+    - Aktion: Setzt Zeitraum auf letzten Monat
+    - Parameter: '1M', '', 'letzter Monat'
+    
+    ⏰ letzte 6 Monate
+    - Funktion: setTime1('6M', '', 'letzte 6 Monate')
+    - Aktion: Setzt Zeitraum auf letzte 6 Monate
+    - Parameter: '6M', '', 'letzte 6 Monate'
+    
+    ⏰ letzte 365 Tage
+    - Funktion: setTime1('12M', '', 'letzte 365 Tage')
+    - Aktion: Setzt Zeitraum auf letzte 365 Tage
+    - Parameter: '12M', '', 'letzte 365 Tage'
+    
+    ⏰ letztes Jahr
+    - Funktion: setTime1('1y/y', 'now-1y/y', 'letztes Jahr')
+    - Aktion: Setzt Zeitraum auf letztes Jahr
+    - Parameter: '1y/y', 'now-1y/y', 'letztes Jahr'
+    
+    ⏰ vorletztes Jahr
+    - Funktion: setTime1('2y/y', 'now-2y/y', 'vorletztes Jahr')
+    - Aktion: Setzt Zeitraum auf vorletztes Jahr
+    - Parameter: '2y/y', 'now-2y/y', 'vorletztes Jahr'
+    
+    5. ACCORDION-BUTTONS:
+    ----------------------
+    📊 Accordion-Header (Diagramm-Titel)
+    - Funktion: onklick(accordionId)
+    - Aktion: Klappt Accordion auf/zu
+    - Parameter: accordionId (z.B. 'taps1')
+    
+    📈 Histogramm-Toggle
+    - Funktion: toggleHistogram(accordionId)
+    - Aktion: Zeigt/versteckt Histogramm-Diagramme
+    - Parameter: accordionId (z.B. 'taps1')
+    
+    6. AUSWAHL-BUTTONS:
+    --------------------
+    🔄 Auswahl-Buttons (Netz1, Netz2, Kessel1, etc.)
+    - Funktion: updateIframe(accordionId, selectedId)
+    - Aktion: Wechselt zwischen verschiedenen Zählern/Objekten
+    - Parameter: accordionId, selectedId (z.B. 'Z20541')
+    
+    ========================================
+    FUNKTIONEN-DOKUMENTATION
+    ========================================
+    
+    🔧 getUrlParameter(name)
+    - Zweck: Liest URL-Parameter aus
+    - Parameter: name (Parameter-Name)
+    - Rückgabe: Parameter-Wert oder null
+    
+    🔍 resolveId(id, meter)
+    - Zweck: Löst Zähler-Referenzen auf (Z20541 → echte ID)
+    - Parameter: id (Zähler-ID), meter (meter.json Objekt)
+    - Rückgabe: Aufgelöste ID
+    
+    📡 getObjectConfig(objid)
+    - Zweck: Lädt Objekt-Konfiguration von API
+    - Parameter: objid (Objekt-ID)
+    - Rückgabe: Promise mit Konfigurationsdaten
+    
+    📑 selectTab(tapId, objid)
+    - Zweck: Wechselt zwischen Tabs
+    - Parameter: tapId (Tab-Index), objid (Objekt-ID)
+    - Rückgabe: Promise
+    
+    🎯 selectObject(objid)
+    - Zweck: Wählt ein Objekt aus
+    - Parameter: objid (Objekt-ID)
+    - Rückgabe: Promise
+    
+    📊 onklick(id)
+    - Zweck: Klappt Accordion auf/zu
+    - Parameter: id (Accordion-ID)
+    - Rückgabe: void
+    
+    📈 toggleHistogram(accordionId)
+    - Zweck: Zeigt/versteckt Histogramm
+    - Parameter: accordionId (Accordion-ID)
+    - Rückgabe: void
+    
+    🔄 updateIframe(accordionId, selectedId, vargraf)
+    - Zweck: Aktualisiert iframe mit neuer ID
+    - Parameter: accordionId, selectedId, vargraf (optional)
+    - Rückgabe: void
+    
+    ⏰ setTime1(timeFrom, timeTo, buttonText)
+    - Zweck: Setzt Zeitraum für alle Diagramme
+    - Parameter: timeFrom, timeTo, buttonText
+    - Rückgabe: void
+    
+    📋 generateTabs(objid, config)
+    - Zweck: Generiert Tab-Navigation
+    - Parameter: objid, config
+    - Rückgabe: Promise mit HTML
+    
+    📊 generateContent(tabNr, objid, config)
+    - Zweck: Generiert Tab-Inhalt
+    - Parameter: tabNr, objid, config
+    - Rückgabe: Promise mit HTML
+    
+    🔧 showPortdataModal()
+    - Zweck: Öffnet Debug-Modal
+    - Parameter: Keine
+    - Rückgabe: void
+    
+    📊 showDebugData(type)
+    - Zweck: Zeigt Debug-Daten an
+    - Parameter: type ('portdata', 'meter', 'full')
+    - Rückgabe: void
+    
+    ❌ closePortdataModal()
+    - Zweck: Schließt Debug-Modal
+    - Parameter: Keine
+    - Rückgabe: void
+    
+    ========================================
+    GLOBALE VARIABLEN
+    ========================================
+    
+    currentObjectId: Aktuelle Objekt-ID
+    currentTabNr: Aktueller Tab-Index
+    lastPortdata: Letzte portdata-Daten
+    lastMeter: Letzte meter-Daten
+    lastFullData: Letzte vollständige Daten
+    
+    ========================================
+    -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .w3-accordion-content {
+            display: none;
+        }
+
+        .w3-show {
+            display: block !important;
+        }
+
+        .w3-accordion .w3-button::before {
+            content: "\25B6\FE0E";
+            display: inline-block;
+            transition: transform 0.1s;
+        }
+
+        .w3-accordion .w3-button.active::before {
+            transform: rotate(90deg);
+        }
+
+        .w3-accordion .w3-button {
+            background-color: rgba(128, 128, 128, 0.128);
+            font-size: 14px;
+            position: relative;
+        }
+
+        .w3-accordion .w3-button.active {
+            background-color: lightgray;
+            position: relative;
+        }
+
+        .w3-accordion .w3-button.active::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+        }
+
+        .w3-teal {
+            color: light-grey !important;
+            background-color: #115875 !important;
+        }
+
+        .w3-border-theme {
+            border-color: #115875 !important;
+        }
+
+        .w3-text-theme {
+            color: #115875 !important;
+        }
+
+        .diaframe {
+            width: 100%;
+            border: 0;
+            padding: 2px;
+            box-sizing: border-box;
+        }
+
+        .auswahl-bar {
+            border-bottom: 2px solid gray;
+        }
+
+        .auswahl-button {
+            background-color: #FFFFFF;
+            color: black;
+            margin-left: 2px !important;
+        }
+
+        .auswahl-button:hover {
+            background-color: #cd2b36;
+            color: white;
+        }
+
+        .auswahl-button.active {
+            background-color: lightgray !important;
+            color: #115875 !important;
+        }
+
+        .auswahl-tab {
+            background-color: gray;
+            color: white;
+        }
+
+        .auswahl-tab:hover {
+            background-color: #cd2b36;
+            color: white;
+        }
+
+        .auswahl-tab.active {
+            background-color: lightgray;
+            color: #115875;
+        }
+
+        /* Volle Breite für object-content */
+        .scroll-container {
+            margin-top: 79px;
+            height: calc(100vh - 79px);
+            overflow-y: auto;
+        }
+
+        #object-content {
+            margin-top: 0px;
+            padding-top: 0px;
+        }
+
+
+
+        /* Entferne margin-left für volle Breite */
+        #main {
+            margin-left: 0px !important;
+        }
+
+        #object-tabs {
+            margin-left: 0px !important;
+        }
+
+        /* Histogramm-Icon Styling */
+        .fa-bar-chart {
+            transition: color 0.3s ease;
+        }
+
+        .fa-bar-chart:hover {
+            color: #115875 !important;
+        }
+        .histogram-toggle:hover .fa-bar-chart,
+        .histogram-toggle:hover span {
+            color: #115875 !important;
+        }
+        .histogram-toggle {
+            display: inline-flex;
+            align-items: center;
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .w3-container, .w3-panel {
+            padding: 1px !important;
+        }
+        .w3-leftbar.w3-border-gray {
+            border-left: none !important;
+        }
+        .auswahl-button {
+            margin-left: 2px !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Fixed Header -->
+    <div class="w3-top w3-container fixed-header">
+        <!-- Header ohne Objektliste -->
+        <div class="w3-bar w3-light-grey">
+            <span class="w3-bar-item" id="selected-objid">Id:207315076</span>
+            <span class="w3-bar-item w3-right" style="cursor:pointer;" onclick="showPortdataModal()" title="Objekt-JSON anzeigen"><i class="fa fa-code"></i></span>
+        </div>
+        <div id="object-tabs" style="margin-left:0px; margin-top:1px">
+            <!-- Tabs werden hier dynamisch eingefügt -->
+        </div>
+    </div>
+
+    <!-- Modal für JSON-Anzeige -->
+    <div id="portdata-modal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.45);z-index:9999;align-items:center;justify-content:center;">
+      <div style="background:#fff;padding:24px 18px 18px 18px;border-radius:8px;max-width:900px;width:90vw;max-height:80vh;overflow:auto;position:relative;">
+        <span onclick="closePortdataModal()" style="position:absolute;top:8px;right:16px;font-size:1.5em;cursor:pointer;"><i class='fa fa-close'></i></span>
+        <h3 style="margin-top:0;font-size:1.1em;color:#115875;">Objekt Debug-Daten (JSON)</h3>
+        
+        <div style="margin-bottom:16px;">
+          <button id="btn-portdata" onclick="showDebugData('portdata')" style="margin-right:8px;" class="w3-button w3-small w3-teal">portdata</button>
+          <button id="btn-meter" onclick="showDebugData('meter')" style="margin-right:8px;" class="w3-button w3-small w3-gray">meter</button>
+          <button id="btn-full" onclick="showDebugData('full')" class="w3-button w3-small w3-gray">Alle Daten</button>
+          <button id="btn-testsite" onclick="showDebugData('testsite')" class="w3-button w3-small w3-gray" style="margin-left:8px;background:#ffe4b5;color:#222;">Meter-Testgraf</button>
+        </div>
+        
+        <pre id="portdata-json" style="font-size:0.98em;background:#f7f7f7;color:#222;border:1px solid #ccc;padding:8px;max-height:60vh;overflow:auto;"></pre>
+      </div>
+    </div>
+
+    <!-- Fehler-Popup für fehlende Grafana-Settings -->
+    <div id="settings-error-modal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.45);z-index:99999;align-items:center;justify-content:center;">
+      <div style="background:#fff;padding:24px 18px 18px 18px;border-radius:8px;max-width:500px;width:90vw;max-height:80vh;overflow:auto;position:relative;">
+        <span onclick="closeSettingsErrorModal()" style="position:absolute;top:8px;right:16px;font-size:1.5em;cursor:pointer;"><i class='fa fa-close'></i></span>
+        <h3 style="margin-top:0;font-size:1.1em;color:#c0392b;">Fehler: Grafana-Settings nicht geladen</h3>
+        <div id="settings-error-message" style="color:#c0392b;font-size:1em;margin-bottom:12px;"></div>
+        <button onclick="closeSettingsErrorModal()" class="w3-button w3-teal">Schließen</button>
+      </div>
+    </div>
+
+    <div class="scroll-container w3-container">
+        <!-- Objekt-content mit voller Breite -->
+        <div id="main" style="margin-left:0px;">
+            <div id="object-content">
+                <!-- Content wird hier dynamisch eingefügt -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+
+    // Globale Variablen
+    let currentObjectId = '207315076';
+    let currentTabNr = 0;
+    let lastPortdata = null;
+    let lastMeter = null;
+    let lastFullData = null;
+    // Speichere die letzten generierten IFrame-HTMLs global
+    let lastIframeHtmls = [];
+
+    // Globale Debug-Log-Sammlung
+    window.debugLog = [];
+    function addDebugLog(msg) {
+      window.debugLog.push(msg);
+      if (window.debugLog.length > 30) window.debugLog.shift(); // Max 30 Einträge
+    }
+
+    // URL-Parameter auslesen
+    function getUrlParameter(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+    }
+
+    // ID-Interpreter: Unterstützt direkte IDs und Zähler-Referenzen
+    function resolveId(id, meter) {
+        if (!id) return id;
+        
+        // Prüfe ob ID mit Z oder z beginnt (Zähler-Referenz)
+        if (id.match(/^[Zz]/)) {
+            // Suche in meter-Objekt nach der Zähler-Referenz
+            const meterId = meter[id.toUpperCase()];
+            if (meterId) {
+                console.log(`🔍 Zähler-Referenz ${id} → ${meterId}`);
+                return meterId.toString();
+            } else {
+                console.warn(`⚠️ Zähler-Referenz ${id} nicht in meter gefunden`);
+                return id; // Fallback: verwende ursprüngliche ID
+            }
+        }
+        
+        // Direkte ID (beginnt nicht mit Z/z)
+        console.log(`🔍 Direkte ID: ${id}`);
+        return id;
+    }
+
+    /**
+     * Prüft, ob der Wächter-Modus aktiv ist (typ=waechter in der URL)
+     * @returns {boolean} true, wenn Wächter-Modus aktiv ist
+     */
+    function isWaechterMode() {
+        const typParam = getUrlParameter('typ');
+        return typParam === 'waechter';
+    }
+
+    // Objekt-Konfiguration abrufen (neu: per API, portdata)
+    async function getObjectConfig(objid) {
+        try {
+            const token = localStorage.getItem('token');
+            const headers = {};
+            let noToken = false;
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            } else {
+                noToken = true;
+            }
+            
+            // Wächter-Modus prüfen
+            const isWaechter = isWaechterMode();
+            
+            // Lade Grafana-Settings
+            let grafanaSettings = null;
+            let usedFallback = false;
+            try {
+                const settingsResp = await fetch('/api/settings/grafana', { headers });
+                if (settingsResp.ok) {
+                    const settingsData = await settingsResp.json();
+                    grafanaSettings = settingsData.data;
+                    // Unterstütze beide Formate: mit und ohne setupGrafana
+                    if (grafanaSettings && grafanaSettings.setupGrafana) {
+                        grafanaSettings = grafanaSettings.setupGrafana;
+                    }
+                }
+            } catch (e) {
+                // Ignorieren, Fehler wird unten behandelt
+            }
+            // Soft-Fallback auf fest eingebaute Defaults
+            if (!grafanaSettings || !grafanaSettings.baseUrl || !grafanaSettings.defaultDashboard) {
+                grafanaSettings = {
+                    baseUrl: "https://graf.heatcare.one",
+                    defaultDashboard: "d-solo/eelav0ybil2wwd/ws-heatcare",
+                    defaultInterval: "&from=now-7d&to=now",
+                    defaultPanelid: [
+                        { diagrammPanelId: 3, label: "Diagramm" },
+                        { netzPanelId: 10, label: "Netz" },
+                        { kesselPanelId: 12, label: "Kessel" },
+                        { waermepumpePanelId: 16, label: "Wärmepumpe" }
+                    ]
+                };
+                usedFallback = true;
+            }
+            if (usedFallback) {
+                if (noToken) {
+                    showSettingsErrorModal('Kein Login-Token gefunden. Bitte zuerst anmelden! Es werden fest eingebaute Standardwerte verwendet.');
+                } else {
+                    showSettingsErrorModal('Die Grafana-Settings konnten nicht geladen werden oder sind unvollständig. Es werden fest eingebaute Standardwerte verwendet.');
+                }
+            }
+            
+            console.log(`🔍 Lade Objekt-Konfiguration für ID: ${objid}`);
+            console.log(`🔑 Token vorhanden: ${token ? 'Ja' : 'Nein'}`);
+            
+            const response = await fetch(`/api/objects/${objid}`, {
+                headers: headers
+            });
+            
+            console.log(`📡 API-Response Status: ${response.status}`);
+            
+            if (!response.ok) {
+                if (response.status === 401) {
+                    throw new Error('Nicht authentifiziert - Bitte anmelden');
+                }
+                throw new Error(`API-Fehler: ${response.status}`);
+            }
+            
+            const responseData = await response.json();
+            console.log(`📦 API-Daten erhalten:`, responseData);
+            
+            // API-Antwort hat Struktur: {success: true, data: {portdata: [...]}}
+            const data = responseData.data || responseData;
+            console.log(`📦 Verarbeitete Daten:`, data);
+            
+            // Wenn Wächter-Modus aktiv ist, ignoriere portdata komplett
+            if (isWaechter) {
+                console.log(`🔧 Wächter-Modus aktiv - portdata wird ignoriert, Tabs werden aus meter generiert.`);
+                // portdata wird ignoriert, direkt zu Fallback-Logik
+            } else {
+                // Normale Verarbeitung: portdata ist das relevante Feld
+                if (data && data.portdata) {
+                    let portdataArray;
+                    
+                    if (Array.isArray(data.portdata)) {
+                        // Struktur: portdata ist ein Array (mehrere Tabs)
+                        portdataArray = data.portdata;
+                    } else if (typeof data.portdata === 'object' && data.portdata.site) {
+                        // Struktur: portdata ist ein Objekt (einzelner Tab)
+                        portdataArray = [data.portdata];
+                    } else if (typeof data.portdata === 'object' && Object.keys(data.portdata).length === 0) {
+                        // Struktur: portdata ist ein leeres Objekt {}
+                        console.log(`⚠️ portdata ist leer - verwende Default-Netzwächter`);
+                        portdataArray = null; // Wird später behandelt
+                    } else {
+                        console.log(`❌ Ungültige portdata-Struktur:`, data.portdata);
+                        throw new Error('Ungültige portdata-Struktur');
+                    }
+                    
+                    if (portdataArray && portdataArray.length > 0) {
+                        console.log(`✅ portdata gefunden:`, portdataArray);
+                        return {
+                            portdata: portdataArray,
+                            objectName: data.title || data.name || '',
+                            meter: data.meter || {},
+                            fullData: data // Speichere alle Daten für Modal
+                        };
+                    }
+                }
+            }
+            
+            // Fallback: Intelligente Tabs basierend auf meter-Daten
+            // Wird ausgeführt wenn: keine portdata ODER Wächter-Modus aktiv
+            const fallbackReason = isWaechter ? 'Wächter-Modus aktiv' : 'Keine portdata verfügbar';
+            console.log(`⚠️ ${fallbackReason} - erstelle intelligente Tabs basierend auf meter-Daten`);
+            
+            const meter = data.meter || {};
+            const portdataArray = [];
+            
+            // Prüfe auf Netz-Zähler (Z20541, Z20542)
+            const netzIds = [];
+            if (meter.Z20541) netzIds.push({id: "Z20541", idlabel: "Netz1"});
+            if (meter.Z20542) netzIds.push({id: "Z20542", idlabel: "Netz2"});
+            
+            if (netzIds.length > 0) {
+                console.log(`✅ Netz-Zähler gefunden: ${netzIds.map(n => `${n.id} → ${meter[n.id]}`).join(', ')}`);
+                const netzTab = {
+                    site: [
+                        {
+                            label: "Wärmezähler Netz",
+                            panelId: "16",
+                            interval: "&from=now-4d&to=now",
+                            panelId2: "3",
+                            histogram: [4, 5, 7],
+                            panelIdWidth: "180px",
+                            auswahl: netzIds
+                        }
+                    ],
+                    grafana: "https://graf.heatcare.one",
+                    dashboard: "d-solo/eelav0ybil2wwd/ws-heatcare",
+                    sitelabel: "Netzwächter"
+                };
+                portdataArray.push(netzTab);
+            }
+            
+            // Prüfe auf Kessel-Zähler (Z20141, Z20142, Z20143)
+            const kesselIds = [];
+            if (meter.Z20141) kesselIds.push({id: "Z20141", idlabel: "Kessel1"});
+            if (meter.Z20142) kesselIds.push({id: "Z20142", idlabel: "Kessel2"});
+            if (meter.Z20143) kesselIds.push({id: "Z20143", idlabel: "Kessel3"});
+            
+            if (kesselIds.length > 0) {
+                console.log(`✅ Kessel-Zähler gefunden: ${kesselIds.map(k => `${k.id} → ${meter[k.id]}`).join(', ')}`);
+                const kesselTab = {
+                    site: [
+                        {
+                            label: "Wärmezähler Kessel",
+                            panelId: "19",
+                            interval: "&from=now-4d&to=now",
+                            panelId2: "3",
+                            histogram: [4, 5, 7],
+                            panelIdWidth: "180px",
+                            auswahl: kesselIds
+                        }
+                    ],
+                    grafana: "https://graf.heatcare.one",
+                    dashboard: "d-solo/eelav0ybil2wwd/ws-heatcare",
+                    sitelabel: "Kesselwächter"
+                };
+                portdataArray.push(kesselTab);
+            }
+            
+            // Prüfe auf Wärmepumpen-Zähler (Z20241, Z20242, Z20243)
+            const waermepumpenIds = [];
+            if (meter.Z20241) waermepumpenIds.push({id: "Z20241", idlabel: "Wärmepumpe1"});
+            if (meter.Z20242) waermepumpenIds.push({id: "Z20242", idlabel: "Wärmepumpe2"});
+            if (meter.Z20243) waermepumpenIds.push({id: "Z20243", idlabel: "Wärmepumpe3"});
+            
+            if (waermepumpenIds.length > 0) {
+                console.log(`✅ Wärmepumpen-Zähler gefunden: ${waermepumpenIds.map(w => `${w.id} → ${meter[w.id]}`).join(', ')}`);
+                const waermepumpenTab = {
+                    site: [
+                        {
+                            label: "Wärmezähler Wärmepumpen",
+                            panelId: "19",
+                            interval: "&from=now-4d&to=now",
+                            panelId2: "3",
+                            histogram: [4, 5, 7],
+                            panelIdWidth: "180px",
+                            auswahl: waermepumpenIds
+                        }
+                    ],
+                    grafana: "https://graf.heatcare.one",
+                    dashboard: "d-solo/eelav0ybil2wwd/ws-heatcare",
+                    sitelabel: "Wärmepumpenwächter"
+                };
+                portdataArray.push(waermepumpenTab);
+            }
+            
+            // Fallback: Mindestens einen Tab erstellen
+            if (portdataArray.length === 0) {
+                console.log(`⚠️ Keine bekannten Zähler gefunden - prüfe auf Dummy-Tab...`);
+                const meterIds = Object.keys(meter);
+                if (meterIds.length > 0) {
+                    const firstId = meterIds[0];
+                    const dummyTab = {
+                        site: [
+                            {
+                                id: firstId,
+                                label: `Dummy-Zähler (${firstId})`,
+                                panelId: "3",
+                                interval: "&from=now-4d&to=now",
+                                panelIdWidth: "180px"
+                            }
+                        ],
+                        grafana: "https://graf.heatcare.one",
+                        dashboard: "d-solo/eelav0ybil2wwd/ws-heatcare",
+                        sitelabel: "Dummy-Tab"
+                    };
+                    portdataArray.push(dummyTab);
+                    console.log('✅ Dummy-Tab generiert:', dummyTab);
+                } else {
+                    console.log('❌ Keine meter-IDs vorhanden, kein Dummy-Tab möglich.');
+                }
+            }
+            
+            console.log(`✅ Intelligente Tabs erstellt: ${portdataArray.length} Tabs`);
+            
+            return {
+                portdata: portdataArray,
+                objectName: data.title || data.name || '',
+                meter: data.meter || {},
+                fullData: data // Speichere alle Daten für Modal
+            };
+        } catch (e) {
+            console.error('Fehler beim Laden der Objektkonfiguration:', e);
+            throw e;
+        }
+    }
+
+
+
+    // Tab-Auswahl (aus Node-RED)
+    async function selectTab(tapId, objid) {
+        try {
+            currentTabNr = parseInt(tapId);
+            currentObjectId = objid || currentObjectId;
+            
+            // Aktualisieren der Anzeige für das ausgewählte Tab
+            const configData = await getObjectConfig(currentObjectId);
+            lastPortdata = configData.portdata; // Merke für Modal
+            lastMeter = configData.meter; // Merke meter für Modal
+            lastFullData = configData.fullData; // Merke alle Daten für Modal
+            const objectName = configData.objectName;
+            const headerText = objectName ? `Id:${currentObjectId} - ${objectName}` : `Id:${currentObjectId}`;
+            document.getElementById("selected-objid").textContent = headerText;
+            document.getElementById("object-content").innerHTML = await generateContent(currentTabNr, currentObjectId, configData.portdata);
+            document.getElementById("object-tabs").innerHTML = await generateTabs(currentObjectId, configData.portdata);
+
+            // Setzen der 'active'-Klasse für den geklickten Tab
+            const tabs = document.querySelectorAll('.auswahl-tab');
+            tabs.forEach(tab => {
+                if (tab.getAttribute('data-tapId') === tapId) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+        } catch (error) {
+            console.error('Error selecting tab:', error);
+            document.getElementById("object-content").innerHTML = `<div class="w3-container w3-red w3-padding">
+                <p><strong>Fehler beim Laden des Tabs:</strong></p>
+                <p>${error.message}</p>
+                <p><strong>Tab-ID:</strong> ${tapId}</p>
+                <p><strong>Objekt-ID:</strong> ${objid}</p>
+            </div>`;
+        }
+    }
+
+    // Objekt-Auswahl (aus Node-RED)
+    async function selectObject(objid) {
+        try {
+            currentObjectId = objid;
+            currentTabNr = 0; // Standardmäßig ersten Tab
+            const configData = await getObjectConfig(currentObjectId);
+            lastPortdata = configData.portdata; // Merke für Modal
+            lastMeter = configData.meter; // Merke meter für Modal
+            lastFullData = configData.fullData; // Merke alle Daten für Modal
+            const objectName = configData.objectName;
+            const headerText = objectName ? `Id:${currentObjectId} - ${objectName}` : `Id:${currentObjectId}`;
+            document.getElementById("selected-objid").textContent = headerText;
+            document.getElementById("object-content").innerHTML = await generateContent(currentTabNr, currentObjectId, configData.portdata);
+            document.getElementById("object-tabs").innerHTML = await generateTabs(currentObjectId, configData.portdata);
+            const tabs = document.querySelectorAll('.auswahl-tab');
+            tabs.forEach(tab => {
+                if (tab.getAttribute('data-tapId') === currentTabNr.toString()) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+
+        } catch (error) {
+            console.error('Error selecting object:', error);
+            document.getElementById("object-content").innerHTML = `<div class="w3-container w3-red w3-padding">
+                <p><strong>Fehler beim Laden der Daten:</strong></p>
+                <p>${error.message}</p>
+                <p><strong>Objekt-ID:</strong> ${objid}</p>
+                <p><strong>Token vorhanden:</strong> ${localStorage.getItem('token') ? 'Ja' : 'Nein'}</p>
+            </div>`;
+        }
+    }
+
+    // Accordion-Funktion (aus Node-RED)
+    function onklick(id) {
+        const element = document.getElementById(id);
+        const button = element.previousElementSibling;
+        if (!element.className.includes('w3-show')) {
+            element.className += ' w3-show';
+            button.className += ' active';
+            
+            // Automatisch erste Auswahl aktivieren, wenn Accordion aufgeklappt wird
+            const firstButton = element.querySelector('.auswahl-button');
+            if (firstButton && !firstButton.classList.contains('active')) {
+                const firstId = firstButton.getAttribute('data-id');
+                if (firstId) {
+                    updateIframe(id, firstId);
+                }
+            }
+        } else {
+            element.className = element.className.replace(' w3-show', '');
+            button.className = button.className.replace(' active', '');
+        }
+    }
+
+    // Histogramm ein/ausblenden
+    function toggleHistogram(accordionId) {
+        const histogramDiv = document.getElementById(`histogram_${accordionId}`);
+        if (histogramDiv) {
+            const isVisible = histogramDiv.style.display !== 'none';
+            
+            // Icon-Status ändern
+            const icon = event.target;
+            
+            if (isVisible) {
+                // Histogramm ausblenden
+                histogramDiv.style.display = 'none';
+                icon.classList.remove('w3-text-teal');
+                icon.classList.add('w3-text-gray');
+            } else {
+                // Erst Accordion aufklappen, dann Histogramm einblenden
+                const accordionElement = document.getElementById(accordionId);
+                const accordionButton = accordionElement.previousElementSibling;
+                if (accordionElement && !accordionElement.className.includes('w3-show')) {
+                    accordionElement.className += ' w3-show';
+                    accordionButton.className += ' active';
+                }
+                
+                // Dann Histogramm einblenden
+                histogramDiv.style.display = 'block';
+                icon.classList.remove('w3-text-gray');
+                icon.classList.add('w3-text-teal');
+            }
+        }
+        
+        // Event-Bubbling verhindern, damit das Accordion nicht zugeklappt wird
+        event.stopPropagation();
+    }
+
+    // Iframe aktualisieren (aus Node-RED)
+    function updateIframe(accordionId, selectedId, vargraf) {
+        // Standardwert für grafvar oder leer
+        const grafvar = vargraf || '';
+
+        // Extrahiere den Variablennamen und den vollständigen Parameter
+        const varParam = grafvar.split('&')[0]; // Erster Parameter, z. B. var-timeDuration=1mo
+        const varName = varParam.split('=')[0]; // Variablenname, z. B. var-timeDuration
+
+        // ID auflösen (direkte ID oder Zähler-Referenz)
+        const resolvedId = resolveId(selectedId, lastMeter);
+
+        const accordion = document.getElementById(accordionId);
+        const iframes = accordion.querySelectorAll('iframe.diaframe');
+        iframes.forEach(iframe => {
+            let url = iframe.src;
+            const urlParts = url.split('&');
+
+            // Prüfe und aktualisiere var-id
+            const indexVarId = urlParts.findIndex(part => part.startsWith('var-id'));
+            if (indexVarId !== -1) {
+                urlParts[indexVarId] = `var-id=${resolvedId}`;
+            } else {
+                urlParts.push(`var-id=${resolvedId}`);
+            }
+
+            // Prüfe, ob varName in der URL vorhanden ist
+            const indexVarParam = urlParts.findIndex(part => part.startsWith(`${varName}=`));
+            if (indexVarParam !== -1) {
+                // Ersetze bestehenden Parameter
+                urlParts[indexVarParam] = varParam;
+            } else {
+                // Füge neuen Parameter hinzu
+                urlParts.push(varParam);
+            }
+
+            // Setze die neue URL
+            iframe.src = urlParts.join('&');
+        });
+
+        // Setze die 'active'-Klasse für den geklickten Button
+        const buttons = accordion.querySelectorAll('.auswahl-button');
+        buttons.forEach(button => {
+            if (button.getAttribute('data-id') === selectedId) {
+                button.classList.add('active');
+            } else {
+                button.classList.remove('active');
+            }
+        });
+    }
+
+    // Zeitraum setzen (aus Node-RED)
+    function setTime1(timeFrom, timeTo, buttonText) {
+        console.log('setTime1 called with:', { timeFrom, timeTo, buttonText });
+        const iframes = document.querySelectorAll('.diaframe');
+        if (!iframes.length) {
+            console.error('No iframes with class diaframe found');
+            const contentDiv = document.getElementById('object-content');
+            if (contentDiv) {
+                contentDiv.innerHTML += '<p class="w3-text-red">Keine Diagramme zum Aktualisieren gefunden</p>';
+            }
+            return;
+        }
+        iframes.forEach(iframe => {
+            try {
+                const urlObj = new URL(iframe.src);
+                const params = new URLSearchParams(urlObj.search);
+                params.set('from', `now-${timeFrom}`);
+                params.set('to', timeTo || 'now');
+                urlObj.search = params.toString();
+                const newUrl = urlObj.toString();
+                console.log('New iframe URL:', newUrl);
+                iframe.src = newUrl;
+            } catch (error) {
+                console.error('Error updating iframe URL:', error, { url: iframe.src });
+            }
+        });
+        const button = document.getElementById('droptime1');
+        if (button) {
+            button.innerHTML = `<i class="fa fa-clock-o"></i> ${buttonText}`;
+            console.log('Button text updated to:', buttonText);
+        } else {
+            console.error('Button with ID droptime1 not found');
+        }
+    }
+
+    // Tabs generieren (aus Node-RED)
+    async function generateTabs(objid, config) {
+        let html = `<div class="w3-row">
+            <div class="w3-left" id="auswahltab">`;
+        
+        // Mehrere Tabs vorhanden
+        config.forEach((tab, index) => {
+            const isActive = index === currentTabNr;
+            const buttonClass = `w3-bar-item w3-border-top w3-border-right auswahl-tab w3-button${isActive ? ' active' : ''}`;
+            html += `<button onclick="selectTab('${index}','${objid}')" class="${buttonClass}" data-tapId="${index}">${tab.sitelabel}</button>`;
+        });
+        
+        html += `</div>
+            <div class="w3-dropdown-hover w3-right">
+                <button id="droptime1" class="w3-button w3-round w3-teal" style="width: 200px"><i class="fa fa-clock-o"></i> Zeitraum </button>
+                <div class="w3-dropdown-content w3-bar-block w3-border" style="left:0">
+                    <a href="javascript:void(0)" class="w3-bar-item w3-button" onclick="setTime1('1d', '', 'letzte 24h')">letzte 24h</a>
+                    <a href="javascript:void(0)" class="w3-bar-item w3-button" onclick="setTime1('3d', '', 'letzte 3 Tage')">letzte 3 Tage</a>
+
+                    <a href="javascript:void(0)" class="w3-bar-item w3-button" onclick="setTime1('7d', '', 'letzte 7 Tage')">letzte 7 Tage</a>
+                    <a href="javascript:void(0)" class="w3-bar-item w3-button" onclick="setTime1('14d', '', 'letzte 14 Tage')">letzte 14 Tage</a>
+                    <a href="javascript:void(0)" class="w3-bar-item w3-button" onclick="setTime1('1M', '', 'letzter Monat')">letzter Monat</a>
+                    <a href="javascript:void(0)" class="w3-bar-item w3-button" onclick="setTime1('6M', '', 'letzte 6 Monate')">letzte 6 Monate</a>
+                    <a href="javascript:void(0)" class="w3-bar-item w3-button" onclick="setTime1('12M', '', 'letzte 365 Tage')">letzte 365 Tage</a>
+                    <a href="javascript:void(0)" class="w3-bar-item w3-button" onclick="setTime1('1y/y', 'now-1y/y', 'letztes Jahr')">letztes Jahr</a>
+                    <a href="javascript:void(0)" class="w3-bar-item w3-button" onclick="setTime1('2y/y', 'now-2y/y', 'vorletztes Jahr')">vorletztes Jahr</a>
+                </div>
+            </div>
+        </div>`;
+        
+        return html;
+    }
+
+    // Content generieren (aus Node-RED)
+    async function generateContent(tabNr, objid, config) {
+        // Verwende die Konfiguration des ausgewählten Tabs
+        const tabConfig = config[tabNr] || config[0];
+        
+        if (!tabConfig || !tabConfig.site) {
+            // Debug-Ausgabe, falls keine Daten
+            return `<div class="w3-container w3-red w3-padding"><p><strong>Keine portdata verfügbar für Objekt ${objid}</strong></p><p>API-Antwort: ${JSON.stringify(config, null, 2)}</p></div>`;
+        }
+
+        const grafana = tabConfig.grafana || "https://graf.heatcare.one";
+        const dashboard = tabConfig.dashboard || "d-solo/eelav0ybil2wwd/ws-heatcare";
+        const interval = tabConfig.interval || "&from=now-3d&to=now";
+
+        let html = '<div class="w3-accordion">';
+        
+        lastIframeHtmls = []; // Reset für neue Objektansicht
+        tabConfig.site.forEach((f, index) => {
+            if (!f.label || !f.panelId) return;
+            
+            const accordionId = `taps${index + 1}`;
+            const height = f.height || '250px';
+            // Verwende f.id falls vorhanden, sonst erste ID aus auswahl Array (auch bei nur 1 Eintrag), sonst objid
+            let urlId = f.id || (f.auswahl && f.auswahl.length > 0 ? f.auswahl[0].id : objid);
+            // ID auflösen (direkte ID oder Zähler-Referenz)
+            urlId = resolveId(urlId, lastMeter);
+            const panelInterval = f.interval || interval;
+            
+            // Grafana URL generieren
+            const iframeUrl = `${grafana}/${dashboard}?orgId=1${panelInterval}&panelId=${f.panelId}&var-id=${urlId}&__feature.dashboardSceneSolo`;
+            // LOG-Ausgabe: iframe-URL und HTML
+            console.log(`[IFRAME] ${f.label}:`, iframeUrl);
+            const iframeHtml = `<iframe class="diaframe" style="height:${height}" src="${iframeUrl}" id="id_${accordionId}"></iframe>`;
+            console.log(`[IFRAME-HTML] ${f.label}:`, iframeHtml);
+            
+            // Prüfe, ob das Accordion aufgeklappt sein soll (erstes Element ODER panel: "show")
+            const isActive = index === 0 || f.panel === "show";
+            const accordionClass = `w3-accordion-content w3-container w3-light-grey ${isActive ? 'w3-show' : 'w3-hide'}`;
+            const buttonClass = `w3-button w3-block w3-left-align${isActive ? ' active' : ''}`;
+
+            // Histogramm-Toggle Icon (falls Histogramm vorhanden)
+            const hasHistogram = f.histogram && Array.isArray(f.histogram) && f.histogram.length >= 3;
+            const histogramToggle = hasHistogram ? `<span class="histogram-toggle" onclick="toggleHistogram('${accordionId}')" style="cursor:pointer; user-select:none;">
+                <i class="fa fa-bar-chart w3-text-gray" style="font-size: 18px;"></i>
+                <span class="w3-small w3-text-gray" style="margin-left:4px;vertical-align:middle;">Histogramm</span>
+            </span>` : '';
+
+            html += `<button onclick="onklick('${accordionId}')" class="${buttonClass}"> .. ${f.label}${histogramToggle}</button>`;
+            html += `<div id="${accordionId}" class="w3-container w3-leftbar w3-border-gray ${accordionClass}">`;
+
+            // Auswahl-Buttons (nur wenn mehr als 1 Eintrag vorhanden)
+            if (f.auswahl && Array.isArray(f.auswahl) && f.auswahl.length > 1) {
+                html += '<div class="auswahl-bar w3-container w3-bar w3-margin-top">';
+                html += '<span class="w3-bar-item w3-padding-small">Auswahl: </span>';
+                f.auswahl.forEach((auswahl, auswahlIndex) => {
+                    if (!auswahl.id || !auswahl.idlabel) return;
+                    const isFirst = auswahlIndex === 0;
+                    const resolvedId = resolveId(auswahl.id, lastMeter);
+                    html += `<button onclick="updateIframe('${accordionId}', '${auswahl.id}')" class="w3-padding-small auswahl-button w3-border-left w3-bar-item ${isFirst ? ' active' : ''}" data-id="${auswahl.id}" data-resolved-id="${resolvedId}">${auswahl.idlabel}</button>`;
+                });
+                html += '</div>';
+            }
+
+          
+            // Zweites Panel (falls vorhanden)
+            if (f.panelId2) {
+                const iframeUrl2 = `${grafana}/${dashboard}?orgId=1${panelInterval}&panelId=${f.panelId2}&var-id=${urlId}&__feature.dashboardSceneSolo`;
+                const panelWidth = f.panelIdWidth || '50%';
+                html += '<div class="w3-row">';
+                html += `<div class="w3-col w3-mobile" style="width:${panelWidth}">`;
+                html += `<iframe class="diaframe" style="height:${height}" src="${iframeUrl}" id="id_col1_${accordionId}"></iframe>`;
+                html += '</div>';
+                html += `<div class="w3-col w3-mobile w3-hide-small" style="width:calc(100% - ${panelWidth})">`;
+                html += `<iframe class="diaframe" style="height:${height}" src="${iframeUrl2}" id="id_col2_${accordionId}"></iframe>`;
+                html += '</div>';
+                html += '</div>';
+            } else if (f.panelId) {
+                // Einzelnes Panel
+                html += `<iframe class="diaframe" style="height:${height}" src="${iframeUrl}" id="id_${accordionId}"></iframe>`;
+            }
+
+            // Histogram (falls vorhanden)
+            if (f.histogram && Array.isArray(f.histogram) && f.histogram.length >= 3) {
+                const histogramHeight = f.histogramheight || '200px';
+                html += `<div id="histogram_${accordionId}" class="w3-row" style="display:none;">`;
+                html += '<div class="w3-col w3-mobile w3-third">';
+                html += `<iframe class="diaframe" style="height:${histogramHeight}" src="${grafana}/${dashboard}?orgId=1${panelInterval}&panelId=${f.histogram[0]}&var-id=${urlId}&__feature.dashboardSceneSolo" id="id_col1_${accordionId}_histo"></iframe>`;
+                html += '</div>';
+                html += '<div class="w3-col w3-mobile w3-third">';
+                html += `<iframe class="diaframe" style="height:${histogramHeight}" src="${grafana}/${dashboard}?orgId=1${panelInterval}&panelId=${f.histogram[1]}&var-id=${urlId}&__feature.dashboardSceneSolo" id="id_col2_${accordionId}_histo"></iframe>`;
+                html += '</div>';
+                html += '<div class="w3-col w3-mobile w3-third">';
+                html += `<iframe class="diaframe" style="height:${histogramHeight}" src="${grafana}/${dashboard}?orgId=1${panelInterval}&panelId=${f.histogram[2]}&var-id=${urlId}&__feature.dashboardSceneSolo" id="id_col3_${accordionId}_histo"></iframe>`;
+                html += '</div>';
+                html += '</div>';
+            }
+
+            html += '</div>';
+        });
+
+        html += '</div>';
+        return html;
+    }
+
+    // Initialisierung
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('✅ Node-RED Grafana Integration ID geladen');
+        
+        // URL-Parameter auslesen
+        const objid = getUrlParameter('objid') || getUrlParameter('id') || '207315076';
+        currentObjectId = objid;
+        
+
+        
+        // Standard-Objekt auswählen
+        selectObject(currentObjectId);
+    });
+
+    // Modal-Logik
+    function showPortdataModal() {
+      const modal = document.getElementById('portdata-modal');
+      showDebugData('portdata'); // Standard: portdata anzeigen
+      modal.style.display = 'flex';
+    }
+    
+    function showDebugData(type) {
+      const pre = document.getElementById('portdata-json');
+      const btnPort = document.getElementById('btn-portdata');
+      const btnMeter = document.getElementById('btn-meter');
+      const btnFull = document.getElementById('btn-full');
+      
+      // Button-Status zurücksetzen
+      btnPort.classList.remove('w3-teal');
+      btnPort.classList.add('w3-gray');
+      btnMeter.classList.remove('w3-teal');
+      btnMeter.classList.add('w3-gray');
+      btnFull.classList.remove('w3-teal');
+      btnFull.classList.add('w3-gray');
+      
+      // Daten anzeigen basierend auf Typ
+      switch(type) {
+        case 'portdata':
+          pre.textContent = JSON.stringify(lastPortdata, null, 2);
+          btnPort.classList.add('w3-teal');
+          btnPort.classList.remove('w3-gray');
+          btnMeter.classList.remove('w3-teal');
+          btnMeter.classList.add('w3-gray');
+          btnFull.classList.remove('w3-teal');
+          btnFull.classList.add('w3-gray');
+          document.getElementById('btn-testsite').classList.remove('w3-teal');
+          document.getElementById('btn-testsite').classList.add('w3-gray');
+          break;
+        case 'meter':
+          pre.textContent = JSON.stringify(lastMeter, null, 2);
+          btnMeter.classList.add('w3-teal');
+          btnMeter.classList.remove('w3-gray');
+          btnPort.classList.remove('w3-teal');
+          btnPort.classList.add('w3-gray');
+          btnFull.classList.remove('w3-teal');
+          btnFull.classList.add('w3-gray');
+          document.getElementById('btn-testsite').classList.remove('w3-teal');
+          document.getElementById('btn-testsite').classList.add('w3-gray');
+          break;
+        case 'full':
+          pre.textContent = JSON.stringify(lastFullData, null, 2);
+          btnFull.classList.add('w3-teal');
+          btnFull.classList.remove('w3-gray');
+          btnPort.classList.remove('w3-teal');
+          btnPort.classList.add('w3-gray');
+          btnMeter.classList.remove('w3-teal');
+          btnMeter.classList.add('w3-gray');
+          document.getElementById('btn-testsite').classList.remove('w3-teal');
+          document.getElementById('btn-testsite').classList.add('w3-gray');
+          break;
+        case 'testsite':
+          pre.textContent = '';
+          btnPort.classList.remove('w3-teal');
+          btnPort.classList.add('w3-gray');
+          btnMeter.classList.remove('w3-teal');
+          btnMeter.classList.add('w3-gray');
+          btnFull.classList.remove('w3-teal');
+          btnFull.classList.add('w3-gray');
+          document.getElementById('btn-testsite').classList.add('w3-teal');
+          document.getElementById('btn-testsite').classList.remove('w3-gray');
+          break;
+      }
+      // Ergänze die IFrame-HTML-Ausgabe unterhalb der JSON-Ausgabe
+      let iframeHtmlSection = document.getElementById('iframe-html-section');
+      if (!iframeHtmlSection) {
+        iframeHtmlSection = document.createElement('div');
+        iframeHtmlSection.id = 'iframe-html-section';
+        iframeHtmlSection.style.marginTop = '18px';
+        pre.parentNode.appendChild(iframeHtmlSection);
+      }
+      let html = '<hr style="margin:12px 0;">';
+      html += '<div style="font-weight:bold;margin-bottom:6px;">Generierte IFrame-HTMLs</div>';
+      if (lastIframeHtmls && lastIframeHtmls.length > 0) {
+        lastIframeHtmls.forEach(item => {
+          html += `<div style="margin-bottom:8px;"><span style="color:#115875;font-weight:500;">${item.label}:</span><br><code style="font-size:0.95em;background:#f7f7f7;padding:4px 6px;display:block;white-space:pre;">${item.html.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</code></div>`;
+        });
+      } else {
+        html += '<div style="color:#888;">Keine IFrame-HTMLs generiert.</div>';
+      }
+      // Nur anzeigen, wenn nicht portdata/meter/full, sondern iframehtml gewählt wurde
+      if (type === 'iframehtml') {
+        iframeHtmlSection.innerHTML = html;
+      } else {
+        iframeHtmlSection.innerHTML = '';
+      }
+
+      // Debug-Ausgabe: Anzahl und Labels der generierten IFrames
+      let debugSection = document.getElementById('debug-section');
+      if (!debugSection) {
+        debugSection = document.createElement('div');
+        debugSection.id = 'debug-section';
+        debugSection.style.marginTop = '12px';
+        pre.parentNode.appendChild(debugSection);
+      }
+      let debugHtml = '<div style="font-size:0.98em;color:#444;background:#f8f8f8;padding:6px 10px;border-radius:6px;margin-bottom:8px;">';
+      if (lastIframeHtmls && lastIframeHtmls.length > 0) {
+        debugHtml += `<b>Debug:</b> ${lastIframeHtmls.length} IFrame(s) generiert.<br>`;
+        debugHtml += 'Labels: ' + lastIframeHtmls.map(item => `<span style=\"color:#115875\">${item.label}</span>`).join(', ');
+      } else {
+        debugHtml += '<b>Debug:</b> Keine IFrames generiert.';
+        if (lastMeter && typeof lastMeter === 'object') {
+          debugHtml += '<br>Gefundene meter-IDs: ' + Object.keys(lastMeter).map(id => `<span style=\"color:#b91c1c\">${id}</span>`).join(', ');
+        }
+      }
+      debugHtml += '</div>';
+      debugSection.innerHTML = debugHtml;
+      // Konsolen-Log-Ausgabe in der UI
+      let debugLogSection = document.getElementById('debug-log-section');
+      if (!debugLogSection) {
+        debugLogSection = document.createElement('div');
+        debugLogSection.id = 'debug-log-section';
+        debugLogSection.style.marginTop = '8px';
+        pre.parentNode.appendChild(debugLogSection);
+      }
+      let debugLogHtml = '<div style="font-size:0.93em;color:#666;background:#f3f4f6;padding:5px 10px;border-radius:6px;max-height:120px;overflow:auto;">';
+      debugLogHtml += '<b>Konsolen-Ausgabe (DebugLog):</b><br>';
+      debugLogHtml += window.debugLog.map(line => `<div style=\"font-family:monospace;\">${line}</div>`).join('');
+      debugLogHtml += '</div>';
+      debugLogSection.innerHTML = debugLogHtml;
+
+      // Test-Site: Zeige für alle meter-IDs einen IFrame
+      let testSiteSection = document.getElementById('testsite-section');
+      if (!testSiteSection) {
+        testSiteSection = document.createElement('div');
+        testSiteSection.id = 'testsite-section';
+        testSiteSection.style.marginTop = '18px';
+        pre.parentNode.appendChild(testSiteSection);
+      }
+      if (type === 'testsite') {
+        let testHtml = '<hr style="margin:12px 0;">';
+        testHtml += '<div style="font-weight:bold;margin-bottom:6px;">Meter-Testgraf: Alle meter-IDs als IFrame</div>';
+        if (lastMeter && typeof lastMeter === 'object' && Object.keys(lastMeter).length > 0) {
+          Object.keys(lastMeter).forEach(id => {
+            let meterValue = lastMeter[id];
+            // Wenn Wert ein Platzhalter ist, nimm den Key als echte ID
+            if (meterValue === '<meterID>' || !meterValue) meterValue = id;
+            const url = `https://graf.heatcare.one/d-solo/eelav0ybil2wwd/ws-heatcare?orgId=1&from=now-7d&to=now&panelId=3&var-id=${meterValue}&__feature.dashboardSceneSolo`;
+            testHtml += `<div style=\"margin-bottom:12px;\"><span style=\"color:#115875;font-weight:500;\">${id}:</span> <span style=\"font-size:0.93em;\">url : @<a href=\"${url}\" target=\"_blank\"><code style=\"font-size:0.93em;word-break:break-all;\">${url}</code></a></span><br><iframe class=\"diaframe\" style=\"height:220px;width:100%;border:1px solid #eee;\" src=\"${url}\"></iframe></div>`;
+          });
+        } else {
+          testHtml += '<div style="color:#888;">Keine meter-IDs gefunden.</div>';
+        }
+        testSiteSection.innerHTML = testHtml;
+      } else {
+        testSiteSection.innerHTML = '';
+      }
+    }
+    
+    function closePortdataModal() {
+      document.getElementById('portdata-modal').style.display = 'none';
+    }
+
+    /**
+     * Zeigt das Fehler-Popup für fehlende Settings an
+     * @param {string} message - Fehlertext
+     */
+    function showSettingsErrorModal(message) {
+        const modal = document.getElementById('settings-error-modal');
+        const msgDiv = document.getElementById('settings-error-message');
+        msgDiv.textContent = message;
+        modal.style.display = 'flex';
+    }
+    function closeSettingsErrorModal() {
+        document.getElementById('settings-error-modal').style.display = 'none';
+    }
+    </script>
+</body>
+</html> 

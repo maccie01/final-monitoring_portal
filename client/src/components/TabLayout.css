@@ -1,0 +1,173 @@
+/* Tab Layout System - Konsistente Styles für alle Grafana Dashboards */
+
+/* Tab Navigation Container */
+.tab-navigation-container {
+  @apply border-0.5 border-gray-200 border-b-0 bg-white;
+}
+
+.tab-navigation-header {
+  @apply flex items-center justify-between border-b-0.5 border-gray-200;
+}
+
+.tab-navigation-buttons {
+  @apply flex space-x-0;
+}
+
+/* Tab Container Styles */
+.tab-container {
+  @apply flex space-x-0 border-b-0.5 border-gray-200;
+}
+
+/* Tab Button Styles */
+.tab-button {
+  @apply flex items-center space-x-2 px-4 py-2 border-b-0.5 transition-all;
+}
+
+.tab-button-active {
+  @apply bg-gray-200 border-blue-500 text-blue-700 font-medium;
+}
+
+.tab-button-active-kessel {
+  @apply bg-gray-200 border-blue-500 text-blue-700 font-medium;
+}
+
+.tab-button-inactive {
+  @apply bg-white border-transparent text-gray-600 hover:bg-gray-50 hover:text-gray-800;
+}
+
+/* Override TabsTrigger defaults */
+.tab-button[role="tab"] {
+  @apply flex items-center space-x-2 px-4 py-2 border-b-0.5 transition-all bg-white border-transparent text-gray-600 hover:bg-gray-50 hover:text-gray-800;
+}
+
+.tab-button[role="tab"][data-state="active"] {
+  @apply bg-gray-200 border-blue-500 text-blue-700 font-medium;
+}
+
+/* Auswahl-Bereiche (Netz, Kessel1, Kessel2) */
+.counter-selection-container {
+  @apply mb-4;
+}
+
+.counter-selection-title {
+  @apply text-sm font-medium text-gray-700 mb-3;
+}
+
+.counter-selection-buttons {
+  @apply flex space-x-0 border-b-0.5 border-gray-200;
+}
+
+/* Counter Button Styles - Tab Layout Style */
+.counter-button {
+  @apply flex items-center space-x-2 px-4 py-2 border-b-0.5 transition-all;
+}
+
+.counter-button-active {
+  @apply bg-gray-100 border-blue-500 text-blue-700 font-medium;
+}
+
+.counter-button-inactive {
+  @apply bg-white border-transparent text-gray-600 hover:bg-gray-50 hover:text-gray-800;
+}
+
+/* Time Range Selector */
+.time-range-selector {
+  @apply px-4 py-2;
+}
+
+/* Content Area */
+.tab-content-area {
+  @apply space-y-0;
+}
+
+.tab-content-seamless {
+  @apply space-y-0;
+}
+
+.tab-container-seamless {
+  @apply border-0.5 border-gray-200 border-b-0 bg-white;
+}
+
+/* Panel Cards */
+.panel-card {
+  @apply border-t-0.5 mt-0;
+}
+
+.panel-header {
+  @apply flex flex-col space-y-1.5 p-4 cursor-default pt-[2px] pb-[2px] pl-[0px] pr-[0px];
+}
+
+.panel-header-default {
+  @apply cursor-default;
+}
+
+.panel-header-collapsible {
+  @apply hover:bg-gray-50 cursor-pointer;
+}
+
+/* Accordion Styles */
+.accordion-icon-default {
+  @apply h-4 w-4 text-gray-400;
+}
+
+.accordion-icon-active {
+  @apply h-4 w-4;
+}
+
+/* Histogram Button */
+.histogram-button {
+  @apply rounded-none;
+}
+
+.histogram-button-active {
+  @apply font-medium text-blue-700 bg-blue-50 border-blue-500;
+}
+
+/* Grafana iframe Styles */
+.grafana-iframe-container {
+  @apply bg-white border-0.5 border-gray-200 shadow-sm overflow-hidden;
+}
+
+.grafana-split-container {
+  @apply flex gap-[1px] bg-gray-100 overflow-hidden;
+}
+
+.grafana-panel-left {
+  @apply bg-white overflow-hidden;
+}
+
+.grafana-panel-right {
+  @apply bg-white overflow-hidden flex-1;
+}
+
+.grafana-iframe {
+  @apply w-full h-full border-0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .tab-navigation-buttons {
+    @apply flex-wrap;
+  }
+  
+  .counter-selection-buttons {
+    @apply flex-col;
+  }
+  
+  .counter-button {
+    @apply w-full;
+  }
+}
+
+/* Utilities */
+.seamless-border {
+  @apply border-t-0.5 mt-0;
+}
+
+.no-padding {
+  @apply p-0;
+}
+
+.minimal-padding {
+  @apply p-1;
+}

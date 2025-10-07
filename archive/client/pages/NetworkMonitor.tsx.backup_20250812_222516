@@ -1,0 +1,1269 @@
+import { useState, useEffect, useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { 
+  ExclamationTriangleIcon,
+  FireIcon,
+  ClockIcon,
+  WrenchScrewdriverIcon,
+  ChevronDownIcon,
+  ChevronRightIcon,
+  WifiIcon,
+  BugAntIcon,
+  ChartBarIcon,
+  InformationCircleIcon,
+  CogIcon,
+  ViewColumnsIcon,
+  PresentationChartLineIcon,
+  BuildingOfficeIcon,
+  CheckCircleIcon,
+  ShareIcon
+} from "@heroicons/react/24/outline";
+import { Thermometer } from "lucide-react";
+import { apiRequest, queryClient } from "@/lib/queryClient";
+import { useMutation } from "@tanstack/react-query";
+import { useToast } from "@/hooks/use-toast";
+import { format } from "date-fns";
+import { de } from "date-fns/locale";
+import { useAuth } from "@/hooks/useAuth";
+import { useLocation, useRoute } from "wouter";
+
+// System Schema Component für Übersicht
+const SystemSchemaView = ({ meterData, objectId }: { meterData: Record<string, string | number>, objectId: number }) => {
+  // Fetch Grafana settings
+  const { data: grafanaSettings } = useQuery({
+    queryKey: ["/api/settings", "grafana"],
+    queryFn: async () => {
+      const response = await fetch("/api/settings?category=grafana");
+      if (!response.ok) throw new Error("Failed to fetch Grafana settings");
+      const data = await response.json();
+      return data;
+    }
+  });
+
+  // Get defaultGrafana settings
+  const defaultGrafanaConfig = grafanaSettings?.find((setting: any) => setting.keyName === 'defaultGrafana' || setting.key_name === 'defaultGrafana');
+  const grafanaConfig = defaultGrafanaConfig?.value?.setupGrafana;
+
+  if (!grafanaConfig || !meterData) {
+    return <div className="text-sm text-gray-500">Keine Schema-Daten verfügbar</div>;
+  }
+
+  // Generate system components based on meter data
+  const generateSystemComponents = () => {
+    const components: any[] = [];
+    const counters: Record<string, number> = {};
+    
+    Object.entries(meterData).forEach(([key, value]) => {
+      if (typeof key === 'string') {
+        let componentType = '';
+        let panelId = '';
+        let baseLabel = '';
+        
+        // Determine component type based on meter ID pattern
+        if (key.match(/Z202[4]\d/)) {
+          // Wärmepumpe (Z20241, Z20242, Z20243)
+          componentType = 'waermepumpe';
+          panelId = grafanaConfig.defaultPanelid?.find((p: any) => p.waermepumpePanelId)?.waermepumpePanelId || '12';
+          baseLabel = 'Wärmepumpe';
+        } else if (key.match(/Z201[4]\d/)) {
+          // Kessel (Z20141, Z20142, Z20143)
+          componentType = 'kessel';
+          panelId = grafanaConfig.defaultPanelid?.find((p: any) => p.kesselPanelId)?.kesselPanelId || '19';
+          baseLabel = 'Kessel';
+        } else if (key.match(/Z205[4]\d/)) {
+          // Netz (Z20541, Z20542, Z20543)
+          componentType = 'netz';
+          panelId = grafanaConfig.defaultPanelid?.find((p: any) => p.netzPanelId)?.netzPanelId || '16';
+          baseLabel = 'Netz';
+        }
+        
+        if (componentType && panelId) {
+          // Increment counter for this component type
+          counters[componentType] = (counters[componentType] || 0) + 1;
+          
+          const resolvedId = value?.toString();
+          const timestamp = Date.now();
+          const grafanaUrl = `${grafanaConfig.baseUrl}/${grafanaConfig.defaultDashboard}?orgId=1&from=now-24h&to=now&panelId=${panelId}&var-id=${resolvedId}&refresh=30s&theme=light&t=${timestamp}`;
+          
+          // Create numbered label with line break
+          const numberedLabel = `${baseLabel}${counters[componentType]}`;
+          const displayLabel = (
+            <div className="text-center">
+              <div>{numberedLabel}</div>
+              <div>({key})</div>
+            </div>
+          );
+          
+          components.push({
+            id: key,
+            type: componentType,
+            label: numberedLabel,
+            displayLabel,
+            meterId: key,
+            panelId,
+            resolvedId,
+            grafanaUrl
+          });
+        }
+      }
+    });
+    
+    return components;
+  };
+
+  const systemComponents = generateSystemComponents();
+  
+  if (systemComponents.length === 0) {
+    return <div className="text-sm text-gray-500">Keine System-Komponenten gefunden</div>;
+  }
+
+  return (
+    <div className="space-y-4">
+      {/* System Components Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-0 p-2">
+        {systemComponents.map((component) => (
+          <div key={component.id} className="space-y-2">
+            <div className="text-xs font-medium text-gray-700 text-center">
+              <div>{component.label}</div>
+              <div>({component.meterId})</div>
+            </div>
+            <div className="border-[0.5px] border-gray-300 overflow-hidden bg-white">
+              <iframe
+                src={component.grafanaUrl}
+                width="150"
+                height="180"
+                frameBorder="0"
+                className="w-full max-w-[150px] mx-auto block border-[0.5px] border-gray-300"
+                title={`${component.label} Dashboard`}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// Embedded Grafana Component für Netzwächter
+const GrafanaContentEmbedded = ({ objectId }: { objectId: number }) => {
+  const [activeTab, setActiveTab] = useState(0);
+  const [selectedTimeRange, setSelectedTimeRange] = useState('24h');
+
+  // Fetch selected object details
+  const { data: selectedObject } = useQuery<any>({
+    queryKey: ["/api/objects/by-objectid", objectId],
+    enabled: !!objectId,
+  });
+
+  // Generate tabs based on available meters
+  const tabs = useMemo(() => {
+    if (!selectedObject?.meter) return [];
+    
+    const meterData = selectedObject.meter;
+    const generatedTabs = [];
+    
+    // Netzwächter Tab - Z20541, Z20542, Z20543
+    const netzMeters = Object.entries(meterData)
+      .filter(([key]) => key.startsWith('Z2054'))
+      .map(([key, value]) => ({
+        key,
+        id: String(typeof value === 'object' && value ? (value as any).ID : value),
+        name: key === 'Z20541' ? 'Netz1' : key === 'Z20542' ? 'Netz2' : key === 'Z20543' ? 'Netz3' : key
+      }));
+    
+    if (netzMeters.length > 0) {
+      generatedTabs.push({
+        id: "netzwaechter",
+        label: "Netz",
+        icon: <ShareIcon className="h-4 w-4" />,
+        meters: netzMeters,
+        panelId: 3
+      });
+    }
+    
+    // Kesselwächter Tab - Z20141, Z20142, Z20143
+    const kesselMeters = Object.entries(meterData)
+      .filter(([key]) => key.startsWith('Z2014'))
+      .map(([key, value]) => ({
+        key,
+        id: String(typeof value === 'object' && value ? (value as any).ID : value),
+        name: key === 'Z20141' ? 'Kessel1' : key === 'Z20142' ? 'Kessel2' : key === 'Z20143' ? 'Kessel3' : key
+      }));
+    
+    if (kesselMeters.length > 0) {
+      generatedTabs.push({
+        id: "kesselwaechter", 
+        label: "Kessel",
+        icon: <FireIcon className="h-4 w-4" />,
+        meters: kesselMeters,
+        panelId: 3
+      });
+    }
+    
+    return generatedTabs;
+  }, [selectedObject]);
+
+  // Time range options
+  const timeRangeOptions = [
+    { value: '24h', label: 'Letzte 24h', from: 'now-24h' },
+    { value: '3d', label: '3 Tage', from: 'now-3d' },
+    { value: '7d', label: '7 Tage', from: 'now-7d' },
+    { value: '30d', label: '30 Tage', from: 'now-30d' },
+    { value: '90d', label: '3 Monate', from: 'now-90d' },
+    { value: '6M', label: '6 Monate', from: 'now-6M' },
+    { value: '1y', label: '12 Monate', from: 'now-1y' }
+  ];
+
+  // Generate Grafana URL for a specific meter
+  const generateGrafanaUrl = (meterId: string, panelId: number) => {
+    const dashboardUrl = selectedObject?.dashboard?.url || 'https://graf.heatcare.one/d-solo/eelav0ybil2wwd/ws-heatcare';
+    const timeRange = timeRangeOptions.find(option => option.value === selectedTimeRange);
+    
+    return `${dashboardUrl}?orgId=1&from=${timeRange?.from || 'now-24h'}&to=now&panelId=${panelId}&var-id=${meterId}&__feature.dashboardSceneSolo&refresh=1m`;
+  };
+
+  if (!selectedObject) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Lade Grafana Dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="w-full">
+      {tabs.length > 0 ? (
+        <div className="space-y-4">
+          {/* Tab Navigation with Time Range Selection */}
+          <div className="flex items-center justify-between modern-tab-nav bg-white">
+            <div className="flex">
+              {tabs.map((tab, index) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(index)}
+                  className={`modern-tab-button flex items-center space-x-2 ${
+                    activeTab === index ? "active" : ""
+                  }`}
+                >
+                  {tab.icon}
+                  <span>{tab.label}</span>
+                </button>
+              ))}
+            </div>
+            
+            {/* Time Range Selection */}
+            <div className="pb-3 pr-2">
+              <select
+                value={selectedTimeRange}
+                onChange={(e) => setSelectedTimeRange(e.target.value)}
+                className="px-3 py-2 text-sm border-0.5 border-gray-300 rounded-md bg-white text-gray-700 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+              >
+                {timeRangeOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+          
+          {/* Tab Content */}
+          {tabs[activeTab] && (
+            <div className="space-y-4 p-4 pt-[5px] pb-[5px] pl-[10px] pr-[10px] text-[14px]">
+              {tabs[activeTab].meters.map((meter) => (
+                <div key={meter.id} className="w-full">
+                  <h4 className="text-sm font-medium text-gray-600 ml-[10px] mr-[10px] mt-[0px] mb-[0px]">
+                    {meter.name} ({meter.id})
+                  </h4>
+                  <iframe
+                    src={generateGrafanaUrl(meter.id, tabs[activeTab].panelId)}
+                    width="100%"
+                    height="200"
+                    frameBorder="0"
+                    title={`${meter.name} Grafana Panel`}
+                    className="border-[0.5px] border-gray-300"
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="text-center py-8 text-gray-500">
+          <ChartBarIcon className="h-12 w-12 mx-auto mb-4 text-gray-400" />
+          <p className="text-gray-600">Keine Wächter-Daten verfügbar</p>
+          <p className="text-sm text-gray-400">Meter-Konfiguration erforderlich</p>
+        </div>
+      )}
+    </div>
+  );
+};
+
+import "../components/TempAnalysisTable.css";
+
+export default function NetworkMonitor() {
+  const { toast } = useToast();
+  const { user } = useAuth();
+  const [location, navigate] = useLocation();
+  const [selectedSystem, setSelectedSystem] = useState<any>(null);
+  const [expandedSections, setExpandedSections] = useState({
+    critical: false,
+    warning: false,
+    offline: false,
+    energy: false,
+    optimized: false
+  });
+  const [temperatureAnalysis, setTemperatureAnalysis] = useState<any>(null);
+  const [isServiceDialogOpen, setIsServiceDialogOpen] = useState(false);
+
+  // Create logbook entry mutation
+  const createEntryMutation = useMutation({
+    mutationFn: (data: any) => apiRequest("POST", "/api/logbook/entries", data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/logbook/entries"] });
+      setIsServiceDialogOpen(false);
+      toast({
+        title: "Erfolg",
+        description: "Service-Anfrage wurde erstellt.",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Fehler",
+        description: "Service-Anfrage konnte nicht erstellt werden.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Generate critical status title for logbook entry
+  const generateCriticalTitle = () => {
+    if (!selectedSystem?.analysis?.sensors || !selectedSystem?.analysis?.critical) {
+      return "Netzstörung";
+    }
+
+    // Find the first critical sensor
+    const criticalSensor = selectedSystem.analysis.sensors.find((sensor: any) => 
+      sensor.vl.status === 'critical' || sensor.rl.status === 'critical'
+    );
+
+    if (!criticalSensor) {
+      return "Netzstörung";
+    }
+
+    // Get critical values and thresholds
+    let criticalValue, criticalThreshold, criticalType;
+    
+    if (criticalSensor.vl.status === 'critical') {
+      criticalValue = criticalSensor.vl.value;
+      criticalThreshold = criticalSensor.vl.threshold;
+      criticalType = 'VL';
+    } else {
+      criticalValue = criticalSensor.rl.value;
+      criticalThreshold = criticalSensor.rl.threshold;
+      criticalType = 'RL';
+    }
+
+    // Format: "Netz1 VL Kritisch 46 < (Grenzwert =50)"
+    const sensorName = criticalSensor.name || "Netz1";
+    const comparison = criticalType === 'VL' ? '<' : '>';
+    
+    return `${sensorName} ${criticalType} Kritisch ${criticalValue} ${comparison} (Grenzwert =${criticalThreshold})`;
+  };
+  const [showDebugInfo, setShowDebugInfo] = useState(false);
+
+  // Fetch critical systems and alerts
+  const { data: criticalSystems, isLoading } = useQuery({
+    queryKey: ["/api/dashboard/critical-systems"],
+  });
+
+  const { data: alerts } = useQuery({
+    queryKey: ["/api/system-alerts"],
+  });
+
+  // Fetch objects with temperature analysis
+  const { data: objects } = useQuery({
+    queryKey: ["/api/objects"],
+  });
+
+  // Fetch temperature thresholds
+  const { data: thresholds } = useQuery({
+    queryKey: ["/api/settings/thresholds"],
+  });
+
+  // Reset expanded sections when component mounts (navigating to Netzwächter)
+  useEffect(() => {
+    setExpandedSections({
+      critical: false,
+      warning: false,
+      offline: false,
+      energy: false,
+      optimized: false
+    });
+  }, []);
+
+  // Process temperature analysis
+  useEffect(() => {
+    if (objects && thresholds) {
+      processTemperatureAnalysis();
+    }
+  }, [objects, thresholds]);
+
+  const processTemperatureAnalysis = () => {
+    if (!objects || !thresholds) return;
+
+    const analysis = {
+      critical: [] as any[],
+      warning: [] as any[],
+      offline: [] as any[],
+      energy: [] as any[],
+      optimized: [] as any[]
+    };
+
+    (objects as any[]).forEach((obj: any) => {
+      const status = analyzeObjectTemperature(obj);
+      
+      if (status.offline) {
+        analysis.offline.push({ ...obj, analysis: status });
+      } else if (status.critical) {
+        analysis.critical.push({ ...obj, analysis: status });
+      } else if (status.warning) {
+        analysis.warning.push({ ...obj, analysis: status });
+      } else {
+        analysis.optimized.push({ ...obj, analysis: status });
+      }
+    });
+
+    setTemperatureAnalysis(analysis);
+  };
+
+  const analyzeObjectTemperature = (obj: any) => {
+    // Check if thresholds are loaded
+    if (!thresholds || !Array.isArray(thresholds) || thresholds.length === 0) {
+      return { offline: true, lastUpdate: null, reason: `Threshold data not loaded. Received: ${typeof thresholds} with ${thresholds ? 'length' : 'no length'}` };
+    }
+    
+    // Debug: Check what threshold configs are available (Drizzle ORM uses keyName instead of key_name)
+    const availableConfigs = (thresholds as any[]).map(t => t.keyName || t.key_name).filter(k => k && k.trim() && k !== 'undefined');
+    console.log('Available threshold configs:', availableConfigs, 'from data:', thresholds);
+    
+    // Debug: Log the specific object being analyzed
+    console.log(`🔍 Analyzing object: ${obj.name} (ID: ${obj.objectid})`);
+    console.log(`🔍 Object thresholds config: ${obj.objanlage?.thresholds || 'none - will use netzwaechter_0'}`);
+    
+    // Additional debug: Show which threshold values will be used
+    console.log(`🔍 ConfigSource will be: ${obj.objanlage?.thresholds || 'netzwaechter_0'}`);
+    
+    if (!availableConfigs.includes('netzwaechter_0')) {
+      return { 
+        offline: true, 
+        lastUpdate: null, 
+        reason: `netzwaechter_0 missing. Available: [${availableConfigs.join(', ')}]. Count: ${thresholds.length}` 
+      };
+    }
+    
+    // Find threshold configuration with priority order:
+    // 1. objanlage.thresholds (anlagentyp-basiert)
+    // 2. netzwaechter_0 (fallback)
+    let objectThresholds = null;
+    let configSource = 'netzwaechter_0'; // Default fallback
+    
+    if (obj.objanlage?.thresholds) {
+      const found = (thresholds as any[]).find((t: any) => (t.keyName || t.key_name) === obj.objanlage.thresholds);
+      if (found) {
+        objectThresholds = found.value?.thresholds;
+        configSource = obj.objanlage.thresholds;
+      }
+    }
+    
+    // Fallback to default netzwaechter_0 if no object-specific config found
+    const fallbackConfig = (thresholds as any[]).find((t: any) => (t.keyName || t.key_name) === 'netzwaechter_0');
+    const defaultThresholds = fallbackConfig?.value?.thresholds;
+    const usedThresholds = objectThresholds || defaultThresholds;
+    
+    if (!usedThresholds) {
+      return { offline: true, lastUpdate: null, reason: 'netzwaechter_0 config not found' };
+    }
+    
+    // Prüfe ob Objekt offline ist (keine Temperatur-Daten oder älter als 24h)
+    const hasFltemp = obj.fltemp && obj.fltemp.updateTime;
+    const hasRttemp = obj.rttemp && obj.rttemp.updateTime;
+    
+    if (!hasFltemp && !hasRttemp) {
+      return { offline: true, lastUpdate: null, reason: 'Keine Temperatur-Daten' };
+    }
+
+    // Prüfe ob Daten älter als 24h sind
+    const now = new Date();
+    const twentyFourHoursAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+    
+    const flIsOld = hasFltemp && new Date(obj.fltemp.updateTime) < twentyFourHoursAgo;
+    const rtIsOld = hasRttemp && new Date(obj.rttemp.updateTime) < twentyFourHoursAgo;
+    
+    if ((!hasFltemp || flIsOld) && (!hasRttemp || rtIsOld)) {
+      return { offline: true, lastUpdate: null, reason: 'Daten älter als 24h' };
+    }
+
+    let critical = false;
+    let warning = false;
+    const sensors: any[] = [];
+
+    // Analyze each sensor using the selected threshold configuration
+    Object.keys(obj.fltemp).forEach(sensorId => {
+      if (sensorId === 'updateTime') return;
+      
+      const vlTemp = obj.fltemp[sensorId];
+      const rlTemp = obj.rttemp[sensorId];
+      
+      if (vlTemp !== undefined && rlTemp !== undefined) {
+        const vlStatus = getTemperatureStatus(vlTemp, usedThresholds, 'vl');
+        const rlStatus = getTemperatureStatus(rlTemp, usedThresholds, 'rl');
+        
+        const sensorStatus = vlStatus === 'critical' || rlStatus === 'critical' ? 'critical' :
+                           vlStatus === 'warning' || rlStatus === 'warning' ? 'warning' : 'normal';
+        
+        if (sensorStatus === 'critical') critical = true;
+        if (sensorStatus === 'warning') warning = true;
+        
+        // Bestimme die anzuzeigenden Grenzwerte basierend auf dem Status
+        const getDisplayThreshold = (status: string, type: 'vl' | 'rl') => {
+          if (status === 'critical') {
+            return type === 'vl' ? usedThresholds.critical.vlValue : usedThresholds.critical.rlValue;
+          } else if (status === 'warning') {
+            return type === 'vl' ? usedThresholds.warning.vlValue : usedThresholds.warning.rlValue;
+          } else {
+            return type === 'vl' ? usedThresholds.normal.vlValue : usedThresholds.normal.rlValue;
+          }
+        };
+
+        sensors.push({
+          id: sensorId,
+          name: getSensorName(sensorId),
+          vl: { value: vlTemp, status: vlStatus, threshold: getDisplayThreshold(vlStatus, 'vl') },
+          rl: { value: rlTemp, status: rlStatus, threshold: getDisplayThreshold(rlStatus, 'rl') },
+          overallStatus: sensorStatus,
+          thresholdConfig: configSource
+        });
+      }
+    });
+
+    // Bestimme letzte Update-Zeit aus Temperatur-Daten
+    const getLatestUpdateTime = () => {
+      const flUpdateTime = obj.fltemp?.updateTime;
+      const rtUpdateTime = obj.rttemp?.updateTime;
+      
+      if (flUpdateTime && rtUpdateTime) {
+        return new Date(flUpdateTime) > new Date(rtUpdateTime) ? flUpdateTime : rtUpdateTime;
+      }
+      return flUpdateTime || rtUpdateTime;
+    };
+
+    const lastUpdate = getLatestUpdateTime();
+
+    return {
+      critical,
+      warning,
+      sensors,
+      lastUpdate,
+      usedThresholdConfig: configSource,
+      thresholdSource: objectThresholds ? 'object-specific' : 'default'
+    };
+  };
+
+  const getTemperatureStatus = (temp: number, thresholds: any, type: 'vl' | 'rl') => {
+    if (type === 'vl') {
+      // VL: Kritisch wenn UNTER dem Grenzwert (zu niedrig)
+      if (temp < thresholds.critical.vlValue) return 'critical';
+      if (temp < thresholds.warning.vlValue) return 'warning';
+      return 'normal';
+    } else {
+      // RL: Kritisch wenn ÜBER dem Grenzwert (zu hoch)
+      if (temp > thresholds.critical.rlValue) return 'critical';
+      if (temp > thresholds.warning.rlValue) return 'warning';
+      return 'normal';
+    }
+  };
+
+  const getSensorName = (sensorId: string) => {
+    const sensorMap: Record<string, string> = {
+      'Z20541': 'Netz 1',
+      'Z20542': 'Netz 2', 
+      'Z20543': 'Netz 3',
+      '20541': 'Netz 1',
+      '20542': 'Netz 2',
+      '20543': 'Netz 3'
+    };
+    return sensorMap[sensorId] || `Sensor ${sensorId}`;
+  };
+
+  const toggleSection = (section: keyof typeof expandedSections) => {
+    setExpandedSections(prev => ({
+      ...prev,
+      [section]: !prev[section]
+    }));
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "critical":
+        return "text-error bg-red-100";
+      case "warning": 
+        return "text-warning bg-yellow-100";
+      case "failure":
+        return "text-error bg-red-100";
+      default:
+        return "text-gray-50 bg-gray-100";
+    }
+  };
+
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case "critical":
+      case "failure":
+        return <ExclamationTriangleIcon className="h-5 w-5" />;
+      case "warning":
+        return <ExclamationTriangleIcon className="h-5 w-5" />;
+      default:
+        return <FireIcon className="h-5 w-5" />;
+    }
+  };
+
+  const renderAnalysisSection = (title: string, items: any[], sectionKey: keyof typeof expandedSections, bgColor: string, textColor: string, icon: any) => {
+    const isExpanded = expandedSections[sectionKey];
+    const count = items?.length || 0;
+    
+    return (
+      <div className={`rounded-lg ${bgColor} mb-4`}>
+        <div 
+          className="flex items-center justify-between cursor-pointer p-3"
+          onClick={() => toggleSection(sectionKey)}
+        >
+          <div className="flex items-center space-x-3">
+            {isExpanded ? <ChevronDownIcon className="h-4 w-4" /> : <ChevronRightIcon className="h-4 w-4" />}
+            {icon}
+            <span className="font-semibold">{title}</span>
+            <span className="bg-white text-red-600 px-2 py-1 rounded-full text-sm font-bold">
+              {count}
+            </span>
+          </div>
+          <span className="text-sm text-gray-600 italic">
+            {sectionKey === 'critical' && 'Netz mit <> Temperatur-Grenzwertüberschreitung'}
+            {sectionKey === 'warning' && 'Netz mit <> Temperatur-Grenzwertverletzung'}
+            {sectionKey === 'offline' && 'Keine Verbindung seit >2h'}
+            {sectionKey === 'energy' && 'Energieverbrauch >20% über Durchschnitt'}
+            {sectionKey === 'optimized' && 'Keine Warnungen, optimale Leistung'}
+          </span>
+        </div>
+        
+        {isExpanded && items && items.length > 0 && (
+          <div className="border-t border-gray-200">
+            <div className="temp-analysis-container">
+              <table className={`temp-analysis-table ${sectionKey === 'critical' ? 'critical' : 'warning'}`}>
+              <thead>
+                <tr>
+                  <th>OBJEKT</th>
+                  <th>TEMPERATUR-KI-ANALYSE</th>
+                  <th>UPDATE-ZEIT</th>
+                </tr>
+              </thead>
+              <tbody>
+                {items.map((item: any, index: number) => (
+                  <tr key={item.objectid || index} onClick={() => setSelectedSystem(item)}>
+                    <td>
+                      <b>{item.name}</b><br />
+                      <span className="object-id">{item.objectid}</span>
+                    </td>
+                    <td>
+                      {item.analysis?.sensors && item.analysis.sensors.length > 0 ? (
+                        <div>
+                          {item.analysis.sensors.map((sensor: any) => (
+                            <div key={sensor.id} style={{marginBottom: '2px'}}>
+                              <div>
+                                {sensor.name} VL: <span className={
+                                  sensor.vl.status === 'critical' ? 'temp-critical' :
+                                  sensor.vl.status === 'warning' ? 'temp-warning' : 'temp-normal'
+                                }>
+                                  {sensor.vl.status.toUpperCase()}
+                                </span> ({sensor.vl.value}°C &gt; {sensor.vl.threshold}°C)
+                              </div>
+                              <div>
+                                {sensor.name} RL: <span className={
+                                  sensor.rl.status === 'critical' ? 'temp-critical' :
+                                  sensor.rl.status === 'warning' ? 'temp-warning' : 'temp-normal'
+                                }>
+                                  {sensor.rl.status.toUpperCase()}
+                                </span> ({sensor.rl.value}°C &gt; {sensor.rl.threshold}°C)
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : item.analysis?.reason ? (
+                        <span className="object-id">{item.analysis.reason}</span>
+                      ) : (
+                        <span className="object-id">Keine Sensordaten</span>
+                      )}
+                    </td>
+                    <td className="update-time">
+                      {item.analysis?.lastUpdate ? (
+                        <>
+                          {new Date(item.analysis.lastUpdate).toLocaleDateString('de-DE')}<br />
+                          {new Date(item.analysis.lastUpdate).toLocaleTimeString('de-DE')}
+                        </>
+                      ) : (
+                        <>
+                          -<br />
+                          -
+                        </>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const renderDetailButton = (item: any) => (
+    <Button 
+      size="sm" 
+      variant="outline" 
+      className="mt-2 w-full"
+      onClick={() => setSelectedSystem(item)}
+    >
+      Details anzeigen
+    </Button>
+  );
+
+  if (isLoading) {
+    return (
+      <div className="p-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-full">
+          <Card className="animate-pulse">
+            <CardContent className="p-6">
+              <div className="h-8 bg-gray-200 rounded mb-4"></div>
+              <div className="space-y-4">
+                {[...Array(5)].map((_, i) => (
+                  <div key={i} className="h-16 bg-gray-200 rounded"></div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="animate-pulse">
+            <CardContent className="p-6">
+              <div className="h-8 bg-gray-200 rounded mb-4"></div>
+              <div className="h-32 bg-gray-200 rounded"></div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="p-6 pl-[10px] pr-[10px] pt-[10px] pb-[10px]">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-full">
+        {/* Left Panel - Temperature Analysis Sections */}
+        <Card className="h-fit">
+          <CardHeader className="flex flex-col space-y-1.5 p-6 pt-[10px] pb-[10px]">
+            <CardTitle className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <WifiIcon className="h-5 w-5 text-blue-600" />
+                <span className="text-[18px]">Anlagenübersicht Temperaturanalyse</span>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowDebugInfo(!showDebugInfo)}
+                className="h-8 w-8 p-0"
+              >
+                <BugAntIcon className="h-4 w-4" />
+              </Button>
+            </CardTitle>
+            {showDebugInfo && (
+              <div className="mt-4 p-3 bg-gray-100 rounded-lg text-xs">
+                <div className="flex items-center gap-2 mb-3">
+                  <BugAntIcon className="h-4 w-4" />
+                  <strong>Temperatur-KI-Analyse für {objects ? (objects as any[]).length : 0} Objekte</strong>
+                </div>
+                
+                <div className="bg-white rounded border max-h-96 overflow-y-auto">
+                  <table className="w-full text-xs">
+                    <thead className="bg-gray-50 sticky top-0">
+                      <tr>
+                        <th className="px-2 py-1 text-left font-semibold">ObjectName</th>
+                        <th className="px-2 py-1 text-left font-semibold">Temperatur-KI-Analyse</th>
+                        <th className="px-2 py-1 text-left font-semibold">Status</th>
+                        <th className="px-2 py-1 text-left font-semibold">Update-Zeit</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {objects && (objects as any[]).map((obj: any) => {
+                        const analysis = analyzeObjectTemperature(obj);
+                        
+                        return (
+                          <tr key={obj.objectid} className="border-b hover:bg-gray-50">
+                            <td className="px-2 py-2">
+                              <div className="text-blue-600 font-medium">{obj.name}</div>
+                              <div className="text-gray-500">{obj.objectid}</div>
+                            </td>
+                            <td className="px-2 py-2">
+                              {!obj.fltemp || Object.keys(obj.fltemp).length === 0 ? (
+                                <span className="text-gray-500">Keine Temperaturdaten</span>
+                              ) : analysis.sensors && analysis.sensors.length > 0 ? (
+                                <div className="text-xs">
+                                  <div>Sensoren: {analysis.sensors.length}</div>
+                                  <div>Config: {analysis.usedThresholdConfig || 'netzwaechter_0'}</div>
+                                </div>
+                              ) : analysis.reason ? (
+                                <span className="text-red-500">{analysis.reason}</span>
+                              ) : (
+                                <span className="text-orange-500">Unbekannter Status</span>
+                              )}
+                            </td>
+                            <td className="px-2 py-2">
+                              {analysis.offline ? (
+                                <Badge variant="secondary" className="bg-gray-100 text-gray-600">Offline</Badge>
+                              ) : analysis.critical ? (
+                                <Badge variant="destructive" className="bg-red-100 text-red-800">Critical</Badge>
+                              ) : analysis.warning ? (
+                                <Badge variant="secondary" className="bg-orange-100 text-orange-800">Warning</Badge>
+                              ) : (
+                                <Badge variant="secondary" className="bg-green-100 text-green-800">Normal</Badge>
+                              )}
+                            </td>
+                            <td className="px-2 py-2">
+                              <div>{analysis.lastUpdate ? new Date(analysis.lastUpdate).toLocaleDateString('de-DE') : '25.7.2025'}</div>
+                              <div className="text-gray-500">{analysis.lastUpdate ? new Date(analysis.lastUpdate).toLocaleTimeString('de-DE') : '23:04:01'}</div>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+                
+                <div className="mt-3 text-xs text-gray-600">
+                  <div><strong>Debug Info:</strong></div>
+                  <div>Objects loaded: {objects ? (objects as any[]).length : 'No'} | Thresholds loaded: {thresholds ? (thresholds as any[]).length : 'No'}</div>
+                  {temperatureAnalysis && (
+                    <div>Critical: {temperatureAnalysis.critical?.length || 0} | Warning: {temperatureAnalysis.warning?.length || 0} | Offline: {temperatureAnalysis.offline?.length || 0} | Normal: {temperatureAnalysis.optimized?.length || 0}</div>
+                  )}
+                  {thresholds && Array.isArray(thresholds) && thresholds.length > 0 && (
+                    <div className="text-blue-600 mt-1">
+                      Available configs: {(thresholds as any[]).map(t => t.keyName || t.key_name || 'undefined').filter(k => k !== 'undefined').join(', ')}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </CardHeader>
+          <CardContent className="p-6 pl-[10px] pr-[10px] pt-[10px] pb-[10px]">
+            {/* Temperature Analysis Sections */}
+            {temperatureAnalysis && (
+              <div className="space-y-4">
+                {renderAnalysisSection(
+                  "Kritische Anlagen",
+                  temperatureAnalysis.critical,
+                  "critical",
+                  "bg-red-100 border border-red-200",
+                  "text-red-700",
+                  <ExclamationTriangleIcon className="h-5 w-5 text-red-600" />
+                )}
+                
+                {renderAnalysisSection(
+                  "Anlagen mit Warnungen", 
+                  temperatureAnalysis.warning,
+                  "warning",
+                  "bg-orange-100 border border-orange-200",
+                  "text-orange-700",
+                  <ExclamationTriangleIcon className="h-5 w-5 text-orange-500" />
+                )}
+                
+                {renderAnalysisSection(
+                  "Offline-Anlagen",
+                  temperatureAnalysis.offline,
+                  "offline", 
+                  "bg-gray-100 border border-gray-200",
+                  "text-gray-700",
+                  <WifiIcon className="h-5 w-5 text-gray-500" />
+                )}
+                
+                {renderAnalysisSection(
+                  "Anlagen - hoher Energieverbrauch",
+                  temperatureAnalysis.energy,
+                  "energy",
+                  "bg-blue-100 border border-blue-200", 
+                  "text-blue-700",
+                  <FireIcon className="h-5 w-5 text-blue-600" />
+                )}
+                
+                {renderAnalysisSection(
+                  "Optimierte Anlagen",
+                  temperatureAnalysis.optimized,
+                  "optimized",
+                  "bg-green-100 border border-green-200",
+                  "text-green-700",
+                  <ClockIcon className="h-5 w-5 text-green-600" />
+                )}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Right Panel - Object Details */}
+        <Card className="h-fit">
+          <CardContent className="p-0">
+            {selectedSystem ? (
+              <div>
+                {/* Header with Building Icon and Object ID */}
+                <div className="p-4 pt-3 pb-3">
+                  <div className="flex items-center space-x-3 mb-2">
+                    <div className="p-2 bg-blue-100 rounded-lg">
+                      <BuildingOfficeIcon className="h-6 w-6 text-blue-600" />
+                    </div>
+                    <div className="flex-1">
+                      <h2 className="font-bold text-gray-900 text-[18px]">{selectedSystem.name}</h2>
+                      <p className="text-gray-600 text-[12px]">Objekt-ID: {selectedSystem.objectid}</p>
+                    </div>
+                    
+                    {/* Grafana Dashboard Button */}
+                    <Button 
+                      variant="outline" 
+                      size="default"
+                      className="flex items-center space-x-2 pl-[10px] pr-[10px] ml-[0px] mr-[0px]"
+                      onClick={() => navigate(`/grafana-dashboards?objectID=${selectedSystem.objectid}&typ=waechter&from=network-monitor`)}
+                      title="Grafana Dashboard"
+                    >
+                      <PresentationChartLineIcon className="h-5 w-5" />
+                      <span>&gt; Dashboard</span>
+                    </Button>
+                    
+                    {/* Status Icon */}
+                    {selectedSystem.analysis?.critical && (
+                      <div className="p-2 bg-red-100 rounded-lg">
+                        <ExclamationTriangleIcon className="h-5 w-5 text-red-600" title="KRITISCH" />
+                      </div>
+                    )}
+                    {selectedSystem.analysis?.warning && !selectedSystem.analysis?.critical && (
+                      <ExclamationTriangleIcon className="h-6 w-6 text-orange-500" title="WARNUNG" />
+                    )}
+                    {selectedSystem.analysis?.offline && !selectedSystem.analysis?.critical && !selectedSystem.analysis?.warning && (
+                      <WifiIcon className="h-6 w-6 text-gray-500" title="OFFLINE" />
+                    )}
+                    {!selectedSystem.analysis?.critical && !selectedSystem.analysis?.warning && !selectedSystem.analysis?.offline && (
+                      <CheckCircleIcon className="h-6 w-6 text-green-500" title="NORMAL" />
+                    )}
+                  </div>
+                </div>
+
+                {/* Tabs */}
+                <Tabs defaultValue="uebersicht" className="w-full">
+                  <TabsList className="grid w-full grid-cols-4 bg-transparent border-b border-gray-200 rounded-none h-auto p-0">
+                    <TabsTrigger 
+                      value="uebersicht" 
+                      className="data-[state=active]:bg-transparent data-[state=active]:text-blue-600 data-[state=active]:border-b-2 data-[state=active]:border-blue-600 rounded-none border-b-2 border-transparent text-sm py-3 px-4"
+                    >
+                      <ViewColumnsIcon className="h-4 w-4 mr-1" />
+                      Anlage
+                    </TabsTrigger>
+                    <TabsTrigger 
+                      value="diagramme" 
+                      className="data-[state=active]:bg-transparent data-[state=active]:text-blue-600 data-[state=active]:border-b-2 data-[state=active]:border-blue-600 rounded-none border-b-2 border-transparent text-sm py-3 px-4"
+                    >
+                      <PresentationChartLineIcon className="h-4 w-4 mr-1" />
+                      Diagramme
+                    </TabsTrigger>
+                    <TabsTrigger 
+                      value="objekt" 
+                      className="data-[state=active]:bg-transparent data-[state=active]:text-blue-600 data-[state=active]:border-b-2 data-[state=active]:border-blue-600 rounded-none border-b-2 border-transparent text-sm py-3 px-4"
+                    >
+                      <InformationCircleIcon className="h-4 w-4 mr-1" />
+                      Objektinfo
+                    </TabsTrigger>
+                    <TabsTrigger 
+                      value="service" 
+                      className="data-[state=active]:bg-transparent data-[state=active]:text-blue-600 data-[state=active]:border-b-2 data-[state=active]:border-blue-600 rounded-none border-b-2 border-transparent text-sm py-3 px-4"
+                    >
+                      <CogIcon className="h-4 w-4 mr-1" />
+                      Service
+                    </TabsTrigger>
+                  </TabsList>
+
+                  <TabsContent value="uebersicht" className="p-6 pl-[10px] pr-[10px] pt-[0px] pb-[0px]">
+                    {/* Overview Dashboard */}
+                    <div className="space-y-4">
+                      
+                      
+
+
+
+                      {/* System-Schema - Full Width */}
+                      <div className="mt-6">
+                        <Card>
+                          <CardHeader className="flex flex-col space-y-1.5 p-6 pt-[5px] pb-[5px]">
+                          </CardHeader>
+                          <CardContent className="p-6 pt-[0px] pb-[0px] pl-[0px] pr-[0px]">
+                            {selectedSystem.meter && (
+                              <SystemSchemaView 
+                                meterData={selectedSystem.meter}
+                                objectId={selectedSystem.objectid}
+                              />
+                            )}
+                          </CardContent>
+                        </Card>
+                      </div>
+
+
+
+
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="diagramme" className="p-0">
+                    {/* Grafana Integration */}
+                    <div className="w-full">
+                      <GrafanaContentEmbedded objectId={selectedSystem.objectid} />
+                    </div>
+                  </TabsContent>
+
+
+
+                  <TabsContent value="objekt" className="p-6 pt-4">
+                    {/* Object Information */}
+                    <div className="space-y-4">
+                      <h3 className="text-lg font-semibold text-gray-900">Objektinformationen</h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <h4 className="text-sm font-medium text-gray-600 mb-1">Standort</h4>
+                          <p className="text-gray-900">{selectedSystem.city || "Nicht verfügbar"}</p>
+                        </div>
+                        <div>
+                          <h4 className="text-sm font-medium text-gray-600 mb-1">PLZ</h4>
+                          <p className="text-gray-900">{selectedSystem.postalCode || "Nicht verfügbar"}</p>
+                        </div>
+                        <div>
+                          <h4 className="text-sm font-medium text-gray-600 mb-1">Objekttyp</h4>
+                          <p className="text-gray-900 capitalize">
+                            {selectedSystem.objectType?.replace('_', ' ') || "Nicht verfügbar"}
+                          </p>
+                        </div>
+                        <div>
+                          <h4 className="text-sm font-medium text-gray-600 mb-1">Status</h4>
+                          <p className="text-gray-900 capitalize">
+                            {selectedSystem.status || "Nicht verfügbar"}
+                          </p>
+                        </div>
+                        <div>
+                          <h4 className="text-sm font-medium text-gray-600 mb-1">Adresse</h4>
+                          <p className="text-gray-900">{selectedSystem.address || "Nicht verfügbar"}</p>
+                        </div>
+                        <div>
+                          <h4 className="text-sm font-medium text-gray-600 mb-1">Baujahr</h4>
+                          <p className="text-gray-900">{selectedSystem.constructionYear || "Nicht verfügbar"}</p>
+                        </div>
+                        <div>
+                          <h4 className="text-sm font-medium text-gray-600 mb-1">Wohnfläche</h4>
+                          <p className="text-gray-900">
+                            {selectedSystem.objdata?.area ? `${selectedSystem.objdata.area} m²` : "Nicht verfügbar"}
+                          </p>
+                        </div>
+                        <div>
+                          <h4 className="text-sm font-medium text-gray-600 mb-1">Eigentümer</h4>
+                          <p className="text-gray-900">{selectedSystem.ownerName || "Nicht verfügbar"}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="service" className="p-6 pt-4">
+                    {/* Service Actions */}
+                    <div className="space-y-4">
+                      <h3 className="text-lg font-semibold text-gray-900">Service & Wartung</h3>
+                      <div className="space-y-3">
+                        <Button 
+                          className="w-full justify-start"
+                          variant={selectedSystem.analysis?.critical ? "destructive" : "default"}
+                          onClick={() => setIsServiceDialogOpen(true)}
+                        >
+                          <WrenchScrewdriverIcon className="h-4 w-4 mr-2" />
+                          {selectedSystem.analysis?.critical ? "Notdienst anfordern" : "Service planen"}
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          className="w-full justify-start"
+                          onClick={() => navigate(`/grafana-dashboards?objectID=${selectedSystem.objectid}&typ=waechter&from=network-monitor`)}
+                        >
+                          <ChartBarIcon className="h-4 w-4 mr-2" />
+                          Grafana Dashboard öffnen
+                        </Button>
+                        <Button variant="outline" className="w-full justify-start">
+                          <InformationCircleIcon className="h-4 w-4 mr-2" />
+                          Technische Dokumentation
+                        </Button>
+                        <Button variant="outline" className="w-full justify-start">
+                          <ClockIcon className="h-4 w-4 mr-2" />
+                          Wartungshistorie anzeigen
+                        </Button>
+                      </div>
+                      
+                      {/* Quick Info */}
+                      <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+                        <h4 className="font-medium text-gray-900 mb-2">Status-Übersicht</h4>
+                        <div className="text-sm text-gray-600 space-y-1">
+                          <p>Letzte Wartung: Nicht verfügbar</p>
+                          <p>Nächste Wartung: Nicht geplant</p>
+                          <p>Service-Techniker: Nicht zugewiesen</p>
+                        </div>
+                      </div>
+                    </div>
+                  </TabsContent>
+                </Tabs>
+              </div>
+            ) : (
+              <div className="text-center py-12 text-gray-500">
+                <WifiIcon className="h-12 w-12 mx-auto mb-4 text-gray-300" />
+                <p>Wählen Sie eine Anlage aus der Liste</p>
+                <p className="text-sm mt-1">um detaillierte Temperaturanalyse anzuzeigen</p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+      {/* Service Request Dialog */}
+      <Dialog open={isServiceDialogOpen} onOpenChange={setIsServiceDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Service-Anfrage erstellen</DialogTitle>
+            <DialogDescription>
+              Erstellen Sie eine Service-Anfrage für die ausgewählte Anlage
+            </DialogDescription>
+          </DialogHeader>
+          <form onSubmit={(e) => {
+            e.preventDefault();
+            const formData = new FormData(e.currentTarget);
+            createEntryMutation.mutate({
+              objectId: selectedSystem.id, // Use internal ID, not objectid
+              entryType: "störung",
+              category: "Netzstörung",
+              priority: selectedSystem.analysis?.critical ? "kritisch" : "hoch",
+              title: selectedSystem.analysis?.critical ? generateCriticalTitle() : formData.get("title"),
+              description: formData.get("description"),
+              technicianName: (user as any)?.username || formData.get("technicianName"),
+              technicianCompany: formData.get("technicianCompany"),
+              scheduledDate: format(new Date(), 'yyyy-MM-dd'),
+              status: "offen",
+            });
+          }} className="space-y-4">
+            <div>
+              <Label>Objekt</Label>
+              <Input value={selectedSystem?.name || ""} disabled className="bg-gray-50" />
+            </div>
+
+            <div>
+              <Label>Objekt-ID</Label>
+              <Input value={selectedSystem?.objectid || ""} disabled className="bg-gray-50" />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label>Typ</Label>
+                <Input value="Störung" disabled className="bg-gray-50" />
+              </div>
+              <div>
+                <Label>Kategorie</Label>
+                <Input value="Netzstörung" disabled className="bg-gray-50" />
+              </div>
+            </div>
+
+            <div>
+              <Label htmlFor="title">Titel</Label>
+              <Input 
+                name="title" 
+                defaultValue={selectedSystem?.analysis?.critical ? generateCriticalTitle() : ""}
+                placeholder="Beschreibung der Störung"
+                className={selectedSystem?.analysis?.critical ? "bg-red-50" : ""}
+                disabled={selectedSystem?.analysis?.critical}
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="description">Beschreibung</Label>
+              <Textarea 
+                name="description" 
+                rows={3} 
+                placeholder="Detaillierte Beschreibung der Störung..."
+                defaultValue={selectedSystem?.analysis?.critical ? 
+                  `KRITISCHER ZUSTAND: ${selectedSystem.analysis.sensors?.filter((s: any) => 
+                    s.vl.status === 'critical' || s.rl.status === 'critical'
+                  ).map((s: any) => 
+                    `${s.name}: VL=${s.vl.value}°C (${s.vl.status}), RL=${s.rl.value}°C (${s.rl.status})`
+                  ).join('; ')}` : ""}
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="technicianName">Techniker</Label>
+                <Input 
+                  name="technicianName" 
+                  defaultValue={(user as any)?.username || ""}
+                  placeholder="Name des Technikers" 
+                />
+              </div>
+              <div>
+                <Label htmlFor="technicianCompany">Firma</Label>
+                <Input name="technicianCompany" placeholder="Firma des Technikers" />
+              </div>
+            </div>
+
+            <div>
+              <Label>Datum</Label>
+              <Input 
+                value={format(new Date(), 'dd.MM.yyyy', { locale: de })} 
+                disabled 
+                className="bg-gray-50" 
+              />
+            </div>
+
+            <div className="flex justify-end space-x-2">
+              <Button type="button" variant="outline" onClick={() => setIsServiceDialogOpen(false)}>
+                Abbrechen
+              </Button>
+              <Button 
+                type="submit" 
+                variant={selectedSystem?.analysis?.critical ? "destructive" : "default"}
+                disabled={createEntryMutation.isPending}
+              >
+                {selectedSystem?.analysis?.critical ? "Notdienst anfordern" : "Service-Anfrage erstellen"}
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}

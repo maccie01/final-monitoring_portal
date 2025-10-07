@@ -1,0 +1,726 @@
+[
+  {
+    "id": 3,
+    "objectid": "296528096",
+    "title": "Nordfeldstr.18A",
+    "ort": "Hannover",
+    "plz": "30161",
+    "objdata": {
+      "NE": 87,
+      "GEG": 75,
+      "GSM": "0152-08911108",
+      "area": 8732,
+      "objnr": 100002
+    },
+    "objanlage": {
+      "Typ": "WP+Kessel"
+    },
+    "portdata": {
+      "dia": "GQgZkLcVz/35110-dia",
+      "dashbord": "I6VrtPcVk/35110-dashbord",
+      "auswertung": "I6VrtPcVk/35110-dashbord",
+      "auswertung_tab1": 28,
+      "auswertung_tab2": 43,
+      "auswertung_tab3": 44,
+      "energieverteilung": 68
+    },
+    "meter": {
+      "Z20130": 32550498,
+      "Z20141": 58158876,
+      "Z20142": 58158875,
+      "Z20221": 452249,
+      "Z20241": 58154476,
+      "Z20541": 58152848,
+      "Z40011": 116528096
+    },
+    "dashboard": {},
+    "alarm": {
+      "active": false,
+      "conditions": [],
+      "lastTriggered": null,
+      "notifications": []
+    },
+    "kianalyse": {
+      "anomalies": [],
+      "predictions": [],
+      "recommendations": []
+    },
+    "status": {
+      "errors": [],
+      "online": false,
+      "signal": null,
+      "battery": null,
+      "lastSeen": null
+    },
+    "analyse": {},
+    "auswertung": {},
+    "report": {},
+    "diagramm": {},
+    "fltemp": {
+      "20541": 59
+    },
+    "rttemp": {
+      "20541": 46
+    },
+    "created_at": "2025-06-13T13:16:18.471Z",
+    "updated_at": "2025-06-29T14:01:55.266Z"
+  },
+  {
+    "id": 9,
+    "objectid": "207210027",
+    "title": "Wallensteinstrasse 108",
+    "ort": "Hannover",
+    "plz": "30161",
+    "objdata": {
+      "NE": 18,
+      "GEG": 75,
+      "area": 98
+    },
+    "objanlage": {
+      "Typ": "WP+Kessel"
+    },
+    "portdata": null,
+    "meter": {
+      "Z20130": 31751964,
+      "Z20141": 51256854,
+      "Z20221": 110176,
+      "Z20241": 51779053,
+      "Z20541": 51754077,
+      "Z40011": 207210027
+    },
+    "dashboard": {},
+    "alarm": {
+      "active": false,
+      "conditions": [],
+      "lastTriggered": null,
+      "notifications": []
+    },
+    "kianalyse": {
+      "anomalies": [],
+      "predictions": [],
+      "recommendations": []
+    },
+    "status": {
+      "errors": [],
+      "online": false,
+      "signal": null,
+      "battery": null,
+      "lastSeen": null
+    },
+    "analyse": {},
+    "auswertung": {},
+    "report": {},
+    "diagramm": {},
+    "fltemp": {
+      "20541": 60,
+      "updateTime": "2025-07-24T23:34:01.755Z"
+    },
+    "rttemp": {
+      "20541": 47,
+      "updateTime": "2025-07-24T23:34:01.472Z"
+    },
+    "created_at": "2025-06-13T13:16:18.471Z",
+    "updated_at": "2025-06-29T14:02:02.856Z"
+  },
+  {
+    "id": 14,
+    "objectid": "207315038",
+    "title": "Ahornstraße 10",
+    "ort": "Hannover",
+    "plz": "30161",
+    "objdata": {
+      "NE": 69,
+      "area": 5787
+    },
+    "objanlage": {
+      "Typ": "WP+Kessel"
+    },
+    "portdata": [
+      {
+        "site": [
+          {
+            "id": "Z20541",
+            "label": "Wärmezähler Netz Ahornweg",
+            "panelId": "16",
+            "interval": "&from=now-4d&to=now",
+            "panelId2": "3",
+            "histogram": [
+              4,
+              5,
+              7
+            ],
+            "panelIdWidth": "180px"
+          },
+          {
+            "label": "Wärmezähler ",
+            "auswahl": [
+              {
+                "id": "Z20541",
+                "idlabel": "netz"
+              },
+              {
+                "id": "Z20141",
+                "idlabel": "Kessel1"
+              },
+              {
+                "id": "Z20142",
+                "idlabel": "Kessel2"
+              }
+            ],
+            "panelId": "19",
+            "panelId2": "3",
+            "panelIdWidth": "180px"
+          }
+        ],
+        "grafana": "https://graf.heatcare.one",
+        "interval": "&from=now-14d&to=now",
+        "dashboard": "d-solo/eelav0ybil2wwd/ws-heatcare",
+        "sitelabel": "Diagramm"
+      },
+      {
+        "site": [
+          {
+            "label": "Wärmezähler Objekt",
+            "auswahl": [
+              {
+                "id": "Z20541",
+                "idlabel": "Netz"
+              },
+              {
+                "id": "Z20141",
+                "idlabel": "Kessel1"
+              },
+              {
+                "id": "Z20142",
+                "idlabel": "Kessel2"
+              }
+            ],
+            "panelId": "13"
+          },
+          {
+            "label": "Wärmezähler Anteil ",
+            "auswahl": [
+              {
+                "id": "Z20541",
+                "idlabel": "Netz"
+              },
+              {
+                "id": "Z20141",
+                "idlabel": "Kessel1"
+              },
+              {
+                "id": "Z20142",
+                "idlabel": "Kessel2"
+              }
+            ],
+            "panelId": "14"
+          }
+        ],
+        "grafana": "https://graf.heatcare.one",
+        "interval": "&from=now-12M&to=now",
+        "dashboard": "d-solo/eelav0ybil2wwd/ws-heatcare",
+        "sitelabel": "Auswertung"
+      }
+    ],
+    "meter": {
+      "Z20141": 51090484,
+      "Z20142": 49774783,
+      "Z20221": 11012548,
+      "Z20241": 51022099,
+      "Z20541": 49785048
+    },
+    "dashboard": {
+      "site": [
+        {
+          "label": "Wärmezähler  Dashbord 2",
+          "auswahl": [
+            {
+              "id": "49785048",
+              "idlabel": "Netz"
+            },
+            {
+              "id": "51090484",
+              "idlabel": "Kessel1.1 dash 51090484"
+            },
+            {
+              "id": "49774783",
+              "idlabel": "Kessel2-Buderus"
+            }
+          ],
+          "panelId": "10",
+          "panelId2": "3",
+          "panelIdWidth": "250px"
+        }
+      ],
+      "grafana": "https://graf.heatcare.one",
+      "interval": "&from=now-7d&to=now",
+      "dashboard": "d-solo/eelav0ybil2wwd/ws-heatcare"
+    },
+    "alarm": {
+      "active": false,
+      "conditions": [],
+      "lastTriggered": null,
+      "notifications": []
+    },
+    "kianalyse": {
+      "anomalies": [],
+      "predictions": [],
+      "recommendations": []
+    },
+    "status": {
+      "errors": [],
+      "online": false,
+      "signal": null,
+      "battery": null,
+      "lastSeen": null
+    },
+    "analyse": {},
+    "auswertung": {},
+    "report": {
+      "site": [
+        {
+          "label": "Wärmezähler  report",
+          "auswahl": [
+            {
+              "id": "49785048",
+              "idlabel": "Netz"
+            },
+            {
+              "id": "51090484",
+              "idlabel": "Kessel1.2.report 51090484"
+            },
+            {
+              "id": "49774783",
+              "idlabel": "Kessel2-Buderus"
+            }
+          ],
+          "panelId": "10",
+          "panelId2": "3",
+          "panelIdWidth": "250px"
+        }
+      ],
+      "grafana": "https://graf.heatcare.one",
+      "interval": "&from=now-7d&to=now",
+      "dashboard": "d-solo/eelav0ybil2wwd/ws-heatcare"
+    },
+    "diagramm": null,
+    "fltemp": {
+      "20541": 54,
+      "updateTime": "2025-07-24T23:34:01.758Z"
+    },
+    "rttemp": {
+      "20541": 52,
+      "updateTime": "2025-07-24T23:34:01.755Z"
+    },
+    "created_at": "2025-06-13T13:16:18.471Z",
+    "updated_at": "2025-06-29T14:02:01.265Z"
+  },
+  {
+    "id": 11,
+    "objectid": "274609033",
+    "title": "Ahornstr. 4",
+    "ort": "Hannover",
+    "plz": "30161",
+    "objdata": {
+      "NE": 148,
+      "area": 10555,
+      "objnr": 100007
+    },
+    "objanlage": {
+      "Typ": "WP+Kessel"
+    },
+    "portdata": [
+      {
+        "site": [
+          {
+            "id": "Z20541",
+            "label": "Wärmezähler Netz Ahornweg",
+            "panelId": "16",
+            "interval": "&from=now-4d&to=now",
+            "panelId2": "3",
+            "histogram": [
+              4,
+              5,
+              7
+            ],
+            "panelIdWidth": "180px"
+          },
+          {
+            "label": "Wärmezähler ",
+            "auswahl": [
+              {
+                "id": "Z20541",
+                "idlabel": "netz"
+              },
+              {
+                "id": "Z20141",
+                "idlabel": "Kessel1"
+              },
+              {
+                "id": "Z20142",
+                "idlabel": "Kessel2"
+              }
+            ],
+            "panelId": "19",
+            "panelId2": "3",
+            "panelIdWidth": "180px"
+          }
+        ],
+        "grafana": "https://graf.heatcare.one",
+        "interval": "&from=now-14d&to=now",
+        "dashboard": "d-solo/eelav0ybil2wwd/ws-heatcare",
+        "sitelabel": "Diagramm"
+      },
+      {
+        "site": [
+          {
+            "label": "Wärmezähler Objekt",
+            "auswahl": [
+              {
+                "id": "Z20541",
+                "idlabel": "Netz"
+              },
+              {
+                "id": "Z20141",
+                "idlabel": "Kessel1"
+              },
+              {
+                "id": "Z20142",
+                "idlabel": "Kessel2"
+              }
+            ],
+            "panelId": "13"
+          },
+          {
+            "label": "Wärmezähler Anteil ",
+            "auswahl": [
+              {
+                "id": "Z20541",
+                "idlabel": "Netz"
+              },
+              {
+                "id": "Z20141",
+                "idlabel": "Kessel1"
+              },
+              {
+                "id": "Z20142",
+                "idlabel": "Kessel2"
+              }
+            ],
+            "panelId": "14"
+          }
+        ],
+        "grafana": "https://graf.heatcare.one",
+        "interval": "&from=now-12M&to=now",
+        "dashboard": "d-solo/eelav0ybil2wwd/ws-heatcare",
+        "sitelabel": "Auswertung"
+      }
+    ],
+    "meter": {
+      "Z20141": "51557959",
+      "Z20142": "51527708",
+      "Z20143": "51527709",
+      "Z20241": 51265804,
+      "Z20242": 51522791,
+      "Z20541": "51515810",
+      "Z40011": 274609033
+    },
+    "dashboard": {},
+    "alarm": {
+      "active": false,
+      "conditions": [],
+      "lastTriggered": null,
+      "notifications": []
+    },
+    "kianalyse": {
+      "anomalies": [],
+      "predictions": [],
+      "recommendations": []
+    },
+    "status": {
+      "errors": [],
+      "online": false,
+      "signal": null,
+      "battery": null,
+      "lastSeen": null
+    },
+    "analyse": {},
+    "auswertung": {},
+    "report": {},
+    "diagramm": {},
+    "fltemp": {
+      "20541": 59,
+      "updateTime": "2025-07-24T23:34:01.477Z"
+    },
+    "rttemp": {
+      "20541": 53,
+      "updateTime": "2025-07-24T23:34:01.473Z"
+    },
+    "created_at": "2025-06-13T13:16:18.471Z",
+    "updated_at": "2025-06-29T14:01:57.806Z"
+  },
+  {
+    "id": 52,
+    "objectid": "207315076",
+    "title": "Ahornstraße 18",
+    "ort": "Hannover",
+    "plz": "30161",
+    "objdata": {
+      "NE": 70,
+      "area": 5667
+    },
+    "objanlage": {
+      "WP": "Hersteller Striebel",
+      "Typ": "WP+2Kessel",
+      "schema": "schema_tpl_35110.jpg"
+    },
+    "portdata": [
+      {
+        "site": [
+          {
+            "id": "Z20541",
+            "label": "Wärmezähler Netz Ahornweg",
+            "panelId": "16",
+            "interval": "&from=now-4d&to=now",
+            "panelId2": "3",
+            "histogram": [
+              4,
+              5,
+              7
+            ],
+            "panelIdWidth": "180px"
+          },
+          {
+            "label": "Wärmezähler ",
+            "auswahl": [
+              {
+                "id": "Z20541",
+                "idlabel": "netz"
+              },
+              {
+                "id": "Z20141",
+                "idlabel": "Kessel1"
+              },
+              {
+                "id": "Z20142",
+                "idlabel": "Kessel2"
+              }
+            ],
+            "panelId": "19",
+            "panelId2": "3",
+            "panelIdWidth": "180px"
+          }
+        ],
+        "grafana": "https://graf.heatcare.one",
+        "interval": "&from=now-14d&to=now",
+        "dashboard": "d-solo/eelav0ybil2wwd/ws-heatcare",
+        "sitelabel": "Diagramm"
+      },
+      {
+        "site": [
+          {
+            "label": "Wärmezähler Objekt",
+            "auswahl": [
+              {
+                "id": "Z20541",
+                "idlabel": "Netz"
+              },
+              {
+                "id": "Z20141",
+                "idlabel": "Kessel1"
+              },
+              {
+                "id": "Z20142",
+                "idlabel": "Kessel2"
+              }
+            ],
+            "panelId": "13"
+          },
+          {
+            "label": "Wärmezähler Anteil ",
+            "auswahl": [
+              {
+                "id": "Z20541",
+                "idlabel": "Netz"
+              },
+              {
+                "id": "Z20141",
+                "idlabel": "Kessel1"
+              },
+              {
+                "id": "Z20142",
+                "idlabel": "Kessel2"
+              }
+            ],
+            "panelId": "14"
+          }
+        ],
+        "grafana": "https://graf.heatcare.one",
+        "interval": "&from=now-12M&to=now",
+        "dashboard": "d-solo/eelav0ybil2wwd/ws-heatcare",
+        "sitelabel": "Auswertung"
+      }
+    ],
+    "meter": {
+      "Z20130": 10157626,
+      "Z20141": 49733048,
+      "Z20142": 49741341,
+      "Z20221": 11012549,
+      "Z20241": 49733049,
+      "Z20541": 49736179
+    },
+    "dashboard": {
+      "site": [
+        {
+          "id": "49736179",
+          "label": "Wärmezähler Netz Ahorn dashbord 6",
+          "panelId": "16",
+          "interval": "&from=now-4d&to=now",
+          "panelId2": "3",
+          "histogram": [
+            4,
+            5,
+            7
+          ],
+          "panelIdWidth": "180px"
+        },
+        {
+          "label": "Wärmezähler Kessel ",
+          "panel": "show",
+          "auswahl": [
+            {
+              "id": "49733048",
+              "idlabel": "Kessel1"
+            },
+            {
+              "id": "49741341",
+              "idlabel": "Kessel2"
+            }
+          ],
+          "3spaltig": [
+            4,
+            5,
+            7
+          ],
+          "panelIdWidth": "180px"
+        }
+      ],
+      "grafana": "https://graf.heatcare.one",
+      "interval": "&from=now-14d&to=now",
+      "dashboard": "d-solo/eelav0ybil2wwd/ws-heatcare"
+    },
+    "alarm": {
+      "active": false,
+      "conditions": [],
+      "lastTriggered": null,
+      "notifications": []
+    },
+    "kianalyse": {
+      "anomalies": [],
+      "predictions": [],
+      "recommendations": []
+    },
+    "status": {
+      "errors": [],
+      "online": false,
+      "signal": null,
+      "battery": null,
+      "lastSeen": null
+    },
+    "analyse": {},
+    "auswertung": {},
+    "report": {
+      "site": [
+        {
+          "id": "49736179",
+          "label": "Wärmezähler Netz Ahorn report",
+          "panelId": "16",
+          "interval": "&from=now-4d&to=now",
+          "panelId2": "3",
+          "histogram": [
+            4,
+            5,
+            7
+          ],
+          "panelIdWidth": "180px"
+        }
+      ],
+      "grafana": "https://graf.heatcare.one",
+      "interval": "&from=now-14d&to=now",
+      "dashboard": "d-solo/eelav0ybil2wwd/ws-heatcare"
+    },
+    "diagramm": {
+      "site": [
+        {
+          "id": "49736179",
+          "label": "Wärmezähler Netz diagramm",
+          "panelId": "16",
+          "interval": "&from=now-4d&to=now",
+          "panelId2": "3",
+          "panelIdWidth": "180px"
+        },
+        {
+          "label": "Wärmezähler Netz Histo",
+          "auswahl": [
+            {
+              "id": "49733048",
+              "idlabel": "Kessel1 (150kW) Buderus"
+            },
+            {
+              "id": "49741341",
+              "idlabel": "Kessel2"
+            }
+          ],
+          "3spaltig": [
+            4,
+            5,
+            7
+          ]
+        },
+        {
+          "label": "Wärmezähler Kessel ",
+          "auswahl": [
+            {
+              "id": "49733048",
+              "idlabel": "Kessel1 (150kW) Buderus"
+            },
+            {
+              "id": "49741341",
+              "idlabel": "Kessel2"
+            }
+          ],
+          "panelId": "19",
+          "panelId2": "3",
+          "panelIdWidth": "180px"
+        },
+        {
+          "label": "Wärmezähler Alle Diagramme ",
+          "auswahl": [
+            {
+              "id": "49733048",
+              "idlabel": "Kessel1 (150kW) Buderus"
+            },
+            {
+              "id": "49741341",
+              "idlabel": "Kessel2"
+            }
+          ],
+          "panelId": "3"
+        }
+      ],
+      "grafana": "https://graf.heatcare.one",
+      "interval": "&from=now-14d&to=now",
+      "dashboard": "d-solo/eelav0ybil2wwd/ws-heatcare"
+    },
+    "fltemp": {
+      "20541": 55,
+      "updateTime": "2025-07-24T23:34:01.758Z"
+    },
+    "rttemp": {
+      "20541": 54,
+      "updateTime": "2025-07-24T23:34:01.758Z"
+    },
+    "created_at": "2025-06-13T13:16:18.471Z",
+    "updated_at": "2025-06-29T14:02:00.815Z"
+  }
+]

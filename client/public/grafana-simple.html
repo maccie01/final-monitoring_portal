@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grafana iframe Test - Einfach</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8fafc;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #1e293b;
+            margin-bottom: 20px;
+        }
+        .controls {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #374151;
+        }
+        input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 12px;
+        }
+        .buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+        .btn-secondary {
+            background: #e5e7eb;
+            color: #374151;
+            border: 1px solid #d1d5db;
+        }
+        .btn-secondary:hover {
+            background: #d1d5db;
+        }
+        .iframe-container {
+            margin-bottom: 15px;
+        }
+        .iframe-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        .iframe-title.blue { color: #2563eb; }
+        .iframe-title.green { color: #16a34a; }
+        iframe {
+            width: 100%;
+            height: 200px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            transition: opacity 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌊 Grafana iframe Test - Einfach</h1>
+        
+        <div class="controls">
+            <div class="input-group">
+                <label for="url1">iframe 1: -2d (2 Tage)</label>
+                <input type="text" id="url1" 
+                       value="https://graf.heatcare.one/d-solo/eelav0ybil2wwd/ws-heatcare?orgId=1&from=now-2d&to=now&timezone=browser&var-id=49736179&panelId=25">
+            </div>
+            
+            <div class="input-group">
+                <label for="url2">iframe 2: -60d (60 Tage)</label>
+                <input type="text" id="url2" 
+                       value="https://graf.heatcare.one/d-solo/eelav0ybil2wwd/ws-heatcare?orgId=1&from=now-60d&to=now&timezone=browser&var-id=49736179&panelId=25">
+            </div>
+            
+            <div class="buttons">
+                <button class="btn-primary" onclick="loadBoth()">▶️ Load Both</button>
+                <button class="btn-secondary" onclick="loadSmooth()">🌊 Smooth</button>
+                <button class="btn-secondary" onclick="loadDelayed()">⏰ Delayed</button>
+                <button class="btn-secondary" onclick="loadPreloaded()">🚀 Preloaded</button>
+            </div>
+        </div>
+        
+        <div class="iframe-container">
+            <div class="iframe-title blue">📊 iframe 1: -2d</div>
+            <iframe id="iframe1" src="about:blank"></iframe>
+        </div>
+        
+        <div class="iframe-container">
+            <div class="iframe-title green">📊 iframe 2: -60d</div>
+            <iframe id="iframe2" src="about:blank"></iframe>
+        </div>
+    </div>
+
+    <script>
+        function getIframes() {
+            return {
+                iframe1: document.getElementById('iframe1'),
+                iframe2: document.getElementById('iframe2')
+            };
+        }
+        
+        function getUrls() {
+            return {
+                url1: document.getElementById('url1').value,
+                url2: document.getElementById('url2').value
+            };
+        }
+        
+        function loadBoth() {
+            console.log('Loading both iframes...');
+            const { iframe1, iframe2 } = getIframes();
+            const { url1, url2 } = getUrls();
+            
+            iframe1.src = url1;
+            iframe2.src = url2;
+            
+            console.log('Loaded iframe 1:', url1.substring(0, 50));
+            console.log('Loaded iframe 2:', url2.substring(0, 50));
+        }
+        
+        function loadSmooth() {
+            console.log('Loading smooth with 2.3s fade...');
+            const { iframe1, iframe2 } = getIframes();
+            const { url1, url2 } = getUrls();
+            
+            // Fade out with 2.3s transition
+            iframe1.style.transition = 'opacity 2.3s ease';
+            iframe2.style.transition = 'opacity 2.3s ease';
+            iframe1.style.opacity = '0.3';
+            iframe2.style.opacity = '0.3';
+            
+            // Load after fade
+            setTimeout(() => {
+                iframe1.src = url1;
+                iframe2.src = url2;
+                console.log('Smooth fade loading complete');
+            }, 2300);
+            
+            // Fade back in
+            iframe1.onload = () => iframe1.style.opacity = '1';
+            iframe2.onload = () => iframe2.style.opacity = '1';
+        }
+        
+        function loadDelayed() {
+            console.log('Loading delayed in 1 second...');
+            const { iframe1, iframe2 } = getIframes();
+            const { url1, url2 } = getUrls();
+            
+            setTimeout(() => {
+                iframe1.src = url1;
+                iframe2.src = url2;
+                console.log('Delayed loading complete');
+            }, 1000);
+        }
+        
+        function loadPreloaded() {
+            console.log('Loading preloaded in 2 seconds...');
+            const { iframe1, iframe2 } = getIframes();
+            const { url1, url2 } = getUrls();
+            
+            setTimeout(() => {
+                iframe1.src = url1;
+                iframe2.src = url2;
+                console.log('Preloaded loading complete');
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

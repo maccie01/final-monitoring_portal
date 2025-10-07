@@ -1,0 +1,101 @@
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { 
+  BarChart3, 
+  Zap, 
+  Building,
+  Users,
+  Monitor,
+  Activity,
+  Leaf,
+  MapPin
+} from "lucide-react";
+
+export default function Info() {
+  return (
+    <div className="container mx-auto p-6 space-y-6">
+      {/* Header */}
+      <div className="space-y-2">
+        <h1 className="text-3xl font-bold tracking-tight">Wählen sie ein Thema aus</h1>
+        <p className="text-muted-foreground">
+          in der Seitenleiste (links)
+        </p>
+      </div>
+
+      {/* Features */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Zap className="h-5 w-5" />
+            Verfügbare Module
+          </CardTitle>
+          <CardDescription>
+            Zentrale Funktionen des Heizungsanlagen-Management-Systems
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="flex items-start space-x-3">
+              <BarChart3 className="h-5 w-5 text-blue-500 mt-0.5" />
+              <div>
+                <h4 className="font-medium">KPI Dashboard</h4>
+                <p className="text-sm text-muted-foreground">
+                  Echtzeitüberwachung wichtiger Kennzahlen und Systemstatus
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start space-x-3">
+              <Leaf className="h-5 w-5 text-green-500 mt-0.5" />
+              <div>
+                <h4 className="font-medium">Effizienz-Analyse</h4>
+                <p className="text-sm text-muted-foreground">
+                  Energieoptimierung und Verbrauchsanalyse nach GEG 2024
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start space-x-3">
+              <MapPin className="h-5 w-5 text-teal-500 mt-0.5" />
+              <div>
+                <h4 className="font-medium">Objekt-Karte</h4>
+                <p className="text-sm text-muted-foreground">
+                  Übersichtliche Anzeige Ihrer Objekte mit Status-Anzeige und schnellem Zugriff
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start space-x-3">
+              <Building className="h-5 w-5 text-purple-500 mt-0.5" />
+              <div>
+                <h4 className="font-medium">Objektverwaltung</h4>
+                <p className="text-sm text-muted-foreground">
+                  CRUD-Operationen für Heizungsanlagen und Gebäude
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start space-x-3">
+              <Activity className="h-5 w-5 text-red-500 mt-0.5" />
+              <div>
+                <h4 className="font-medium">NetzWächter</h4>
+                <p className="text-sm text-muted-foreground">
+                  Der NetzWächter ist die Erweiterung von Heizungsanlagen zu automatisierten Optimierung von Wärmenetzen des Gebäudes.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start space-x-3">
+              <Users className="h-5 w-5 text-indigo-500 mt-0.5" />
+              <div>
+                <h4 className="font-medium">Benutzerverwaltung</h4>
+                <p className="text-sm text-muted-foreground">
+                  Rollenbasierte Zugriffskontrolle und Mandantenverwaltung
+                </p>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}

@@ -1,0 +1,166 @@
+{
+  "agent_id": "backend-modularization-agent",
+  "name": "Backend Modularization Agent",
+  "version": "1.0.0",
+  "description": "Refactors monolithic storage.ts (3,961 LOC) into 8 clean domain modules with repository pattern",
+
+  "priority": "P1",
+  "estimated_duration_weeks": 2,
+  "actual_duration_hours": null,
+
+  "dependencies": {
+    "blocks_on": ["security-agent"],
+    "reason": "storage.ts file conflict - Security Agent modifies storage.ts for password hashing",
+    "must_wait_for_merge": true
+  },
+
+  "git": {
+    "branch": "refactor/backend-modules",
+    "base_branch": "main",
+    "commit_prefix": "refactor(backend)",
+    "pr_title": "Backend Modularization: Extract 8 Domain Modules from storage.ts",
+    "pr_labels": ["refactoring", "backend", "P1", "breaking-change"]
+  },
+
+  "subagents": {
+    "enabled": true,
+    "strategy": "parallel",
+    "count": 8,
+    "coordination": "parent-orchestrated",
+    "subagent_list": [
+      {
+        "id": "auth-module-agent",
+        "module": "auth",
+        "estimated_days": 2,
+        "lines_to_extract": "~400 LOC"
+      },
+      {
+        "id": "users-module-agent",
+        "module": "users",
+        "estimated_days": 3,
+        "lines_to_extract": "~600 LOC"
+      },
+      {
+        "id": "objects-module-agent",
+        "module": "objects",
+        "estimated_days": 3,
+        "lines_to_extract": "~700 LOC"
+      },
+      {
+        "id": "energy-module-agent",
+        "module": "energy",
+        "estimated_days": 3,
+        "lines_to_extract": "~600 LOC"
+      },
+      {
+        "id": "temperature-module-agent",
+        "module": "temperature",
+        "estimated_days": 2,
+        "lines_to_extract": "~400 LOC"
+      },
+      {
+        "id": "monitoring-module-agent",
+        "module": "monitoring",
+        "estimated_days": 2,
+        "lines_to_extract": "~500 LOC"
+      },
+      {
+        "id": "ki-reports-module-agent",
+        "module": "ki-reports",
+        "estimated_days": 2,
+        "lines_to_extract": "~400 LOC"
+      },
+      {
+        "id": "settings-module-agent",
+        "module": "settings",
+        "estimated_days": 2,
+        "lines_to_extract": "~400 LOC"
+      }
+    ]
+  },
+
+  "target_structure": {
+    "base_path": "apps/backend-api/src/modules",
+    "module_pattern": {
+      "controller": "{module}.controller.ts",
+      "service": "{module}.service.ts",
+      "repository": "{module}.repository.ts",
+      "routes": "{module}.routes.ts",
+      "types": "{module}.types.ts",
+      "tests": "__tests__/{module}.test.ts"
+    }
+  },
+
+  "tasks_file": "tasks.json",
+  "prompt_file": "prompt.md",
+
+  "verification": {
+    "before_commit": [
+      "npm run type-check",
+      "npm run lint",
+      "npm run test:unit"
+    ],
+    "after_module_extraction": [
+      "npm run test:integration",
+      "npm run test:e2e",
+      "npm run build"
+    ],
+    "final_verification": [
+      "npm run test:coverage",
+      "npm audit",
+      "npm run build",
+      "verify storage.ts deleted or empty"
+    ]
+  },
+
+  "success_criteria": {
+    "storage_ts_refactored": "File deleted or <10 LOC",
+    "modules_created": 8,
+    "repository_pattern": "Implemented in all modules",
+    "api_endpoints_functional": "100% (all 94 endpoints work)",
+    "tests_passing": true,
+    "test_coverage": "≥75%",
+    "build_successful": true,
+    "no_regressions": "All integration tests pass"
+  },
+
+  "rollback": {
+    "strategy": "git-revert",
+    "commands": [
+      "git checkout main",
+      "git branch rollback-backend-$(date +%Y%m%d)",
+      "git reset --hard <pre-refactor-commit>",
+      "npm install",
+      "npm run build",
+      "npm run test"
+    ],
+    "data_changes": false,
+    "migration_required": false
+  },
+
+  "monitoring": {
+    "report_interval_minutes": 30,
+    "metrics": [
+      "modules_extracted",
+      "lines_refactored",
+      "tests_added",
+      "endpoints_migrated"
+    ]
+  },
+
+  "tools": [
+    "Read",
+    "Write",
+    "Edit",
+    "Bash",
+    "Grep",
+    "Glob"
+  ],
+
+  "autonomy_level": "high",
+  "approval_required_for": [
+    "delete storage.ts (after all modules extracted)",
+    "breaking API changes",
+    "database schema changes"
+  ]
+}

@@ -1,0 +1,594 @@
+{
+  "agent_id": "backend-modularization-agent",
+  "total_tasks": 25,
+  "estimated_duration_hours": 80,
+
+  "tasks": [
+    {
+      "id": "BKD-1.1",
+      "title": "Analyze storage.ts and identify module boundaries",
+      "priority": "P0",
+      "estimated_hours": 2,
+      "steps": [
+        "Read entire server/storage.ts file",
+        "Identify all exported methods and their responsibilities",
+        "Group methods by domain (auth, users, objects, energy, etc.)",
+        "Document dependencies between methods",
+        "Create module extraction plan"
+      ],
+      "success_criteria": [
+        "All methods categorized by domain",
+        "Dependencies mapped",
+        "Extraction plan documented"
+      ],
+      "verification": "grep 'export' server/storage.ts | wc -l"
+    },
+
+    {
+      "id": "BKD-1.2",
+      "title": "Create base module structure for all 8 modules",
+      "priority": "P0",
+      "estimated_hours": 1,
+      "steps": [
+        "Create directories: server/src/modules/{auth,users,objects,energy,temperature,monitoring,ki-reports,settings}",
+        "Create template files for each module: controller, service, repository, routes, types",
+        "Add __tests__ directories",
+        "Create index.ts barrel exports"
+      ],
+      "success_criteria": [
+        "8 module directories created",
+        "48 template files created (8 modules × 6 files)",
+        "Directory structure matches target architecture"
+      ],
+      "verification": "find server/src/modules -type d | wc -l"
+    },
+
+    {
+      "id": "BKD-2.1",
+      "title": "Spawn 8 parallel subagents for module extraction",
+      "priority": "P0",
+      "estimated_hours": 1,
+      "steps": [
+        "For each module, create subagent configuration",
+        "Spawn subagent with specific extraction task",
+        "Assign methods from storage.ts to each subagent",
+        "Provide repository pattern template",
+        "Set subagent success criteria"
+      ],
+      "success_criteria": [
+        "8 subagents spawned successfully",
+        "Each subagent has clear extraction task",
+        "No method overlap between subagents"
+      ],
+      "verification": "Check orchestrator status for 8 running subagents"
+    },
+
+    {
+      "id": "BKD-3.1",
+      "title": "Monitor and coordinate subagent work",
+      "priority": "P0",
+      "estimated_hours": 40,
+      "steps": [
+        "Monitor subagent progress every 30 minutes",
+        "Resolve conflicts if subagents need shared code",
+        "Ensure consistent patterns across modules",
+        "Review extracted code for quality",
+        "Coordinate shared type definitions"
+      ],
+      "success_criteria": [
+        "All subagents complete successfully",
+        "No code duplication between modules",
+        "Consistent patterns enforced"
+      ],
+      "verification": "python orchestrator.py status | grep 'complete'"
+    },
+
+    {
+      "id": "BKD-4.1",
+      "title": "Extract shared utilities and types",
+      "priority": "P0",
+      "estimated_hours": 3,
+      "steps": [
+        "Identify code shared by multiple modules",
+        "Create server/src/shared/ directory",
+        "Move shared types to shared/types/",
+        "Move shared utilities to shared/utils/",
+        "Update imports in all modules"
+      ],
+      "success_criteria": [
+        "Shared code centralized",
+        "No code duplication",
+        "All imports updated"
+      ],
+      "verification": "npm run type-check"
+    },
+
+    {
+      "id": "BKD-4.2",
+      "title": "Update server/app.ts to use new modules",
+      "priority": "P0",
+      "estimated_hours": 2,
+      "steps": [
+        "Import all module routers",
+        "Replace old route registrations with module routers",
+        "Update middleware application order",
+        "Remove imports of storage.ts",
+        "Verify all endpoints still registered"
+      ],
+      "success_criteria": [
+        "All 8 module routers imported",
+        "All 94 endpoints still accessible",
+        "No references to storage.ts",
+        "Server starts successfully"
+      ],
+      "verification": "npm run dev && curl http://localhost:5000/api/health"
+    },
+
+    {
+      "id": "BKD-5.1",
+      "title": "Update all controllers to use new modules",
+      "priority": "P0",
+      "estimated_hours": 4,
+      "steps": [
+        "Find all files importing from storage.ts",
+        "Update imports to use new module structure",
+        "Replace storage method calls with module service calls",
+        "Test each controller after update"
+      ],
+      "success_criteria": [
+        "No imports of storage.ts remain",
+        "All controllers use module services",
+        "All controller tests pass"
+      ],
+      "verification": "grep -r 'from.*storage' server/ --include='*.ts' | wc -l (should be 0)"
+    },
+
+    {
+      "id": "BKD-6.1",
+      "title": "Implement dependency injection for services",
+      "priority": "P1",
+      "estimated_hours": 3,
+      "steps": [
+        "Create service container/registry",
+        "Inject repository instances into services",
+        "Inject service instances into controllers",
+        "Add interface definitions for dependency injection"
+      ],
+      "success_criteria": [
+        "Dependency injection implemented",
+        "Services decoupled from repositories",
+        "Controllers decoupled from services",
+        "Unit tests easier to mock"
+      ],
+      "verification": "Check that services accept repositories as constructor params"
+    },
+
+    {
+      "id": "BKD-7.1",
+      "title": "Write unit tests for all repositories",
+      "priority": "P1",
+      "estimated_hours": 8,
+      "steps": [
+        "For each of 8 modules, write repository tests",
+        "Test CRUD operations",
+        "Test query methods",
+        "Test error handling",
+        "Mock database connections"
+      ],
+      "success_criteria": [
+        "All repositories have unit tests",
+        "Repository test coverage >80%",
+        "All tests passing"
+      ],
+      "verification": "npm run test:coverage -- server/src/modules/**/repository.ts"
+    },
+
+    {
+      "id": "BKD-7.2",
+      "title": "Write unit tests for all services",
+      "priority": "P1",
+      "estimated_hours": 8,
+      "steps": [
+        "For each of 8 modules, write service tests",
+        "Test business logic",
+        "Test validation",
+        "Test error handling",
+        "Mock repository dependencies"
+      ],
+      "success_criteria": [
+        "All services have unit tests",
+        "Service test coverage >80%",
+        "All tests passing"
+      ],
+      "verification": "npm run test:coverage -- server/src/modules/**/service.ts"
+    },
+
+    {
+      "id": "BKD-8.1",
+      "title": "Write integration tests for all modules",
+      "priority": "P1",
+      "estimated_hours": 6,
+      "steps": [
+        "Create integration test suite for each module",
+        "Test full request → response flow",
+        "Test with real database (test DB)",
+        "Test authentication/authorization",
+        "Test error scenarios"
+      ],
+      "success_criteria": [
+        "All 8 modules have integration tests",
+        "All API endpoints tested",
+        "Integration tests passing"
+      ],
+      "verification": "npm run test:integration"
+    },
+
+    {
+      "id": "BKD-9.1",
+      "title": "Create module documentation",
+      "priority": "P1",
+      "estimated_hours": 4,
+      "steps": [
+        "For each module, create README.md",
+        "Document module responsibilities",
+        "Document API endpoints",
+        "Document data models",
+        "Add usage examples"
+      ],
+      "success_criteria": [
+        "8 module READMEs created",
+        "All endpoints documented",
+        "Usage examples provided"
+      ],
+      "verification": "ls server/src/modules/*/README.md | wc -l (should be 8)"
+    },
+
+    {
+      "id": "BKD-10.1",
+      "title": "Verify all 94 API endpoints still functional",
+      "priority": "P0",
+      "estimated_hours": 3,
+      "steps": [
+        "Create endpoint verification script",
+        "Test each endpoint with sample data",
+        "Compare responses before/after refactoring",
+        "Document any breaking changes (should be none)",
+        "Fix any broken endpoints"
+      ],
+      "success_criteria": [
+        "All 94 endpoints return correct responses",
+        "No breaking changes",
+        "Response format unchanged",
+        "All tests passing"
+      ],
+      "verification": "./scripts/verify-all-endpoints.sh"
+    },
+
+    {
+      "id": "BKD-11.1",
+      "title": "Performance benchmarking",
+      "priority": "P1",
+      "estimated_hours": 2,
+      "steps": [
+        "Run performance benchmarks on key endpoints",
+        "Compare with pre-refactoring benchmarks",
+        "Identify any performance regressions",
+        "Optimize if needed",
+        "Document performance changes"
+      ],
+      "success_criteria": [
+        "No performance regressions >10%",
+        "Most endpoints same or faster",
+        "Benchmarks documented"
+      ],
+      "verification": "npm run benchmark"
+    },
+
+    {
+      "id": "BKD-12.1",
+      "title": "Delete or archive storage.ts",
+      "priority": "P0",
+      "estimated_hours": 1,
+      "approval_required": true,
+      "steps": [
+        "Verify no imports of storage.ts remain",
+        "Verify all functionality migrated to modules",
+        "Run full test suite one final time",
+        "Request approval to delete storage.ts",
+        "Delete storage.ts or move to archive/"
+      ],
+      "success_criteria": [
+        "storage.ts deleted or archived",
+        "No references to storage.ts in codebase",
+        "All tests still passing",
+        "Build successful"
+      ],
+      "verification": "find server -name 'storage.ts' | wc -l (should be 0 or in archive)"
+    },
+
+    {
+      "id": "BKD-13.1",
+      "title": "Update imports throughout codebase",
+      "priority": "P0",
+      "estimated_hours": 2,
+      "steps": [
+        "Find all files importing from storage",
+        "Update to import from new modules",
+        "Update import paths",
+        "Verify no circular dependencies",
+        "Run type checker"
+      ],
+      "success_criteria": [
+        "All imports updated",
+        "No circular dependencies",
+        "Type checking passes"
+      ],
+      "verification": "npm run type-check"
+    },
+
+    {
+      "id": "BKD-14.1",
+      "title": "Create migration guide for developers",
+      "priority": "P1",
+      "estimated_hours": 2,
+      "steps": [
+        "Document old structure vs new structure",
+        "Provide import path migration examples",
+        "Document new patterns (repository, service, controller)",
+        "Create troubleshooting guide",
+        "Add examples for common operations"
+      ],
+      "success_criteria": [
+        "Migration guide complete",
+        "Examples provided",
+        "Troubleshooting section added"
+      ],
+      "verification": "docs/backend-migration-guide.md created"
+    },
+
+    {
+      "id": "BKD-15.1",
+      "title": "Update API documentation",
+      "priority": "P1",
+      "estimated_hours": 2,
+      "steps": [
+        "Update endpoint documentation with new module structure",
+        "Document any new patterns or conventions",
+        "Update OpenAPI/Swagger spec",
+        "Regenerate API docs",
+        "Verify documentation accuracy"
+      ],
+      "success_criteria": [
+        "API docs updated",
+        "OpenAPI spec current",
+        "All endpoints documented"
+      ],
+      "verification": "API docs generated successfully"
+    },
+
+    {
+      "id": "BKD-16.1",
+      "title": "Code quality verification",
+      "priority": "P1",
+      "estimated_hours": 2,
+      "steps": [
+        "Run ESLint on all new modules",
+        "Fix any linting errors",
+        "Run Prettier for formatting",
+        "Check for code duplication",
+        "Verify naming conventions"
+      ],
+      "success_criteria": [
+        "Zero ESLint errors",
+        "Code formatted consistently",
+        "No significant duplication",
+        "Naming conventions followed"
+      ],
+      "verification": "npm run lint && npm run format:check"
+    },
+
+    {
+      "id": "BKD-17.1",
+      "title": "Security scan of new modules",
+      "priority": "P0",
+      "estimated_hours": 1,
+      "steps": [
+        "Run npm audit",
+        "Scan for common vulnerabilities",
+        "Verify input validation in all services",
+        "Check for SQL injection risks",
+        "Verify authentication on all routes"
+      ],
+      "success_criteria": [
+        "Zero critical vulnerabilities",
+        "Input validation implemented",
+        "No SQL injection risks",
+        "All routes authenticated"
+      ],
+      "verification": "npm audit && npm run security-scan"
+    },
+
+    {
+      "id": "BKD-18.1",
+      "title": "Create rollback procedure documentation",
+      "priority": "P0",
+      "estimated_hours": 1,
+      "steps": [
+        "Document steps to rollback to storage.ts",
+        "Create rollback script",
+        "Test rollback procedure",
+        "Document potential issues",
+        "Add emergency contacts"
+      ],
+      "success_criteria": [
+        "Rollback procedure documented",
+        "Rollback script tested",
+        "Emergency procedures clear"
+      ],
+      "verification": "docs/backend-rollback-procedure.md created"
+    },
+
+    {
+      "id": "BKD-19.1",
+      "title": "Final integration testing",
+      "priority": "P0",
+      "estimated_hours": 4,
+      "steps": [
+        "Run complete integration test suite",
+        "Test all critical user flows",
+        "Test edge cases",
+        "Load testing on new structure",
+        "Verify no regressions"
+      ],
+      "success_criteria": [
+        "All integration tests pass",
+        "Critical flows verified",
+        "Load testing passes",
+        "No regressions found"
+      ],
+      "verification": "npm run test:integration && npm run test:e2e"
+    },
+
+    {
+      "id": "BKD-20.1",
+      "title": "Create pull request",
+      "priority": "P0",
+      "estimated_hours": 1,
+      "steps": [
+        "Review all changes",
+        "Write comprehensive PR description",
+        "List breaking changes (if any)",
+        "Add migration instructions",
+        "Request reviews from senior developers",
+        "Create PR"
+      ],
+      "success_criteria": [
+        "PR created successfully",
+        "Description comprehensive",
+        "Reviewers assigned",
+        "CI/CD checks passing"
+      ],
+      "verification": "PR URL generated"
+    },
+
+    {
+      "id": "BKD-21.1",
+      "title": "Address PR review feedback",
+      "priority": "P0",
+      "estimated_hours": 4,
+      "steps": [
+        "Read all review comments",
+        "Make requested changes",
+        "Add additional tests if requested",
+        "Update documentation as needed",
+        "Re-request review"
+      ],
+      "success_criteria": [
+        "All review comments addressed",
+        "Changes approved by reviewers",
+        "CI/CD still passing"
+      ],
+      "verification": "PR approved by all reviewers"
+    },
+
+    {
+      "id": "BKD-22.1",
+      "title": "Pre-merge verification",
+      "priority": "P0",
+      "estimated_hours": 2,
+      "steps": [
+        "Rebase on latest main",
+        "Resolve any merge conflicts",
+        "Run full test suite",
+        "Run build",
+        "Verify CI/CD passes"
+      ],
+      "success_criteria": [
+        "No merge conflicts",
+        "All tests passing",
+        "Build successful",
+        "CI/CD green"
+      ],
+      "verification": "All checks passing"
+    },
+
+    {
+      "id": "BKD-23.1",
+      "title": "Merge to main",
+      "priority": "P0",
+      "estimated_hours": 1,
+      "approval_required": true,
+      "steps": [
+        "Final approval from tech lead",
+        "Merge PR to main",
+        "Tag release v2.0.0-modular-backend",
+        "Trigger deployment to staging",
+        "Monitor for issues"
+      ],
+      "success_criteria": [
+        "PR merged successfully",
+        "Release tagged",
+        "Staging deployment successful",
+        "No immediate issues"
+      ],
+      "verification": "git tag | grep v2.0.0-modular-backend"
+    },
+
+    {
+      "id": "BKD-24.1",
+      "title": "Post-merge monitoring",
+      "priority": "P0",
+      "estimated_hours": 4,
+      "steps": [
+        "Monitor application logs",
+        "Check error rates",
+        "Verify all endpoints responding",
+        "Monitor performance metrics",
+        "Address any issues immediately"
+      ],
+      "success_criteria": [
+        "Error rate normal (<1%)",
+        "All endpoints healthy",
+        "Performance within expected range",
+        "No critical issues"
+      ],
+      "verification": "24 hours of stable operation"
+    },
+
+    {
+      "id": "BKD-25.1",
+      "title": "Create completion report",
+      "priority": "P1",
+      "estimated_hours": 2,
+      "steps": [
+        "Document what was accomplished",
+        "List all modules created",
+        "Document metrics (LOC, tests, coverage, etc.)",
+        "Document lessons learned",
+        "Provide recommendations for future work"
+      ],
+      "success_criteria": [
+        "Completion report created",
+        "Metrics documented",
+        "Lessons learned captured"
+      ],
+      "verification": "docs/backend-modularization-report.md created"
+    }
+  ],
+
+  "module_extraction_tasks": {
+    "note": "Each subagent receives a subset of these tasks specific to their module",
+    "per_module": [
+      "Extract methods from storage.ts",
+      "Create repository class",
+      "Create service class",
+      "Create controller class",
+      "Define routes",
+      "Define types/interfaces",
+      "Write unit tests (repository)",
+      "Write unit tests (service)",
+      "Write integration tests",
+      "Document module"
+    ]
+  }
+}

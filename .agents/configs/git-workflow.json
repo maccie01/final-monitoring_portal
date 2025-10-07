@@ -1,0 +1,155 @@
+{
+  "git_workflow": {
+    "description": "Git workflow for multi-agent refactoring",
+
+    "branch_strategy": {
+      "base_branch": "main",
+      "feature_branch_format": "{category}/{description}",
+
+      "agent_branches": {
+        "security-agent": "security/backend-hardening",
+        "frontend-cleanup-agent": "cleanup/frontend-dead-code",
+        "backend-modularization-agent": "refactor/backend-modules",
+        "database-optimizer-agent": "perf/database-optimization",
+        "containerization-agent": "docker/containerization"
+      },
+
+      "protection_rules": {
+        "main": {
+          "require_pr": true,
+          "require_reviews": 1,
+          "require_tests_passing": true,
+          "no_direct_push": true
+        }
+      }
+    },
+
+    "commit_conventions": {
+      "format": "<type>(<agent>): <subject>\\n\\n<body>\\n\\n<footer>",
+
+      "types": {
+        "fix": "Bug fix or security fix",
+        "feat": "New feature or capability",
+        "refactor": "Code restructuring without functional changes",
+        "perf": "Performance improvements",
+        "test": "Adding or updating tests",
+        "docs": "Documentation changes",
+        "style": "Code style changes (formatting, etc.)",
+        "ci": "CI/CD changes"
+      },
+
+      "agents": {
+        "security": "Security Agent",
+        "cleanup": "Frontend Cleanup Agent",
+        "backend": "Backend Modularization Agent",
+        "perf": "Performance/Database Agent",
+        "docker": "Containerization Agent"
+      },
+
+      "examples": [
+        "fix(security): implement bcrypt password hashing",
+        "refactor(cleanup): remove 26 unused UI components",
+        "feat(backend): extract users module with repository pattern",
+        "perf(database): fix N+1 query in getUserById",
+        "ci(docker): add multi-stage Dockerfile for backend"
+      ],
+
+      "body_requirements": [
+        "What changed (files, LOC)",
+        "Why the change was made",
+        "Any breaking changes",
+        "Related task ID"
+      ],
+
+      "footer_format": {
+        "task_reference": "Task: {TASK-ID}",
+        "impact": "Impact: {CRITICAL|HIGH|MEDIUM|LOW}",
+        "tests": "Tests: {PASS|FAIL}",
+        "reviewed_by": "Reviewed-by: {orchestrator|human}"
+      }
+    },
+
+    "merge_strategy": {
+      "parallel_branches": {
+        "can_merge_independently": [
+          ["security/backend-hardening", "cleanup/frontend-dead-code"],
+          ["perf/database-optimization", "docker/containerization"]
+        ],
+        "must_coordinate": [
+          ["refactor/backend-modules", "perf/database-optimization"],
+          ["cleanup/frontend-dead-code", "refactor/frontend-modules"]
+        ]
+      },
+
+      "merge_order_phases": [
+        {
+          "phase": 1,
+          "parallel_merge": [
+            "security/backend-hardening",
+            "cleanup/frontend-dead-code"
+          ],
+          "description": "Phase 1: Security fixes + Dead code removal"
+        },
+        {
+          "phase": 2,
+          "sequential_merge": [
+            "refactor/backend-modules",
+            "perf/database-optimization"
+          ],
+          "description": "Phase 2: Backend refactoring → Performance optimization"
+        },
+        {
+          "phase": 3,
+          "parallel_merge": [
+            "refactor/frontend-modules",
+            "docker/containerization"
+          ],
+          "description": "Phase 3: Frontend refactoring + Docker setup"
+        }
+      ],
+
+      "conflict_resolution": {
+        "automatic": {
+          "package.json": "merge dependencies, orchestrator resolves conflicts",
+          "package-lock.json": "regenerate after merge",
+          ".gitignore": "merge additions"
+        },
+        "manual": {
+          "source_files": "orchestrator coordinates resolution",
+          "config_files": "human review required"
+        }
+      }
+    },
+
+    "hooks": {
+      "pre_commit": {
+        "enabled": true,
+        "checks": [
+          "npm run lint",
+          "npm run type-check",
+          "check no secrets in diff"
+        ]
+      },
+      "pre_push": {
+        "enabled": true,
+        "checks": [
+          "npm run build",
+          "npm test"
+        ]
+      }
+    },
+
+    "tagging_strategy": {
+      "format": "v{major}.{minor}.{patch}-{label}",
+      "examples": [
+        "v1.1.0-security-hardened",
+        "v1.2.0-cleanup-complete",
+        "v2.0.0-modular-backend",
+        "v2.1.0-modular-frontend",
+        "v2.2.0-containerized",
+        "v3.0.0-monorepo"
+      ],
+      "when_to_tag": "After each major phase completion"
+    }
+  }
+}

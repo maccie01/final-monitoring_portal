@@ -1,0 +1,96 @@
+{
+  "agent_id": "database-optimizer-agent",
+  "name": "Database Optimizer Agent",
+  "version": "1.0.0",
+  "description": "Optimizes database queries, adds indexes, implements caching, and improves overall database performance",
+
+  "priority": "P1",
+  "estimated_duration_weeks": 1,
+  "actual_duration_hours": null,
+
+  "dependencies": {
+    "blocks_on": ["backend-modularization-agent"],
+    "reason": "Needs new module structure to optimize repository queries",
+    "must_wait_for_merge": true
+  },
+
+  "git": {
+    "branch": "perf/database-optimization",
+    "base_branch": "main",
+    "commit_prefix": "perf(db)",
+    "pr_title": "Database Optimization: Indexes, Caching, Query Improvements",
+    "pr_labels": ["performance", "database", "P1"]
+  },
+
+  "tasks_file": "tasks.json",
+  "prompt_file": "prompt.md",
+
+  "verification": {
+    "before_commit": [
+      "npm run type-check",
+      "npm run lint",
+      "npm run test:unit"
+    ],
+    "after_optimization": [
+      "npm run test:integration",
+      "npm run benchmark",
+      "verify query performance improved"
+    ],
+    "final_verification": [
+      "npm run test:coverage",
+      "npm audit",
+      "npm run build",
+      "run load tests"
+    ]
+  },
+
+  "success_criteria": {
+    "query_performance_improved": "30-50% faster on average",
+    "indexes_added": "All frequently queried fields indexed",
+    "caching_implemented": "Redis caching for expensive queries",
+    "connection_pool_optimized": "Already done by Security Agent",
+    "monitoring_dashboard": "Created and functional",
+    "tests_passing": true,
+    "no_regressions": "All functionality preserved"
+  },
+
+  "rollback": {
+    "strategy": "git-revert",
+    "commands": [
+      "git checkout main",
+      "git revert <optimization-commit>",
+      "DROP indexes if causing issues (documented in rollback)",
+      "npm install",
+      "npm run build"
+    ],
+    "data_changes": false,
+    "migration_required": true,
+    "migration_rollback": "DROP INDEX statements provided"
+  },
+
+  "monitoring": {
+    "report_interval_minutes": 30,
+    "metrics": [
+      "queries_optimized",
+      "indexes_added",
+      "cache_hit_ratio",
+      "avg_query_time"
+    ]
+  },
+
+  "tools": [
+    "Read",
+    "Write",
+    "Edit",
+    "Bash",
+    "Grep",
+    "Glob"
+  ],
+
+  "autonomy_level": "high",
+  "approval_required_for": [
+    "database schema changes",
+    "index creation on production",
+    "caching strategy changes"
+  ]
+}
