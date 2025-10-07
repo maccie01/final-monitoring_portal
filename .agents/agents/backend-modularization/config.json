@@ -91,6 +91,7 @@
     }
   },
 
+  "source_document": ".agents/agents/backend-modularization/tasks.md",
   "tasks_file": "tasks.json",
   "prompt_file": "prompt.md",
 
