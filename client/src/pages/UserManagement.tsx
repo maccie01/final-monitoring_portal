@@ -1274,7 +1274,7 @@ export default function UserManagement() {
                           <TableCell className="py-1 px-4 pl-[10px] pr-[10px]">
                             <div className="flex space-x-2">
                               {((currentUser as any)?.role === "user" || (currentUser as any)?.role === "admin") && (
-                                <Button size="sm" variant="outline" className="h-8 w-8 p-0" onClick={() => handleEditUser(user)}>
+                                <Button size="sm" variant="outline" className="h-8 w-8 p-0" onClick={() => handleEditUser(user)} aria-label="Benutzer bearbeiten">
                                   <PencilIcon className="h-3 w-3 text-blue-600" />
                                 </Button>
                               )}
@@ -1456,18 +1456,19 @@ export default function UserManagement() {
                           </TableCell>
                           <TableCell className="py-1 px-4 pl-[10px] pr-[10px]">
                             <div className="flex space-x-2">
-                              <Button size="sm" variant="outline" className="h-8 w-8 p-0" onClick={() => handleEditProfile(profile)}>
+                              <Button size="sm" variant="outline" className="h-8 w-8 p-0" onClick={() => handleEditProfile(profile)} aria-label="Profil bearbeiten">
                                 <PencilIcon className="h-3 w-3 text-blue-600" />
                               </Button>
-                              <Button 
-                                size="sm" 
-                                variant="outline" 
+                              <Button
+                                size="sm"
+                                variant="outline"
                                 className="h-8 w-8 p-0"
                                 onClick={() => {
                                   if (confirm("Sind Sie sicher, dass Sie dieses Profil löschen möchten?")) {
                                     deleteProfileMutation.mutate(profile.id);
                                   }
                                 }}
+                                aria-label="Profil löschen"
                               >
                                 <Trash2 className="h-3 w-3 text-red-600" />
                               </Button>
@@ -1756,10 +1757,10 @@ export default function UserManagement() {
                           </TableCell>
                           <TableCell className="py-1 px-4 pl-[10px] pr-[10px]">
                             <div className="flex space-x-2">
-                              <Button size="sm" variant="outline" className="h-8 w-8 p-0" onClick={() => handleEditMandate(mandant)}>
+                              <Button size="sm" variant="outline" className="h-8 w-8 p-0" onClick={() => handleEditMandate(mandant)} aria-label="Mandant bearbeiten">
                                 <PencilIcon className="h-3 w-3 text-blue-600" />
                               </Button>
-                              <Button size="sm" variant="outline" className="h-8 w-8 p-0" onClick={() => handleDeleteMandate(mandant.id)}>
+                              <Button size="sm" variant="outline" className="h-8 w-8 p-0" onClick={() => handleDeleteMandate(mandant.id)} aria-label="Mandant löschen">
                                 <Trash2 className="h-3 w-3 text-red-600" />
                               </Button>
                             </div>
@@ -1880,20 +1881,22 @@ export default function UserManagement() {
                           </TableCell>
                           <TableCell className="py-1 px-4 pl-[10px] pr-[10px]">
                             <div className="flex space-x-2">
-                              <Button 
-                                size="sm" 
-                                variant="outline" 
+                              <Button
+                                size="sm"
+                                variant="outline"
                                 className="h-8 w-8 p-0"
                                 onClick={() => handleEditObjectGroup(group)}
+                                aria-label="Objektgruppe bearbeiten"
                               >
                                 <PencilIcon className="h-3 w-3 text-blue-600" />
                               </Button>
-                              <Button 
-                                size="sm" 
-                                variant="outline" 
+                              <Button
+                                size="sm"
+                                variant="outline"
                                 className="h-8 w-8 p-0"
                                 onClick={() => handleDeleteObjectGroup(group)}
                                 disabled={deleteObjectGroupMutation.isPending}
+                                aria-label="Objektgruppe löschen"
                               >
                                 <Trash2 className="h-3 w-3 text-red-600" />
                               </Button>

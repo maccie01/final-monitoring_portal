@@ -170,6 +170,7 @@ export default function ObjektinfoContent({
                 variant="outline"
                 onClick={onEdit}
                 className="h-8 w-8 p-0"
+                aria-label="Objekt bearbeiten"
               >
                 <PencilIcon className="h-4 w-4" />
               </Button>

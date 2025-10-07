@@ -1795,6 +1795,7 @@ export default function SystemPortalSetup({ configType, title, description }: Sy
                         variant="ghost"
                         className="h-8 w-8 p-0"
                         onClick={loadSettingsdbAltConfig}
+                        aria-label="Konfiguration bearbeiten"
                       >
                         <Edit className="w-3 h-3" />
                       </Button>

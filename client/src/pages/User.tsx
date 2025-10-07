@@ -558,6 +558,7 @@ export default function User() {
                         size="sm"
                         onClick={() => handleEditUser(user)}
                         className="h-8 w-8 p-0"
+                        aria-label="Benutzer bearbeiten"
                       >
                         <Edit2 className="h-4 w-4" />
                       </Button>
