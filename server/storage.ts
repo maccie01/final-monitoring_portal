@@ -41,6 +41,7 @@ import {
 import { getDb, db } from "./db";
 import { eq, desc, and, gte, lte, count, sql, arrayContains, asc, inArray, or, SQL } from "drizzle-orm";
 import { ConnectionPoolManager } from "./connection-pool";
+import bcrypt from "bcrypt";
 
 export interface IStorage {
   // User operations (used for session-based authentication)
@@ -369,6 +370,11 @@ export class DatabaseStorage implements IStorage {
   }
 
   async upsertUser(userData: UpsertUser): Promise<User> {
+    // Hash password if provided (for new users or password updates)
+    if (userData.password) {
+      userData.password = await bcrypt.hash(userData.password, 12);
+    }
+
     // Für neue Benutzer: Einfach insert ohne conflict
     if (!userData.id) {
       // Stelle sicher, dass die SEQUENCE in der Portal-DB existiert
@@ -377,18 +383,18 @@ export class DatabaseStorage implements IStorage {
       } catch (e) {
         console.log("SEQUENCE bereits vorhanden oder erstellt");
       }
-      
+
       // PostgreSQL Sequenz für automatisches Hochzählen ab 100
       const result = await getDb().execute(sql`SELECT nextval('user_id_seq') as next_id`);
       const nextId = Number(result.rows[0].next_id);
-      
+
       const [user] = await getDb()
         .insert(users)
         .values({ ...userData, id: nextId.toString() })
         .returning();
       return user;
     }
-    
+
     // Für bestehende Benutzer: Direktes Update
     const [user] = await getDb()
       .update(users)
@@ -402,17 +408,22 @@ export class DatabaseStorage implements IStorage {
   }
 
   async updateUser(id: string, userData: Partial<UpsertUser>): Promise<User> {
+    // Hash password if provided (for password updates)
+    if (userData.password) {
+      userData.password = await bcrypt.hash(userData.password, 12);
+    }
+
     // Bereinige userData - entferne nicht-existierende Felder
     const cleanUserData = { ...userData } as any;
     // Entferne Felder, die nicht in der Datenbank existieren
     delete cleanUserData.groupIds;
     delete cleanUserData.autoId;
-    
+
     // Konvertiere mandantAccess Array-String zu echtem Array für PostgreSQL
     if (cleanUserData.mandantAccess !== undefined) {
       // Wenn es ein leeres Objekt {} ist, setze auf leeres Array
-      if (typeof cleanUserData.mandantAccess === 'object' && 
-          !Array.isArray(cleanUserData.mandantAccess) && 
+      if (typeof cleanUserData.mandantAccess === 'object' &&
+          !Array.isArray(cleanUserData.mandantAccess) &&
           Object.keys(cleanUserData.mandantAccess).length === 0) {
         cleanUserData.mandantAccess = [];
       }
@@ -3352,12 +3363,15 @@ export class DatabaseStorage implements IStorage {
         .limit(1);
 
       if (!user || !user.password) {
+        // User not found - use dummy bcrypt.compare to prevent timing attacks
+        await bcrypt.compare(password, '$2b$12$dummy.hash.to.prevent.timing.attacks.xxxxxxxxxxxxxxxxxxxxx');
         return null;
       }
 
-      // For now, simple password comparison
-      // In production, use bcrypt or similar hashing
-      if (user.password === password) {
+      // Secure password comparison using bcrypt
+      const isValid = await bcrypt.compare(password, user.password);
+
+      if (isValid) {
         return user;
       }
 
