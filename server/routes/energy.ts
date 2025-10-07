@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { energyController } from "../controllers/energyController";
-import { isAuthenticated } from "../middleware/auth";
+import { requireAuth } from "../middleware/auth";
 
 const router = Router();
 
@@ -8,8 +8,8 @@ const router = Router();
 // Energy Data API Routes (Energiedaten-Verwaltung)
 // =============================================================================
 
-// All energy routes require authentication (with demo session fallback)
-router.use(isAuthenticated); // Re-enabled for proper session handling
+// All energy routes require authentication
+router.use(requireAuth);
 
 // Energy data CRUD operations
 router.get('/energy-data', energyController.getEnergyData);

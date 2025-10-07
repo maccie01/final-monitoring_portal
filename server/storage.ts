@@ -41,6 +41,7 @@ import {
 import { getDb, db } from "./db";
 import { eq, desc, and, gte, lte, count, sql, arrayContains, asc, inArray, or, SQL } from "drizzle-orm";
 import { ConnectionPoolManager } from "./connection-pool";
+import bcrypt from "bcrypt";
 
 export interface IStorage {
   // User operations (used for session-based authentication)
@@ -200,137 +201,216 @@ export interface IStorage {
 export class DatabaseStorage implements IStorage {
   // User operations (used for session-based authentication)
   async getUser(id: string): Promise<User | undefined> {
-    // Vereinfachte Query ohne Join um Fehler zu diagnostizieren
-    const [result] = await getDb()
-      .select()
+    // Optimized query with LEFT JOIN to avoid N+1 problem
+    const result = await getDb()
+      .select({
+        // User fields
+        id: users.id,
+        username: users.username,
+        email: users.email,
+        password: users.password,
+        role: users.role,
+        mandantId: users.mandantId,
+        firstName: users.firstName,
+        lastName: users.lastName,
+        profileImageUrl: users.profileImageUrl,
+        userProfileId: users.userProfileId,
+        address: users.address,
+        mandantAccess: users.mandantAccess,
+        createdAt: users.createdAt,
+        updatedAt: users.updatedAt,
+        // UserProfile fields (nested object)
+        userProfile: {
+          id: userProfiles.id,
+          name: userProfiles.name,
+          startPage: userProfiles.startPage,
+          sidebar: userProfiles.sidebar,
+          createdAt: userProfiles.createdAt,
+          updatedAt: userProfiles.updatedAt,
+        },
+      })
       .from(users)
-      .where(eq(users.id, id));
+      .leftJoin(userProfiles, eq(users.userProfileId, userProfiles.id))
+      .where(eq(users.id, id))
+      .limit(1);
 
-    if (!result) return undefined;
+    if (!result[0]) return undefined;
 
-    // User Profile separat laden falls userProfileId vorhanden
-    let userProfile = null;
-    if (result.userProfileId) {
-      const [profile] = await getDb()
-        .select()
-        .from(userProfiles)
-        .where(eq(userProfiles.id, result.userProfileId));
-      userProfile = profile || null;
-    }
-    
+    // Transform result - set userProfile to null if no profile exists
+    const user = result[0];
     return {
-      ...result,
-      userProfile,
+      ...user,
+      userProfile: user.userProfile?.id ? user.userProfile : null,
     } as any;
   }
 
   async getUserByUsername(username: string): Promise<User | undefined> {
-    // Vereinfachte Query ohne Join um Drizzle-Fehler zu vermeiden
-    const [result] = await getDb()
-      .select()
+    // Optimized query with LEFT JOIN to avoid N+1 problem
+    const result = await getDb()
+      .select({
+        // User fields
+        id: users.id,
+        username: users.username,
+        email: users.email,
+        password: users.password,
+        role: users.role,
+        mandantId: users.mandantId,
+        firstName: users.firstName,
+        lastName: users.lastName,
+        profileImageUrl: users.profileImageUrl,
+        userProfileId: users.userProfileId,
+        address: users.address,
+        mandantAccess: users.mandantAccess,
+        createdAt: users.createdAt,
+        updatedAt: users.updatedAt,
+        // UserProfile fields (nested object)
+        userProfile: {
+          id: userProfiles.id,
+          name: userProfiles.name,
+          startPage: userProfiles.startPage,
+          sidebar: userProfiles.sidebar,
+          createdAt: userProfiles.createdAt,
+          updatedAt: userProfiles.updatedAt,
+        },
+      })
       .from(users)
-      .where(eq(users.username, username));
+      .leftJoin(userProfiles, eq(users.userProfileId, userProfiles.id))
+      .where(eq(users.username, username))
+      .limit(1);
 
-    if (!result) return undefined;
+    if (!result[0]) return undefined;
 
-    // User Profile separat laden falls userProfileId vorhanden
-    let userProfile = null;
-    if (result.userProfileId) {
-      const [profile] = await getDb()
-        .select()
-        .from(userProfiles)
-        .where(eq(userProfiles.id, result.userProfileId));
-      userProfile = profile || null;
-    }
-    
+    // Transform result - set userProfile to null if no profile exists
+    const user = result[0];
     return {
-      ...result,
-      userProfile,
+      ...user,
+      userProfile: user.userProfile?.id ? user.userProfile : null,
     } as any;
   }
 
   async getUserByEmail(email: string): Promise<User | undefined> {
-    // Vereinfachte Query ohne Join um Drizzle-Fehler zu vermeiden
-    const [result] = await getDb()
-      .select()
+    // Optimized query with LEFT JOIN to avoid N+1 problem
+    const result = await getDb()
+      .select({
+        // User fields
+        id: users.id,
+        username: users.username,
+        email: users.email,
+        password: users.password,
+        role: users.role,
+        mandantId: users.mandantId,
+        firstName: users.firstName,
+        lastName: users.lastName,
+        profileImageUrl: users.profileImageUrl,
+        userProfileId: users.userProfileId,
+        address: users.address,
+        mandantAccess: users.mandantAccess,
+        createdAt: users.createdAt,
+        updatedAt: users.updatedAt,
+        // UserProfile fields (nested object)
+        userProfile: {
+          id: userProfiles.id,
+          name: userProfiles.name,
+          startPage: userProfiles.startPage,
+          sidebar: userProfiles.sidebar,
+          createdAt: userProfiles.createdAt,
+          updatedAt: userProfiles.updatedAt,
+        },
+      })
       .from(users)
-      .where(eq(users.email, email));
+      .leftJoin(userProfiles, eq(users.userProfileId, userProfiles.id))
+      .where(eq(users.email, email))
+      .limit(1);
 
-    if (!result) return undefined;
+    if (!result[0]) return undefined;
 
-    // User Profile separat laden falls userProfileId vorhanden
-    let userProfile = null;
-    if (result.userProfileId) {
-      const [profile] = await getDb()
-        .select()
-        .from(userProfiles)
-        .where(eq(userProfiles.id, result.userProfileId));
-      userProfile = profile || null;
-    }
-    
+    // Transform result - set userProfile to null if no profile exists
+    const user = result[0];
     return {
-      ...result,
-      userProfile,
+      ...user,
+      userProfile: user.userProfile?.id ? user.userProfile : null,
     } as any;
   }
 
   async getUsers(): Promise<User[]> {
-    // Vereinfachte Query ohne Join um Drizzle-Fehler zu vermeiden
+    // Optimized query with LEFT JOIN to avoid N+1 problem
     const results = await getDb()
-      .select()
+      .select({
+        // User fields
+        id: users.id,
+        username: users.username,
+        email: users.email,
+        password: users.password,
+        role: users.role,
+        mandantId: users.mandantId,
+        firstName: users.firstName,
+        lastName: users.lastName,
+        profileImageUrl: users.profileImageUrl,
+        userProfileId: users.userProfileId,
+        address: users.address,
+        mandantAccess: users.mandantAccess,
+        createdAt: users.createdAt,
+        updatedAt: users.updatedAt,
+        // UserProfile fields (nested object)
+        userProfile: {
+          id: userProfiles.id,
+          name: userProfiles.name,
+          startPage: userProfiles.startPage,
+          sidebar: userProfiles.sidebar,
+          createdAt: userProfiles.createdAt,
+          updatedAt: userProfiles.updatedAt,
+        },
+      })
       .from(users)
+      .leftJoin(userProfiles, eq(users.userProfileId, userProfiles.id))
       .orderBy(users.createdAt);
 
-    // User Profiles separat laden und zuordnen
-    const usersWithProfiles = await Promise.all(
-      results.map(async (user: any) => {
-        let userProfile = null;
-        if (user.userProfileId) {
-          const [profile] = await getDb()
-            .select()
-            .from(userProfiles)
-            .where(eq(userProfiles.id, user.userProfileId));
-          userProfile = profile || null;
-        }
-        
-        return {
-          ...user,
-          userProfile,
-        };
-      })
-    );
-    
-    return usersWithProfiles as any;
+    // Transform results - set userProfile to null if no profile exists
+    return results.map(user => ({
+      ...user,
+      userProfile: user.userProfile?.id ? user.userProfile : null,
+    })) as any;
   }
 
   async getUsersByMandant(mandantId: number): Promise<User[]> {
-    // Vereinfachte Query ohne Join um Drizzle-Fehler zu vermeiden
+    // Optimized query with LEFT JOIN to avoid N+1 problem
     const results = await getDb()
-      .select()
+      .select({
+        // User fields
+        id: users.id,
+        username: users.username,
+        email: users.email,
+        password: users.password,
+        role: users.role,
+        mandantId: users.mandantId,
+        firstName: users.firstName,
+        lastName: users.lastName,
+        profileImageUrl: users.profileImageUrl,
+        userProfileId: users.userProfileId,
+        address: users.address,
+        mandantAccess: users.mandantAccess,
+        createdAt: users.createdAt,
+        updatedAt: users.updatedAt,
+        // UserProfile fields (nested object)
+        userProfile: {
+          id: userProfiles.id,
+          name: userProfiles.name,
+          startPage: userProfiles.startPage,
+          sidebar: userProfiles.sidebar,
+          createdAt: userProfiles.createdAt,
+          updatedAt: userProfiles.updatedAt,
+        },
+      })
       .from(users)
+      .leftJoin(userProfiles, eq(users.userProfileId, userProfiles.id))
       .where(eq(users.mandantId, mandantId))
       .orderBy(users.username);
 
-    // User Profiles separat laden und zuordnen
-    const usersWithProfiles = await Promise.all(
-      results.map(async (user: any) => {
-        let userProfile = null;
-        if (user.userProfileId) {
-          const [profile] = await getDb()
-            .select()
-            .from(userProfiles)
-            .where(eq(userProfiles.id, user.userProfileId));
-          userProfile = profile || null;
-        }
-        
-        return {
-          ...user,
-          userProfile,
-        };
-      })
-    );
-    
-    return usersWithProfiles as any;
+    // Transform results - set userProfile to null if no profile exists
+    return results.map(user => ({
+      ...user,
+      userProfile: user.userProfile?.id ? user.userProfile : null,
+    })) as any;
   }
 
   async getUsersByMandants(mandantIds: number[]): Promise<User[]> {
@@ -338,37 +418,53 @@ export class DatabaseStorage implements IStorage {
     if (!mandantIds || mandantIds.length === 0) {
       return [];
     }
-    
-    // Query für mehrere Mandanten mit inArray
+
+    // Optimized query with LEFT JOIN to avoid N+1 problem
     const results = await getDb()
-      .select()
+      .select({
+        // User fields
+        id: users.id,
+        username: users.username,
+        email: users.email,
+        password: users.password,
+        role: users.role,
+        mandantId: users.mandantId,
+        firstName: users.firstName,
+        lastName: users.lastName,
+        profileImageUrl: users.profileImageUrl,
+        userProfileId: users.userProfileId,
+        address: users.address,
+        mandantAccess: users.mandantAccess,
+        createdAt: users.createdAt,
+        updatedAt: users.updatedAt,
+        // UserProfile fields (nested object)
+        userProfile: {
+          id: userProfiles.id,
+          name: userProfiles.name,
+          startPage: userProfiles.startPage,
+          sidebar: userProfiles.sidebar,
+          createdAt: userProfiles.createdAt,
+          updatedAt: userProfiles.updatedAt,
+        },
+      })
       .from(users)
+      .leftJoin(userProfiles, eq(users.userProfileId, userProfiles.id))
       .where(inArray(users.mandantId, mandantIds))
       .orderBy(users.username);
 
-    // User Profiles separat laden und zuordnen
-    const usersWithProfiles = await Promise.all(
-      results.map(async (user: any) => {
-        let userProfile = null;
-        if (user.userProfileId) {
-          const [profile] = await getDb()
-            .select()
-            .from(userProfiles)
-            .where(eq(userProfiles.id, user.userProfileId));
-          userProfile = profile || null;
-        }
-        
-        return {
-          ...user,
-          userProfile,
-        };
-      })
-    );
-    
-    return usersWithProfiles as any;
+    // Transform results - set userProfile to null if no profile exists
+    return results.map(user => ({
+      ...user,
+      userProfile: user.userProfile?.id ? user.userProfile : null,
+    })) as any;
   }
 
   async upsertUser(userData: UpsertUser): Promise<User> {
+    // Hash password if provided (for new users or password updates)
+    if (userData.password) {
+      userData.password = await bcrypt.hash(userData.password, 12);
+    }
+
     // Für neue Benutzer: Einfach insert ohne conflict
     if (!userData.id) {
       // Stelle sicher, dass die SEQUENCE in der Portal-DB existiert
@@ -377,18 +473,18 @@ export class DatabaseStorage implements IStorage {
       } catch (e) {
         console.log("SEQUENCE bereits vorhanden oder erstellt");
       }
-      
+
       // PostgreSQL Sequenz für automatisches Hochzählen ab 100
       const result = await getDb().execute(sql`SELECT nextval('user_id_seq') as next_id`);
       const nextId = Number(result.rows[0].next_id);
-      
+
       const [user] = await getDb()
         .insert(users)
         .values({ ...userData, id: nextId.toString() })
         .returning();
       return user;
     }
-    
+
     // Für bestehende Benutzer: Direktes Update
     const [user] = await getDb()
       .update(users)
@@ -402,17 +498,22 @@ export class DatabaseStorage implements IStorage {
   }
 
   async updateUser(id: string, userData: Partial<UpsertUser>): Promise<User> {
+    // Hash password if provided (for password updates)
+    if (userData.password) {
+      userData.password = await bcrypt.hash(userData.password, 12);
+    }
+
     // Bereinige userData - entferne nicht-existierende Felder
     const cleanUserData = { ...userData } as any;
     // Entferne Felder, die nicht in der Datenbank existieren
     delete cleanUserData.groupIds;
     delete cleanUserData.autoId;
-    
+
     // Konvertiere mandantAccess Array-String zu echtem Array für PostgreSQL
     if (cleanUserData.mandantAccess !== undefined) {
       // Wenn es ein leeres Objekt {} ist, setze auf leeres Array
-      if (typeof cleanUserData.mandantAccess === 'object' && 
-          !Array.isArray(cleanUserData.mandantAccess) && 
+      if (typeof cleanUserData.mandantAccess === 'object' &&
+          !Array.isArray(cleanUserData.mandantAccess) &&
           Object.keys(cleanUserData.mandantAccess).length === 0) {
         cleanUserData.mandantAccess = [];
       }
@@ -3352,12 +3453,15 @@ export class DatabaseStorage implements IStorage {
         .limit(1);
 
       if (!user || !user.password) {
+        // User not found - use dummy bcrypt.compare to prevent timing attacks
+        await bcrypt.compare(password, '$2b$12$dummy.hash.to.prevent.timing.attacks.xxxxxxxxxxxxxxxxxxxxx');
         return null;
       }
 
-      // For now, simple password comparison
-      // In production, use bcrypt or similar hashing
-      if (user.password === password) {
+      // Secure password comparison using bcrypt
+      const isValid = await bcrypt.compare(password, user.password);
+
+      if (isValid) {
         return user;
       }
 

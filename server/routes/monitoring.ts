@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { monitoringController } from "../controllers/monitoringController";
-import { requireRole } from "../middleware/auth";
+import { requireAuth } from "../middleware/auth";
 
 const router = Router();
 

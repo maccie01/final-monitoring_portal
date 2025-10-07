@@ -49,23 +49,33 @@ export function validateSession(req: Request, res: Response, next: NextFunction)
 export function requireRole(role: string) {
   return (req: Request, res: Response, next: NextFunction) => {
     const user = (req as any).session?.user || (req as any).user;
-    
+
     if (!user) {
-      return res.status(401).json({ 
+      return res.status(401).json({
         message: "Unauthorized",
-        error: "User not found" 
+        error: "User not found"
       });
     }
-    
+
     if (user.role !== role && user.role !== 'superadmin') {
-      return res.status(403).json({ 
-        message: "Forbidden", 
-        error: `Role '${role}' required` 
+      return res.status(403).json({
+        message: "Forbidden",
+        error: `Role '${role}' required`
       });
     }
-    
+
     next();
   };
+}
+
+// Convenience middleware for admin role
+export function requireAdmin(req: Request, res: Response, next: NextFunction) {
+  return requireRole('admin')(req, res, next);
+}
+
+// Convenience middleware for superadmin role
+export function requireSuperAdmin(req: Request, res: Response, next: NextFunction) {
+  return requireRole('superadmin')(req, res, next);
 }
 
 // Initialize authentication middleware on Express app

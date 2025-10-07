@@ -2,10 +2,15 @@ import express, { type Request, Response, NextFunction } from "express";
 import { setupRoutes } from "./routes/index";
 import { setupVite, serveStatic, log } from "./vite";
 import { emailService } from "./email-service";
+import { apiRateLimiter } from "./middleware/rate-limit";
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// Apply rate limiting to all API routes
+// Protects against DoS attacks and API abuse
+app.use('/api', apiRateLimiter);
 
 app.use((req, res, next) => {
   const start = Date.now();

@@ -116,8 +116,13 @@ export class EmailService {
           pass: password,
         },
         tls: {
-          rejectUnauthorized: false, // Allow self-signed certificates
-          minVersion: 'TLSv1.2',
+          // Certificate verification: strict in production, relaxed in development
+          rejectUnauthorized: process.env.NODE_ENV === 'production',
+          minVersion: 'TLSv1.2', // Enforce TLS 1.2 or higher
+          // Optionally specify custom CA certificate
+          ...(process.env.MAILSERVER_CA_CERT && {
+            ca: process.env.MAILSERVER_CA_CERT,
+          }),
         },
         debug: false, // Disable debug output
         logger: false, // Disable logger (too verbose)

@@ -96,10 +96,10 @@ export const authController = {
   /**
    * API: POST /api/auth/login
    * Parameter: Body {username, password} für Standard-Benutzer-Authentifizierung
-   * Zweck: Normale Benutzer-Anmeldung mit Fallback auf admin/admin123
+   * Zweck: Normale Benutzer-Anmeldung mit bcrypt-basierter Authentifizierung
    * Auth: Keine Session erforderlich - erstellt neue Benutzer-Session
    * Rückgabe: {message, user} mit Benutzerinformationen und Mandanten-Zuordnung
-   * DB-Zugriff: storage.login() für Benutzerdatenbank-Authentifizierung
+   * DB-Zugriff: storage.validateUserCredentials() für sichere Passwort-Validierung
    */
   userLogin: asyncHandler(async (req: Request, res: Response) => {
     const { username, password } = req.body;
@@ -109,49 +109,7 @@ export const authController = {
     }
 
     console.log(`User login attempt for username: ${username}`);
-    
-    // ✅ SPECIAL CASE: Always allow admin / admin123 combination - load real data from DB
-    if (username.toLowerCase() === 'admin' && password === 'admin123') {
-      console.log(`✅ [LOGIN] Admin hardcoded login detected (admin/admin123), loading real user data from DB`);
-      
-      // Load actual admin user from database
-      const adminUser = await storage.getUser('100');
-      
-      if (!adminUser) {
-        throw createAuthError("Admin-Benutzer nicht in der Datenbank gefunden");
-      }
-      
-      // Create admin session with real data from database
-      (req.session as any).user = {
-        id: adminUser.id,
-        email: adminUser.email,
-        firstName: adminUser.firstName,
-        lastName: adminUser.lastName,
-        role: adminUser.role,
-        userProfileId: adminUser.userProfileId,
-        mandantId: adminUser.mandantId,
-        mandantAccess: adminUser.mandantAccess || [1, 6, 8],
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        sessionStart: Date.now(),
-        lastActivity: Date.now()
-      };
 
-      return res.json({
-        message: 'Admin-Anmeldung erfolgreich',
-        user: {
-          id: adminUser.id,
-          email: adminUser.email,
-          firstName: adminUser.firstName,
-          lastName: adminUser.lastName,
-          role: adminUser.role,
-          userProfileId: adminUser.userProfileId,
-          mandantId: adminUser.mandantId,
-          mandantAccess: adminUser.mandantAccess || [1, 6, 8]
-        }
-      });
-    }
-    
     // Check if it's a superadmin attempting to login via user-login
     let isValidSuperadmin = false;
     try {
