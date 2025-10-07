@@ -31,18 +31,34 @@ export async function getSession() {
 
   console.log('✅ [SESSION] PostgreSQL Session Store initialized with connection pool');
 
+  // Validate SESSION_SECRET
+  const sessionSecret = process.env.SESSION_SECRET;
+  if (!sessionSecret || sessionSecret === 'your-session-secret-here' || sessionSecret.length < 64) {
+    console.error('❌ [SESSION] CRITICAL: SESSION_SECRET is weak or missing!');
+    console.error('   Generate a strong secret with: node -e "console.log(require(\'crypto\').randomBytes(64).toString(\'hex\'))"');
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('Strong SESSION_SECRET required in production');
+    }
+  }
+
+  const isProduction = process.env.NODE_ENV === 'production';
+
   return session({
-    secret: process.env.SESSION_SECRET || 'development-secret-change-in-production',
+    secret: sessionSecret || 'development-secret-change-in-production',
     store: sessionStore,
     resave: false,
     saveUninitialized: false, // Don't create session until login
     rolling: true, // Reset expiration on activity
+    name: 'sid', // Don't use default 'connect.sid' (security through obscurity)
     cookie: {
-      httpOnly: true,
-      secure: false, // Set true in production with HTTPS
+      httpOnly: true, // Prevent XSS access to cookies
+      secure: isProduction, // HTTPS only in production
       maxAge: sessionTtl,
-      sameSite: 'lax'
-    }
+      sameSite: isProduction ? 'strict' : 'lax', // CSRF protection
+      domain: undefined, // Let browser determine
+      path: '/' // Cookie valid for all paths
+    },
+    proxy: true // Trust proxy headers (for secure cookies behind reverse proxy)
   });
 }
 
