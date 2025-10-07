@@ -1,6 +1,6 @@
-# Claude Agent SDK Setup
+# Claude Agent SDK - Multi-Agent Orchestration System
 
-This directory contains the Claude Agent SDK setup for Python-based agent interactions with Claude Code.
+This directory contains the Claude Agent SDK setup for autonomous multi-agent refactoring of the Netzwächter monitoring portal.
 
 ## 🚀 Installation Status
 
@@ -8,6 +8,20 @@ This directory contains the Claude Agent SDK setup for Python-based agent intera
 ✅ **Python Virtual Environment**: Created at `.agents/venv/`
 ✅ **Claude Code**: Installed (v2.0.9)
 ✅ **Prerequisites**: All met (Python 3.10+, Node.js)
+
+## 📊 Current Agent Status (2025-10-07)
+
+### Frontend Cleanup Agent
+- **Status**: ✅ COMPLETE (11/11 tasks - 100%)
+- **Branch**: `cleanup/frontend-dead-code`
+- **Achievements**: Dead code removal, design tokens, accessibility, documentation
+- **Ready for**: Pull Request
+
+### Security Hardening Agent
+- **Status**: 🟢 ACTIVE (9/11 tasks - 82%)
+- **Branch**: `security/backend-hardening`
+- **Achievements**: 8 critical vulnerabilities fixed, comprehensive security documentation
+- **Remaining**: 2 tasks (SEC-1.6 input validation, SEC-3.2 N+1 queries)
 
 ## 📋 Prerequisites Verified
 
