@@ -20,8 +20,14 @@ interface HealthStatus {
 
 /**
  * Centralized Connection Pool Manager
- * Maintains 50 persistent database connections for optimal performance
+ * Maintains optimized database connection pool (5-20 connections) for performance
  * Implements connection health monitoring, metrics tracking, and graceful degradation
+ *
+ * Configuration (via environment variables):
+ * - DB_POOL_MIN: Minimum persistent connections (default: 5)
+ * - DB_POOL_MAX: Maximum concurrent connections (default: 20)
+ * - DB_POOL_IDLE_TIMEOUT: Idle connection timeout in ms (default: 30000)
+ * - DB_CONNECTION_TIMEOUT: Connection acquisition timeout in ms (default: 5000)
  */
 export class ConnectionPoolManager {
   private static instance: ConnectionPoolManager;
@@ -47,7 +53,8 @@ export class ConnectionPoolManager {
   }
 
   /**
-   * Initialize connection pool with 50 persistent connections
+   * Initialize connection pool with optimized configuration
+   * Reduced from 50 to 5-20 connections for better resource management
    */
   public async initialize(): Promise<void> {
     if (this.isInitialized) {
@@ -62,14 +69,20 @@ export class ConnectionPoolManager {
         throw new Error('DATABASE_URL environment variable is required');
       }
 
-      console.log('🔄 Initializing connection pool with 50 persistent connections...');
+      // Optimized pool configuration - read from environment or use defaults
+      const minConnections = parseInt(process.env.DB_POOL_MIN || '5', 10);
+      const maxConnections = parseInt(process.env.DB_POOL_MAX || '20', 10);
+      const idleTimeout = parseInt(process.env.DB_POOL_IDLE_TIMEOUT || '30000', 10);
+      const connectionTimeout = parseInt(process.env.DB_CONNECTION_TIMEOUT || '5000', 10);
+
+      console.log(`🔄 Initializing optimized connection pool (min: ${minConnections}, max: ${maxConnections})...`);
 
       const poolConfig: PoolConfig = {
         connectionString,
-        min: 50,                          // Minimum persistent connections
-        max: 50,                          // Maximum connections (hard limit)
-        idleTimeoutMillis: 0,             // Never timeout - keep alive forever
-        connectionTimeoutMillis: 5000,    // 5 second connection timeout
+        min: minConnections,              // Minimum persistent connections (reduced from 50)
+        max: maxConnections,              // Maximum connections (reduced from 50)
+        idleTimeoutMillis: idleTimeout,   // Close idle connections after 30s (was: never)
+        connectionTimeoutMillis: connectionTimeout, // 5 second connection timeout
         keepAlive: true,                  // Enable TCP keepalive
         keepAliveInitialDelayMillis: 10000, // Start keepalive after 10 seconds
       };
@@ -122,11 +135,11 @@ export class ConnectionPoolManager {
         }
       });
 
-      // Pre-warm all connections
-      await this.prewarmConnections();
+      // Pre-warm minimum connections
+      await this.prewarmConnections(minConnections);
 
       this.isInitialized = true;
-      console.log('✅ Connection pool initialized successfully with 50 connections');
+      console.log(`✅ Connection pool initialized successfully (${minConnections}-${maxConnections} connections)`);
 
       // Start health check interval
       this.startHealthCheckInterval();
@@ -138,15 +151,17 @@ export class ConnectionPoolManager {
   }
 
   /**
-   * Pre-warm all connections by establishing them upfront
+   * Pre-warm minimum connections by establishing them upfront
+   * @param count Number of connections to pre-warm (default: pool minimum)
    */
-  private async prewarmConnections(): Promise<void> {
-    console.log('🔥 Pre-warming connection pool...');
+  private async prewarmConnections(count?: number): Promise<void> {
+    const warmCount = count || 5;
+    console.log(`🔥 Pre-warming ${warmCount} connections...`);
 
     const connections: PoolClient[] = [];
     try {
-      // Acquire all 50 connections to force creation
-      for (let i = 0; i < 50; i++) {
+      // Acquire minimum connections to force creation
+      for (let i = 0; i < warmCount; i++) {
         const client = await this.pool!.connect();
         connections.push(client);
 
@@ -298,9 +313,14 @@ export class ConnectionPoolManager {
         ? (stats.totalErrors / stats.totalQueries) * 100
         : 0;
 
+      // Dynamic active connection threshold based on max pool size
+      const maxActiveThreshold = Math.floor(
+        (this.pool?.options?.max || 20) * 0.9
+      ); // 90% of max capacity
+
       const healthy =
         !this.circuitBreakerOpen &&
-        stats.activeConnections <= 45 && // Leave some headroom
+        stats.activeConnections <= maxActiveThreshold && // Leave 10% headroom
         errorRate < 5 && // Less than 5% error rate
         checkTime < 100; // Health check under 100ms
 
