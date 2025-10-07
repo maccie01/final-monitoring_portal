@@ -1,7 +1,7 @@
 #!/usr/bin/env tsx
 
-import { weatherService } from '../services/weatherService';
-import { Pool } from 'pg';
+import { weatherService } from "../services/weatherService";
+import { Pool } from "pg";
 
 /**
  * Daily automated weather data update from Bright Sky API (DWD)

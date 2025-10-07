@@ -1,6 +1,6 @@
-import axios from 'axios';
-import { ConnectionPoolManager } from '../connection-pool';
-import type { Pool } from 'pg';
+import axios from "axios";
+import { ConnectionPoolManager } from "../connection-pool";
+import type { Pool } from "pg";
 
 interface WeatherData {
   date: string;
