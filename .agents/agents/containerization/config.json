@@ -23,6 +23,7 @@
     "pr_labels": ["infrastructure", "docker", "P1", "deployment"]
   },
 
+  "source_document": ".agents/agents/containerization/tasks.md",
   "tasks_file": "tasks.json",
   "prompt_file": "prompt.md",
 
