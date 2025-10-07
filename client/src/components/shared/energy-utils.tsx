@@ -1,5 +1,5 @@
-import React from "from "react"";
-import { Share2, Leaf, Flame, Zap, Settings, XCircle, AlertTriangle, Check } from "from "lucide-react"";
+import React from "react";
+import { Share2, Leaf, Flame, Zap, Settings, XCircle, AlertTriangle, Check } from "lucide-react";
 
 // Gemeinsame Typen
 export interface DailyData {

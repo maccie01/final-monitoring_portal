@@ -9,14 +9,15 @@ Purpose: Define the complete target architecture after all agent work
 
 **Current State**: Monolithic application with 3,961 LOC storage.ts
 **Target State**: Modular monorepo with clean separation of concerns
+**Final Location**: `/Users/janschubert/code-projects/monitoring_firma/netzwaechter-refactored/`
 **Migration Strategy**: Incremental refactoring via specialized agents
 
 ---
 
-## Directory Structure
+## Final Directory Structure
 
 ```
-netzwaechter-refactored/
+/Users/janschubert/code-projects/monitoring_firma/netzwaechter-refactored/
 ├── .agents/                          # Agent coordination (existing)
 │   ├── agents/                       # Agent configs
 │   ├── state/                        # Orchestrator state
@@ -239,6 +240,32 @@ netzwaechter-refactored/
 ├── .prettierrc
 └── README.md
 ```
+
+---
+
+## Migration Path from Current to Target
+
+### Current Location
+`/Users/janschubert/code-projects/monitoring_firma/app-version-4_netzwächter/`
+
+### Target Location
+`/Users/janschubert/code-projects/monitoring_firma/netzwaechter-refactored/`
+
+### Migration Strategy
+
+**Option A: In-Place Refactoring** (Current approach)
+- Refactor in current directory
+- Copy to target location when complete
+- Verify everything works
+- Archive old directory
+
+**Option B: Parallel Development**
+- Create new directory structure first
+- Migrate files module by module
+- Keep old directory running
+- Swap when complete
+
+**Chosen: Option A** (In-place refactoring, then copy to final location)
 
 ---
 
@@ -633,22 +660,24 @@ export const userFiltersSchema = z.object({
 
 ```
 CURRENT:
-server/
-  storage.ts (3,961 LOC - MONOLITH)
-  controllers/
-  routes/
-client/
-  src/
-    pages/ (many unused)
-    components/ui/ (many unused)
+/Users/janschubert/code-projects/monitoring_firma/app-version-4_netzwächter/
+  server/
+    storage.ts (3,961 LOC - MONOLITH)
+    controllers/
+    routes/
+  client/
+    src/
+      pages/ (many unused)
+      components/ui/ (many unused)
 
 TARGET:
-apps/
-  backend-api/
-    src/modules/ (8 modules, avg 500 LOC each)
-  frontend-web/
-    src/features/ (8 features, clean structure)
-packages/ (shared code)
+/Users/janschubert/code-projects/monitoring_firma/netzwaechter-refactored/
+  apps/
+    backend-api/
+      src/modules/ (8 modules, avg 500 LOC each)
+    frontend-web/
+      src/features/ (8 features, clean structure)
+  packages/ (shared code)
 ```
 
 ### Migration Strategy
@@ -658,6 +687,7 @@ packages/ (shared code)
 **Phase 3**: Backend Modularization Agent extracts modules from storage.ts
 **Phase 4**: DB Optimizer Agent optimizes queries in new structure
 **Phase 5**: Docker Agent containerizes refactored application
+**Phase 6**: Copy to `/Users/janschubert/code-projects/monitoring_firma/netzwaechter-refactored/` and verify
 
 ---
 
@@ -702,17 +732,38 @@ After migration, complete documentation includes:
 
 ---
 
+## Final Deliverables
+
+At completion, the following must exist at `/Users/janschubert/code-projects/monitoring_firma/netzwaechter-refactored/`:
+
+1. ✅ Complete monorepo structure (apps/ + packages/ + infrastructure/)
+2. ✅ 8 backend modules extracted from storage.ts
+3. ✅ 8 frontend feature modules
+4. ✅ 3 shared packages (types, validation, utils)
+5. ✅ Docker containerization
+6. ✅ Complete documentation
+7. ✅ All tests passing
+8. ✅ Production-ready deployment
+9. ✅ Zero security vulnerabilities
+10. ✅ Performance metrics achieved
+
+---
+
 ## Next Steps
 
 1. ✅ Validation matrix complete
 2. ✅ Todo mapping complete
-3. 🔄 Target architecture defined (this document)
-4. ⏳ Create actual directory structure
-5. ⏳ Execute agent migrations
-6. ⏳ Generate final documentation
+3. ✅ Target architecture defined (this document)
+4. ⏳ Execute agent migrations in current directory
+5. ⏳ Verify all changes work
+6. ⏳ Create target directory structure at `/Users/janschubert/code-projects/monitoring_firma/netzwaechter-refactored/`
+7. ⏳ Copy refactored code to target location
+8. ⏳ Generate final documentation
+9. ⏳ Deploy to production
 
 ---
 
 **Status**: Architecture design complete
-**Next**: Create target directory structure in new folder
+**Current Work**: Agents refactoring in `/Users/janschubert/code-projects/monitoring_firma/app-version-4_netzwächter/`
+**Final Target**: `/Users/janschubert/code-projects/monitoring_firma/netzwaechter-refactored/`
 **Timeline**: 7-8 weeks with Agent SDK parallel execution

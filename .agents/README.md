@@ -1,30 +1,261 @@
-# Claude Agent SDK Setup
+# Multi-Agent Orchestration System
 
-This directory contains the Claude Agent SDK setup for Python-based agent interactions with Claude Code.
+**Status**: ✅ **OPERATIONAL**
+**Execution Model**: SDK-Based Autonomous Agents
+**SDK Version**: claude-agent-sdk 0.1.1
+**Last Updated**: October 7, 2025
 
-## 🚀 Installation Status
+---
 
-✅ **Claude Agent SDK**: Installed (v0.1.1)
-✅ **Python Virtual Environment**: Created at `.agents/venv/`
-✅ **Claude Code**: Installed (v2.0.9)
-✅ **Prerequisites**: All met (Python 3.10+, Node.js)
+## Overview
 
-## 📋 Prerequisites Verified
+This directory contains a multi-agent orchestration system for the Netzwächter monitoring portal. Agents run autonomously via the Claude Agent SDK, working on independent branches in parallel.
 
-- **Python 3.10+**: ✅ Available
-- **Node.js**: ✅ Available
-- **Claude Code 2.0.0+**: ✅ Version 2.0.9 installed
+## Active Agents
 
-## 🔧 Usage
+### Frontend Cleanup Agent
+- **Agent ID**: `frontend-cleanup-agent`
+- **Branch**: `cleanup/frontend-dead-code`
+- **Priority**: P0 (Critical)
+- **Status**: ✅ RUNNING (PID tracked in state/)
+- **Progress**: 6/11 tasks complete (55%)
+- **Task Document**: `todo/AGENT-A-FRONTEND-CLEANUP.md`
+- **Progress Log**: `logs/frontend-agent-progress.md`
 
-### Activating the Virtual Environment
+**Recent Completions**:
+- ✅ Task 3.1: ARIA labels (10 buttons) - Commit af294c2
+- ✅ Task 3.2: Button Guidelines (224 buttons audited) - Commit 65cfb41
+- 🔄 Task 4.1: Design Token System (IN PROGRESS)
+
+### Security Hardening Agent
+- **Agent ID**: `security-agent`
+- **Branch**: `security/backend-hardening`
+- **Priority**: P0 (Critical)
+- **Status**: ⏸️ PAUSED (manual work completed)
+- **Progress**: 4/9 tasks complete (44%)
+- **Task Document**: `todo/AGENT-B-SECURITY.md`
+- **Progress Log**: `logs/security-agent-progress.md`
+
+**Completed Tasks**:
+- ✅ SEC-1.1: bcrypt password hashing - Commit f104d5b
+- ✅ SEC-1.2: Remove admin bypass - Commit d8cf78a
+- ✅ SEC-1.3: SSL/TLS configuration - Commit 73d2e76
+- ✅ SEC-1.4: API rate limiting - Commit aca2596
+
+---
+
+## Quick Start
+
+### Spawn an Agent
 
 ```bash
 cd /path/to/project
 source .agents/venv/bin/activate
+python .agents/spawn_agent.py <agent-id>
 ```
 
-### Basic Query Example
+**Available Agents**:
+- `frontend-cleanup-agent` - Frontend cleanup and optimization
+- `security-agent` - Backend security hardening
+
+**Example**:
+```bash
+python .agents/spawn_agent.py frontend-cleanup-agent
+```
+
+### Check Agent Progress
+
+```bash
+# View progress log
+cat .agents/logs/frontend-agent-progress.md
+
+# View agent state
+cat .agents/state/frontend-cleanup-agent.json
+
+# View latest commit
+git log cleanup/frontend-dead-code -1
+```
+
+### Manager Validation Process
+
+As the managing agent, validate work after each agent commit:
+
+1. **Check Agent Output**:
+   ```bash
+   # Via BashOutput tool (if agent running in background)
+   # Or monitor logs/[agent]-progress.md
+   ```
+
+2. **Verify Commits**:
+   ```bash
+   git show <commit-hash> --stat
+   git log <branch> --oneline -5
+   ```
+
+3. **Validate Build**:
+   ```bash
+   npm run build
+   ```
+
+4. **Check for Regressions**:
+   ```bash
+   git diff main...<branch>
+   ```
+
+---
+
+## Directory Structure
+
+```
+.agents/
+├── README.md                      # This file - orchestration overview
+├── orchestrator.py                # High-level orchestrator (WIP)
+├── spawn_agent.py                 # ✅ ACTIVE - spawns SDK agents
+├── requirements.txt               # Python dependencies
+├── venv/                          # Python virtual environment
+│
+├── agents/                        # Agent configurations
+│   ├── frontend-cleanup/
+│   │   ├── config.json           # Agent settings (max_turns, tools)
+│   │   └── prompt.md             # System prompt for agent
+│   └── security/
+│       ├── config.json
+│       └── prompt.md
+│
+├── logs/                          # Agent progress tracking
+│   ├── frontend-agent-progress.md # ✅ Updated by agent autonomously
+│   └── security-agent-progress.md # ✅ Updated manually (pre-SDK)
+│
+├── state/                         # Runtime state (git-ignored)
+│   ├── frontend-cleanup-agent.json
+│   └── security-agent.json
+│
+└── todo/                          # Task documents
+    ├── AGENT-A-FRONTEND-CLEANUP.md  # 11 tasks, 2 weeks
+    └── AGENT-B-SECURITY.md          # 9 tasks, 2 weeks
+```
+
+---
+
+## How Agents Work
+
+### 1. Agent Spawning
+
+`spawn_agent.py` uses the Claude Agent SDK to create autonomous agent instances:
+
+```python
+from claude_agent_sdk import query, ClaudeAgentOptions
+
+# Load agent configuration
+config = json.load(open(f".agents/agents/{agent_id}/config.json"))
+prompt = open(f".agents/agents/{agent_id}/prompt.md").read()
+
+# Configure agent
+options = ClaudeAgentOptions(
+    cwd=str(base_dir),
+    system_prompt=prompt,
+    max_turns=config.get("max_turns", 80),
+    allowed_tools=config.get("tools", ["Read", "Write", "Edit", "Bash"])
+)
+
+# Spawn agent
+async for message in query(prompt=initial_query, options=options):
+    # Agent runs autonomously
+```
+
+### 2. Agent Autonomy
+
+Agents independently:
+- ✅ Read their task documents
+- ✅ Check current progress
+- ✅ Plan next steps
+- ✅ Execute tasks (search, edit, test)
+- ✅ Run builds to verify changes
+- ✅ Commit with proper messages
+- ✅ Update progress logs
+- ✅ Move to next task
+
+### 3. Manager Oversight
+
+The managing agent (this Claude instance) validates:
+- Commit quality and accuracy
+- Build success after changes
+- Progress log accuracy
+- No regressions introduced
+
+---
+
+## Agent Configuration
+
+### Agent Prompt Structure
+
+Each `agents/{agent-id}/prompt.md` contains:
+
+```markdown
+# [Agent Name]
+
+## Your Identity
+- Agent ID: [agent-id]
+- Branch: [feature-branch]
+- Priority: P0/P1/P2
+
+## Your Task Document
+../../todo/[TASK-DOC].md
+
+## Your Working Approach
+1. Read task document
+2. Work systematically
+3. Verify after each task (npm run build)
+4. Track progress in ../../logs/[agent]-progress.md
+5. Commit with format: `type(scope): description (Task X.Y)`
+```
+
+### Agent Config Options
+
+`agents/{agent-id}/config.json`:
+
+```json
+{
+  "agent_id": "frontend-cleanup-agent",
+  "branch": "cleanup/frontend-dead-code",
+  "priority": "P0",
+  "max_turns": 80,
+  "tools": ["Read", "Write", "Edit", "Bash", "Grep", "Glob", "TodoWrite"],
+  "allowed_actions": ["commit", "push"],
+  "auto_commit": true
+}
+```
+
+---
+
+## Parallel Execution Safety
+
+**Validated**: Security and Frontend agents can run simultaneously.
+
+**Conflict Analysis** (from VALIDATION-MATRIX.md):
+- Security Agent: Modifies `server/**` (backend)
+- Frontend Agent: Modifies `client/**` (frontend)
+- **File Overlap**: ZERO conflicts ✅
+
+**Git Strategy**:
+- Both agents branch from `main`
+- Work in isolated feature branches
+- No shared files = no merge conflicts
+- Can merge independently when complete
+
+---
+
+## Claude Agent SDK Reference
+
+### Installation (Already Complete)
+
+```bash
+python3 -m venv .agents/venv
+source .agents/venv/bin/activate
+pip install claude-agent-sdk anthropic rich gitpython
+```
+
+### Basic Query
 
 ```python
 import anyio
@@ -43,202 +274,168 @@ anyio.run(main)
 from claude_agent_sdk import query, ClaudeAgentOptions
 
 options = ClaudeAgentOptions(
-    system_prompt="You are a helpful coding assistant",
-    max_turns=3,
-    allowed_tools=["Read", "Write", "Bash"]
+    system_prompt="You are a specialized agent",
+    max_turns=50,
+    cwd="/path/to/project",
+    allowed_tools=["Read", "Write", "Edit", "Bash", "Grep"]
 )
 
 async def main():
     async for message in query(
-        prompt="Help me refactor this code",
+        prompt="Complete your assigned task",
         options=options
     ):
-        print(message)
+        # Process agent responses
+        if hasattr(message, 'content'):
+            for block in message.content:
+                if hasattr(block, 'text'):
+                    print(block.text)
 
 anyio.run(main)
 ```
 
-### Using ClaudeSDKClient for Interactive Sessions
+### Available Tools
 
-```python
-from claude_agent_sdk import ClaudeSDKClient, ClaudeAgentOptions
-
-async def main():
-    options = ClaudeAgentOptions(
-        cwd="/path/to/project",
-        allowed_tools=["Read", "Write", "Bash", "Grep"]
-    )
-
-    async with ClaudeSDKClient(options=options) as client:
-        await client.query("Analyze this codebase")
-
-        async for msg in client.receive_response():
-            print(msg)
-
-anyio.run(main)
-```
-
-## 🛠️ Custom Tools Support
-
-### Creating In-Process MCP Tools
-
-```python
-from claude_agent_sdk import tool, create_sdk_mcp_server
-
-@tool("analyze_code", "Analyze code quality", {"file_path": str})
-async def analyze_code(args):
-    # Your tool implementation
-    return {
-        "content": [
-            {"type": "text", "text": f"Analysis of {args['file_path']}"}
-        ]
-    }
-
-# Create server
-server = create_sdk_mcp_server(
-    name="code-tools",
-    version="1.0.0",
-    tools=[analyze_code]
-)
-
-# Use with Claude
-options = ClaudeAgentOptions(
-    mcp_servers={"code-tools": server},
-    allowed_tools=["mcp__code-tools__analyze_code"]
-)
-```
-
-## 🪝 Hooks System
-
-### Pre-Tool-Use Hook Example
-
-```python
-from claude_agent_sdk import HookMatcher
-
-async def security_check(input_data, tool_use_id, context):
-    tool_name = input_data["tool_name"]
-    if tool_name == "Bash":
-        command = input_data["tool_input"].get("command", "")
-        if "rm -rf" in command:
-            return {
-                "hookSpecificOutput": {
-                    "hookEventName": "PreToolUse",
-                    "permissionDecision": "deny",
-                    "permissionDecisionReason": "Dangerous command blocked"
-                }
-            }
-    return {}
-
-options = ClaudeAgentOptions(
-    allowed_tools=["Bash"],
-    hooks={
-        "PreToolUse": [
-            HookMatcher(matcher="Bash", hooks=[security_check])
-        ]
-    }
-)
-```
-
-## 🧪 Testing
-
-### Run Basic Test
-```bash
-source .agents/venv/bin/activate
-python .agents/test_sdk_improved.py
-```
-
-Expected output:
-```
-🧪 Testing Claude Agent SDK (Improved Version)...
-🤖 Querying Claude: 'What is the capital of France?'
-
-🔧 System: system
-📥 Claude says: Paris
-
-✅ Claude Agent SDK is working correctly!
-🎉 Ready to use for .agents functionality!
-```
-
-## 📁 File Structure
-
-```
-.agents/
-├── venv/                    # Python virtual environment
-├── test_sdk.py             # Basic functionality test
-├── test_sdk_improved.py    # Improved test with proper response handling
-└── README.md               # This documentation
-```
-
-## 🔧 Available Tools
-
-The SDK provides access to Claude Code's comprehensive tool set:
-
+Agents have access to:
 - **File Operations**: Read, Write, Edit
 - **Search**: Grep, Glob
-- **Shell**: Bash, KillShell
-- **Web**: WebFetch, WebSearch
-- **Development**: Task, TodoWrite, NotebookEdit
-- **System**: ExitPlanMode, SlashCommand
-
-## ⚙️ Configuration Options
-
-### ClaudeAgentOptions
-
-```python
-ClaudeAgentOptions(
-    system_prompt="Custom system prompt",
-    max_turns=5,
-    cwd="/working/directory",
-    allowed_tools=["Read", "Write", "Bash"],
-    permission_mode="acceptEdits",  # Auto-accept file changes
-    mcp_servers={"name": server},   # Custom MCP servers
-    hooks={"event": [hooks]}        # Custom hooks
-)
-```
-
-## 🚨 Error Handling
-
-```python
-from claude_agent_sdk import (
-    ClaudeSDKError,      # Base error
-    CLINotFoundError,    # Claude Code not installed
-    CLIConnectionError,  # Connection issues
-    ProcessError,        # Process execution errors
-)
-
-try:
-    async for message in query(prompt="Hello"):
-        pass
-except CLINotFoundError:
-    print("Install Claude Code: npm install -g @anthropic-ai/claude-code")
-except ProcessError as e:
-    print(f"Process error: {e}")
-```
-
-## 🔄 Migration Notes
-
-If upgrading from older Claude Code SDK versions:
-- `ClaudeCodeOptions` → `ClaudeAgentOptions`
-- Merged system prompt configuration
-- New programmatic subagents support
-- Enhanced session forking capabilities
-
-## 📚 Resources
-
-- [Claude Agent SDK Documentation](https://docs.anthropic.com/claude-agent-sdk)
-- [Claude Code Tools Reference](https://docs.anthropic.com/claude-code/tools)
-- [MCP Protocol Specification](https://modelcontextprotocol.io/specification)
-
-## 🎯 Next Steps
-
-1. **Create Custom Tools**: Implement project-specific tools using the `@tool` decorator
-2. **Add Security Hooks**: Implement pre-tool-use validation for dangerous operations
-3. **Build Agent Workflows**: Create automated workflows using `ClaudeSDKClient`
-4. **Integrate with CI/CD**: Use SDK for automated code analysis and improvements
+- **Shell**: Bash
+- **Task Management**: TodoWrite
+- **Web**: WebFetch, WebSearch (if enabled)
 
 ---
 
-**Status**: ✅ **Fully Operational**
-**SDK Version**: 0.1.1
-**Claude Code Version**: 2.0.9
-**Last Verified**: October 7, 2025
+## Manager Responsibilities
+
+As the managing agent, I:
+
+1. **Spawn Agents**: Use `spawn_agent.py` to create autonomous agents
+2. **Monitor Progress**: Check `logs/[agent]-progress.md` regularly
+3. **Validate Work**: Verify commits, builds, and code quality
+4. **Intervene When Needed**: Fix issues, provide guidance
+5. **Coordinate**: Ensure agents don't conflict
+6. **Document**: Maintain this README and system documentation
+
+### When to Intervene
+
+✅ **Intervene When**:
+- Agent makes incorrect changes
+- Build fails after agent commit
+- Agent gets stuck in a loop
+- Progress log shows errors
+
+❌ **Don't Intervene When**:
+- Agent is working correctly (even if slow)
+- Progress log shows steady advancement
+- Build passes after commits
+
+---
+
+## Memory Management
+
+**System**: Memory MCP (Docker-based)
+
+**Categories Tracked**:
+1. **Agent State**: Current task, progress, blockers
+2. **Technical Decisions**: Architecture choices, patterns
+3. **Error Patterns**: Common issues and resolutions
+4. **Progress Milestones**: Completed phases
+5. **Validation Results**: Build status, test results
+6. **Inter-Agent Coordination**: Dependencies, conflicts
+7. **User Feedback**: Preferences, corrections
+
+**When to Save**:
+- After each agent task completion
+- When errors occur
+- Before/after major decisions
+- After validation steps
+
+**Documentation**: `MANAGER-MEMORY-SYSTEM.md` (detailed guidelines)
+
+---
+
+## Troubleshooting
+
+### Agent Not Spawning
+
+```bash
+# Check SDK installation
+source .agents/venv/bin/activate
+python -c "import claude_agent_sdk; print('SDK OK')"
+
+# Verify agent config exists
+ls .agents/agents/frontend-cleanup/
+```
+
+### Agent Stuck or Erroring
+
+```bash
+# View agent output (if running in background)
+# Use BashOutput tool with agent PID
+
+# Check progress log
+cat .agents/logs/frontend-agent-progress.md
+
+# Check for uncommitted changes
+git status
+```
+
+### Build Failures After Agent Commit
+
+```bash
+# Checkout the commit
+git checkout <commit-hash>
+
+# Run build with verbose output
+npm run build --verbose
+
+# Fix manually if needed, then commit
+git commit -m "fix(agent): resolve build issue from <commit-hash>"
+```
+
+---
+
+## Resources
+
+- **Claude Agent SDK Docs**: https://docs.anthropic.com/claude-agent-sdk
+- **Claude Code Tools**: https://docs.anthropic.com/claude-code/tools
+- **Project Docs**: `docs/` directory
+- **Task Breakdown**: `.agents/todo/` directory
+
+## Key Documents
+
+- **MASTER-EXECUTION-PLAN.md** - ⭐⭐ **MANAGING AGENT PLAYBOOK** - Step-by-step execution guide, validation workflow, current status
+- **AGENT-TIMELINE.md** - ⭐ When to use which agents, dependencies, execution timeline
+- **TARGET-ARCHITECTURE.md** - ⭐ Final deliverable structure at `/Users/janschubert/code-projects/monitoring_firma/netzwaechter-refactored/`
+- **SDK-SETUP-COMPLETE.md** - SDK setup and usage documentation
+
+---
+
+## Current Status Summary
+
+### Active Work
+- **Frontend Agent**: Running autonomously on Task 4.1 (Design Token System)
+- **Security Agent**: Paused (manual work complete, awaiting SDK restart)
+
+### Completed
+- ✅ SDK Setup (claude-agent-sdk 0.1.1)
+- ✅ Agent configuration files
+- ✅ Spawn system (spawn_agent.py)
+- ✅ Progress tracking logs
+- ✅ Git branch strategy
+- ✅ Manager validation process
+- ✅ 6/11 Frontend tasks
+- ✅ 4/9 Security tasks
+
+### Next Steps
+1. Frontend Agent completes remaining tasks (5 tasks)
+2. Security Agent resumes via SDK (5 tasks)
+3. Merge branches after validation
+4. Deploy to production
+
+---
+
+**Manager**: Claude (this instance)
+**Execution Mode**: SDK-based autonomous agents
+**Last Manager Validation**: October 7, 2025 21:35 UTC
+**System Health**: ✅ All systems operational

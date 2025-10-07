@@ -1,9 +1,9 @@
-import { useState, useEffect } from "from "react"";
-import { Button } from "from "@/components/ui/button"";
-import { Card, CardContent, CardHeader, CardTitle } from "from "@/components/ui/card"";
-import { Textarea } from "from "@/components/ui/textarea"";
-import { Badge } from "from "@/components/ui/badge"";
-import { useToast } from "from "@/hooks/use-toast"";
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/hooks/use-toast";
 import { 
   Database, 
   CheckCircle, 
@@ -12,7 +12,7 @@ import {
   Play,
   Save,
   Wifi
-} from "from "lucide-react"";
+} from "lucide-react";
 
 interface PortalConfigCardProps {
   configType: string;

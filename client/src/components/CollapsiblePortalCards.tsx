@@ -1,13 +1,13 @@
-import { useState } from "from "react"";
-import { Card, CardContent, CardHeader, CardTitle } from "from "@/components/ui/card"";
-import { Button } from "from "@/components/ui/button"";
-import { Input } from "from "@/components/ui/input"";
-import { Label } from "from "@/components/ui/label"";
-import { Switch } from "from "@/components/ui/switch"";
-import { Textarea } from "from "@/components/ui/textarea"";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "from "@/components/ui/tabs"";
-import { ChevronDown, ChevronUp, Database, Wifi, Copy, CheckCircle2, Save, Edit, Code, Table } from "from "lucide-react"";
-import { useToast } from "from "@/hooks/use-toast"";
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ChevronDown, ChevronUp, Database, Wifi, Copy, CheckCircle2, Save, Edit, Code, Table } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface PortalConfig {
   id: string;

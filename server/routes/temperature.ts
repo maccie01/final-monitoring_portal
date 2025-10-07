@@ -1,6 +1,6 @@
-import { Router } from "from "express"";
-import { temperatureController } from "from "../controllers/temperatureController"";
-import { isAuthenticated } from "from "../middleware/auth"";
+import { Router } from "express";
+import { temperatureController } from "../controllers/temperatureController";
+import { isAuthenticated } from "../middleware/auth";
 
 const router = Router();
 
