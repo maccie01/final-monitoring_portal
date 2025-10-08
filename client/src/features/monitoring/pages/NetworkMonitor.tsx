@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { buildGrafanaUrl } from "@/features/ki-reports/components/grafanaConfig";
+import { buildGrafanaUrl } from "@/utils/grafanaConfig";
 import {
   Dialog,
   DialogContent,
@@ -47,7 +47,7 @@ import { format } from "date-fns";
 import { de } from "date-fns/locale";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useLocation, useRoute } from "wouter";
-import { GrafanaDiagramme } from "@/features/ki-reports/components/GrafanaDiagramme";
+import { GrafanaDiagramme } from "@/components/GrafanaDiagramme";
 import { NetzView } from "@/features/objects/components/NetzView";
 import { KIEnergyAnalysisNetz } from "@/features/energy/components/KI_energy_netz";
 
