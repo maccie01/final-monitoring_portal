@@ -155,3 +155,8 @@ export function createAuthError(message: string) {
 export function createForbiddenError(message: string) {
   return new AppError(message, 403);
 }
+
+// Not found error creator
+export function createNotFoundError(message: string) {
+  return new AppError(message, 404);
+}
