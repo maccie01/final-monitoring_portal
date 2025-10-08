@@ -1,0 +1,55 @@
+# Node modules
+node_modules
+npm-debug.log*
+
+# Build outputs
+dist
+build
+.next
+out
+
+# Git files
+.git
+.gitignore
+.github
+
+# Environment files
+.env
+.env.*
+*.env
+
+# IDE files
+.vscode
+.idea
+*.swp
+.DS_Store
+
+# Logs
+logs
+*.log
+
+# Testing
+coverage
+.nyc_output
+
+# Temporary files
+tmp
+temp
+*.tmp
+
+# Documentation
+*.md
+!README.md
+docs
+
+# Docker files
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# Agent files
+.agents
+
+# Misc
+.cache
+.parcel-cache
