@@ -1,0 +1,193 @@
+{
+  "timestamp": "20251008_114909",
+  "routes": [
+    {
+      "route": "/login",
+      "description": "Login Page",
+      "http_code": "200",
+      "response_time_ms": 245,
+      "passed": true
+    },
+    {
+      "route": "/anmelden",
+      "description": "Strawa Login Page",
+      "http_code": "200",
+      "response_time_ms": 1019,
+      "passed": true
+    },
+    {
+      "route": "/superadmin-login",
+      "description": "Superadmin Login Page",
+      "http_code": "200",
+      "response_time_ms": 6,
+      "passed": true
+    },
+    {
+      "route": "/users",
+      "description": "User Management Page",
+      "http_code": "200",
+      "response_time_ms": 12,
+      "passed": true
+    },
+    {
+      "route": "/user",
+      "description": "User Profile Page",
+      "http_code": "200",
+      "response_time_ms": 16,
+      "passed": true
+    },
+    {
+      "route": "/user-settings",
+      "description": "User Settings Page",
+      "http_code": "200",
+      "response_time_ms": 26,
+      "passed": true
+    },
+    {
+      "route": "/objects",
+      "description": "Objects Management Page",
+      "http_code": "200",
+      "response_time_ms": 83,
+      "passed": true
+    },
+    {
+      "route": "/objektverwaltung",
+      "description": "Objects Management Page (German)",
+      "http_code": "200",
+      "response_time_ms": 34,
+      "passed": true
+    },
+    {
+      "route": "/energy-data",
+      "description": "Energy Data Page",
+      "http_code": "200",
+      "response_time_ms": 9,
+      "passed": true
+    },
+    {
+      "route": "/efficiency",
+      "description": "Efficiency Analysis Page",
+      "http_code": "200",
+      "response_time_ms": 7,
+      "passed": true
+    },
+    {
+      "route": "/db-energy-config",
+      "description": "Database Energy Config Page",
+      "http_code": "200",
+      "response_time_ms": 2,
+      "passed": true
+    },
+    {
+      "route": "/temperature-analysis",
+      "description": "Temperature Analysis Page",
+      "http_code": "200",
+      "response_time_ms": 1,
+      "passed": true
+    },
+    {
+      "route": "/temperatur-analyse",
+      "description": "Temperature Analysis Page (German)",
+      "http_code": "200",
+      "response_time_ms": 1,
+      "passed": true
+    },
+    {
+      "route": "/dashboard",
+      "description": "Dashboard Page",
+      "http_code": "200",
+      "response_time_ms": 1,
+      "passed": true
+    },
+    {
+      "route": "/maps",
+      "description": "Maps Page",
+      "http_code": "200",
+      "response_time_ms": 1,
+      "passed": true
+    },
+    {
+      "route": "/network-monitor",
+      "description": "Network Monitor Page",
+      "http_code": "200",
+      "response_time_ms": 1,
+      "passed": true
+    },
+    {
+      "route": "/performance-test",
+      "description": "Performance Test Page",
+      "http_code": "200",
+      "response_time_ms": 2,
+      "passed": true
+    },
+    {
+      "route": "/grafana-dashboard",
+      "description": "Grafana Dashboard Page",
+      "http_code": "200",
+      "response_time_ms": 1,
+      "passed": true
+    },
+    {
+      "route": "/grafana-dashboards",
+      "description": "Grafana Dashboards Page",
+      "http_code": "200",
+      "response_time_ms": 1,
+      "passed": true
+    },
+    {
+      "route": "/system-setup",
+      "description": "System Setup Page",
+      "http_code": "200",
+      "response_time_ms": 1,
+      "passed": true
+    },
+    {
+      "route": "/api-management",
+      "description": "API Management Page",
+      "http_code": "200",
+      "response_time_ms": 108,
+      "passed": true
+    },
+    {
+      "route": "/modbusConfig",
+      "description": "Modbus Configuration Page",
+      "http_code": "200",
+      "response_time_ms": 1,
+      "passed": true
+    },
+    {
+      "route": "/devices",
+      "description": "Devices Page",
+      "http_code": "200",
+      "response_time_ms": 3,
+      "passed": true
+    },
+    {
+      "route": "/geraeteverwaltung",
+      "description": "Device Management Page (German)",
+      "http_code": "200",
+      "response_time_ms": 2,
+      "passed": true
+    },
+    {
+      "route": "/admin-dashboard",
+      "description": "Admin Dashboard Page",
+      "http_code": "200",
+      "response_time_ms": 1,
+      "passed": true
+    },
+    {
+      "route": "/logbook",
+      "description": "Logbook Page",
+      "http_code": "200",
+      "response_time_ms": 1,
+      "passed": true
+    }
+  ],
+  "summary": {
+    "total": 26,
+    "passed": 26,
+    "failed": 0,
+    "slow": 0
+  }
+}

@@ -1,0 +1,36 @@
+[0;34m=== Functional API Tests - Data Validation ===[0m
+
+
+[0;34mTest 1: Health Check[0m
+[0;32m✓ PASS[0m - Health check returns 'healthy'
+  Status: healthy
+
+[0;34mTest 2: Database Status[0m
+[1;33m⚠ PARTIAL[0m - Database status returns JSON but missing timestamp
+  Response: {"message":"Unauthorized"}
+
+[0;34mTest 3: Public Daily Consumption[0m
+[0;32m✓ PASS[0m - Public endpoint works (returns valid JSON)
+
+[0;34mTest 4: Protected Endpoints (Auth Check)[0m
+[0;32m✓ PASS[0m - All protected endpoints require authentication
+  Tested 4 endpoints, all require auth
+
+[0;34mTest 5: Removed Endpoints (Should Not Exist)[0m
+[0;32m✓ PASS[0m - All removed endpoints properly cleaned up
+  Tested 4 endpoints, none accessible
+
+[0;34mTest 6: Route Ordering Fix[0m
+[0;32m✓ PASS[0m - Specific object routes accessible
+  /objects/by-objectid: 401 (not 404)
+  /objects/hierarchy: 401 (not 404)
+
+[0;34mTest 7: Public Weather Endpoints[0m
+[0;32m✓ PASS[0m - Weather public endpoint returns valid JSON
+
+[0;34m=== Test Summary ===[0m
+Total Tests: 7
+[0;32mPassed: 7[0m
+[0;31mFailed: 0[0m
+
+[0;32m✓ All functional tests passed![0m

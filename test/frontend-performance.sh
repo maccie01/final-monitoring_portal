@@ -20,7 +20,7 @@ RESULTS_FILE="$OUTPUT_DIR/frontend-performance-$TIMESTAMP.txt"
 JSON_RESULTS="$OUTPUT_DIR/frontend-performance-$TIMESTAMP.json"
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 CLIENT_DIR="$PROJECT_ROOT/client"
-DIST_DIR="$CLIENT_DIR/dist"
+DIST_DIR="$PROJECT_ROOT/dist/public"
 
 # Colors for output
 RED='\033[0;31m'
@@ -212,21 +212,18 @@ analyze_bundle_sizes() {
 test_critical_routes() {
     print_status "SECTION" "CRITICAL ROUTE PERFORMANCE"
 
-    declare -A routes
-    routes["/"]="Homepage"
-    routes["/login"]="Login Page"
-    routes["/dashboard"]="Dashboard"
-    routes["/maps"]="Maps"
-    routes["/energy-data"]="Energy Data"
-    routes["/objects"]="Objects Management"
+    # Define routes as parallel arrays (compatible with bash 3.2)
+    local route_paths=("/" "/login" "/dashboard" "/maps" "/energy-data" "/objects")
+    local route_descs=("Homepage" "Login Page" "Dashboard" "Maps" "Energy Data" "Objects Management")
 
     local total_time=0
     local route_count=0
     local slowest_route=""
     local slowest_time=0
 
-    for route in "${!routes[@]}"; do
-        description="${routes[$route]}"
+    for i in "${!route_paths[@]}"; do
+        local route="${route_paths[$i]}"
+        local description="${route_descs[$i]}"
         time_ms=$(measure_load_time "$FRONTEND_URL$route" "$description")
 
         total_time=$((total_time + time_ms))

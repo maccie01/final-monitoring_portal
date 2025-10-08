@@ -1,0 +1,14 @@
+=== Quick API Validation ===
+
+1. Efficiency auth required... ✓ PASS (HTTP 401)
+2. /objects/by-objectid route... ✓ PASS (HTTP 401)
+3. /objects/hierarchy route... ✓ PASS (HTTP 401)
+4. Heartbeat removed... ✗ FAIL (HTTP 401 - should be 404)
+5. Heating-systems removed... ✗ FAIL (HTTP 401 - should be 404)
+6. Energy-balance removed... ✗ FAIL (HTTP 401 - should be 404)
+7. Monitoring endpoints removed... ✗ FAIL (HTTP 401 - should be 404)
+8. Health check works... ✓ PASS (200)
+9. Public endpoint works... ✗ FAIL (HTTP 404)
+10. Yearly summary exists... ✓ PASS (HTTP 401)
+
+=== Validation Complete ===

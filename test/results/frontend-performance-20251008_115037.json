@@ -1,0 +1,10 @@
+{
+  "timestamp": "20251008_115037",
+  "tests": {
+    "bundle_sizes": {
+      "total_js": "2634426",
+      "total_css": "105153",
+      "total_build": "2797568"
+    }
+  }
+}

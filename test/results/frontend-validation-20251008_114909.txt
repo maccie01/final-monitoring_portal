@@ -1,0 +1,26 @@
+/login|200|245ms|true|Login Page
+/anmelden|200|1019ms|true|Strawa Login Page
+/superadmin-login|200|6ms|true|Superadmin Login Page
+/users|200|12ms|true|User Management Page
+/user|200|16ms|true|User Profile Page
+/user-settings|200|26ms|true|User Settings Page
+/objects|200|83ms|true|Objects Management Page
+/objektverwaltung|200|34ms|true|Objects Management Page (German)
+/energy-data|200|9ms|true|Energy Data Page
+/efficiency|200|7ms|true|Efficiency Analysis Page
+/db-energy-config|200|2ms|true|Database Energy Config Page
+/temperature-analysis|200|1ms|true|Temperature Analysis Page
+/temperatur-analyse|200|1ms|true|Temperature Analysis Page (German)
+/dashboard|200|1ms|true|Dashboard Page
+/maps|200|1ms|true|Maps Page
+/network-monitor|200|1ms|true|Network Monitor Page
+/performance-test|200|2ms|true|Performance Test Page
+/grafana-dashboard|200|1ms|true|Grafana Dashboard Page
+/grafana-dashboards|200|1ms|true|Grafana Dashboards Page
+/system-setup|200|1ms|true|System Setup Page
+/api-management|200|108ms|true|API Management Page
+/modbusConfig|200|1ms|true|Modbus Configuration Page
+/devices|200|3ms|true|Devices Page
+/geraeteverwaltung|200|2ms|true|Device Management Page (German)
+/admin-dashboard|200|1ms|true|Admin Dashboard Page
+/logbook|200|1ms|true|Logbook Page

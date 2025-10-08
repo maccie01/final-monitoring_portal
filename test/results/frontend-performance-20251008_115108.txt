@@ -1,0 +1,17 @@
+Frontend Performance Test Results
+=================================
+Timestamp: 20251008_115108
+
+Bundle Sizes:
+  Total JS: 2634426 bytes
+  Total CSS: 105153 bytes
+  Total Build: 2797568 bytes
+
+Performance Summary:
+  Average Load Time: N/Ams
+  Slowest Route: N/A
+
+Dependencies:
+  Production: 99
+  Development: 21
+  Total: 120
