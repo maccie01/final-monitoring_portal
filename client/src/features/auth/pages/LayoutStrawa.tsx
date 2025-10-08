@@ -4,7 +4,7 @@ import Dashboard from "@/features/monitoring/pages/Dashboard";
 import NetworkMonitor from "@/features/monitoring/pages/NetworkMonitor";
 import EfficiencyAnalysis from "@/features/energy/pages/EfficiencyAnalysis";
 import Maps from "@/features/monitoring/pages/Maps";
-import GrafanaDashboard from "@/pages/GrafanaDashboard";
+import GrafanaDashboard from "@/features/ki-reports/pages/GrafanaDashboard";
 import SystemSettings from "@/features/settings/pages/SystemSettings";
 import UserSettings from "@/features/users/pages/UserSettings";
 import User from "@/features/users/pages/User";

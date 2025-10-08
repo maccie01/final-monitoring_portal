@@ -1,5 +1,5 @@
 import { Activity, Thermometer, Zap } from "lucide-react";
-import { buildGrafanaUrl } from "@/utils/grafanaConfig";
+import { buildGrafanaUrl } from "@/features/ki-reports/components/grafanaConfig";
 
 export interface GrafanaPanel {
   id: string;
