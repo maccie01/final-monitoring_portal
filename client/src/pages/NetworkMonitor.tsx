@@ -49,7 +49,7 @@ import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useLocation, useRoute } from "wouter";
 import { GrafanaDiagramme } from "@/components/GrafanaDiagramme";
 import { NetzView } from "@/features/objects/components/NetzView";
-import { KIEnergyAnalysisNetz } from "@/components/KI_energy_netz";
+import { KIEnergyAnalysisNetz } from "@/features/energy/components/KI_energy_netz";
 
 
 // Embedded Grafana Component für Netzwächter

@@ -28,7 +28,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { ArrowUpIcon, ArrowDownIcon, ArrowUpDownIcon, Search, BarChart3, Leaf, AlertTriangle, Check, WifiOff } from "lucide-react";
 import ExportDialog from "@/components/ExportDialog";
-import EfficiencyDistributionCard from "@/components/EfficiencyDistributionCard";
+import EfficiencyDistributionCard from "@/features/energy/components/EfficiencyDistributionCard";
 import { useState } from "react";
 import { useLocation } from "wouter";
 import { useAuth } from "@/features/auth/hooks/useAuth";

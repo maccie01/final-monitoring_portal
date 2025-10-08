@@ -8,7 +8,7 @@ import { ChevronDown, ChevronRight, AlertTriangle, XCircle, CheckCircle2, Search
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts";
 import { Link } from "wouter";
 import TemperatureEfficiencyChart from "@/components/TemperatureEfficiencyChart";
-import EfficiencyDistributionCard from "@/components/EfficiencyDistributionCard";
+import EfficiencyDistributionCard from "@/features/energy/components/EfficiencyDistributionCard";
 
 interface ObjectEfficiency {
   objectId: number;

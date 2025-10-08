@@ -14,8 +14,8 @@ import {
   TrendingUp,
   Brain,
 } from "lucide-react";
-import { KIEnergyAnalysis } from "@/components/KI_energy";
-import { KIEnergyJahrWrapper } from "@/components/KI_energy_jahr_wrapper";
+import { KIEnergyAnalysis } from "@/features/energy/components/KI_energy";
+import { KIEnergyJahrWrapper } from "@/features/energy/components/KI_energy_jahr_wrapper";
 import ObjektinfoContent from "@/features/objects/components/ObjektinfoContent";
 import {
   ViewColumnsIcon,
