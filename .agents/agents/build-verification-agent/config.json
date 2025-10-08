@@ -1,0 +1,23 @@
+{
+  "agent_id": "build-verification-agent",
+  "name": "Build Verification & Documentation Agent",
+  "version": "1.0.0",
+  "description": "Final build verification, testing, and documentation (Tasks 14-15)",
+  "priority": "P1",
+  "estimated_duration_weeks": 0.1,
+  "source_document": "prompt.md",
+  "dependencies": {
+    "blocks_on": ["routing-shared-agent"],
+    "reason": "Must verify after routing/shared updates",
+    "must_wait_for_merge": true
+  },
+  "git": {
+    "branch": "feature/build-verification",
+    "base_branch": "main",
+    "commit_prefix": "docs(frontend)",
+    "pr_title": "Frontend: Build Verification & Documentation",
+    "pr_labels": ["frontend", "documentation", "P1"]
+  },
+  "max_turns": 80,
+  "tools": ["Read", "Write", "Edit", "Bash", "Grep", "Glob"]
+}

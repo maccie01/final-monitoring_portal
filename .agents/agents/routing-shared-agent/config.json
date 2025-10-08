@@ -1,0 +1,23 @@
+{
+  "agent_id": "routing-shared-agent",
+  "name": "Routing & Shared Components Agent",
+  "version": "1.0.0",
+  "description": "Update routing, shared layout, TypeScript paths (Tasks 10-13)",
+  "priority": "P1",
+  "estimated_duration_weeks": 0.2,
+  "source_document": "prompt.md",
+  "dependencies": {
+    "blocks_on": [],
+    "reason": "Independent - updates shared infrastructure",
+    "must_wait_for_merge": false
+  },
+  "git": {
+    "branch": "feature/routing-shared-updates",
+    "base_branch": "main",
+    "commit_prefix": "feat(frontend)",
+    "pr_title": "Frontend: Update Routing & Shared Components",
+    "pr_labels": ["frontend", "routing", "P1"]
+  },
+  "max_turns": 100,
+  "tools": ["Read", "Write", "Edit", "Bash", "Grep", "Glob"]
+}

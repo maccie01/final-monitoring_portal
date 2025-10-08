@@ -95,41 +95,59 @@ function RouterMain() {
         <Route>
           <Layout>
             <Switch>
+              {/* Monitoring Routes */}
               <Route path="/dashbord" component={Dashboard} />
               <Route path="/maps" component={Maps} />
+              <Route path="/network-monitor" component={NetworkMonitor} />
+              <Route path="/performance-test" component={PerformanceTest} />
+
+              {/* KI Reports / Grafana Routes */}
               <Route path="/grafana-dashboards" component={GrafanaDashboard} />
               <Route path="/grafana-dashboard" component={GrafanaDashboard} />
+
+              {/* Energy Routes */}
               <Route path="/energy-data" component={EnergyData} />
-              <Route path="/network-monitor" component={NetworkMonitor} />
               <Route path="/efficiency" component={EfficiencyAnalysis} />
+              <Route path="/db-energy-config" component={DbEnergyDataConfig} />
+
+              {/* Temperature Routes */}
+              <Route path="/temperature-analysis" component={TemperatureAnalysis} />
+              <Route path="/temperatur-analyse" component={TemperatureAnalysis} />
+
+              {/* Objects Routes */}
               <Route path="/objects" component={ObjectManagement} />
               <Route path="/objektverwaltung" component={ObjectManagement} />
+
+              {/* User Management Routes */}
               <Route path="/users" component={UserManagement} />
               <Route path="/UserManagement" component={UserManagement} />
               <Route path="/user-management" component={UserManagement} />
               <Route path="/User-Management" component={UserManagement} />
               <Route path="/user" component={User} />
               <Route path="/user-settings" component={UserSettings} />
+
+              {/* Settings Routes */}
               <Route path="/system-setup" component={SystemSettings} />
               <Route path="/setup" component={SystemSettings} />
               <Route path="/api-management" component={ApiManagement} />
-              <Route path="/db-energy-config" component={DbEnergyDataConfig} />
-              <Route path="/logbook" component={Logbook} />
-              <Route path="/admin-dashboard" component={AdminDashboard} />
               <Route path="/api-test" component={ApiManagement} />
               <Route path="/api-tests" component={ApiManagement} />
-              <Route path="/temperature-analysis" component={TemperatureAnalysis} />
-              <Route path="/temperatur-analyse" component={TemperatureAnalysis} />
-              <Route path="/performance-test" component={PerformanceTest} />
               <Route path="/modbusConfig" component={ModbusConfig} />
               <Route path="/devices" component={Devices} />
               <Route path="/geraeteverwaltung" component={Geraeteverwaltung} />
+
+              {/* Admin Routes */}
+              <Route path="/admin-dashboard" component={AdminDashboard} />
+              <Route path="/logbook" component={Logbook} />
+
+              {/* Debug/Development Routes */}
               <Route path="/layout" component={() => (
                 <div className="p-8 text-center">
                   <h1 className="text-2xl font-bold">Layout Komponente</h1>
                   <p className="text-gray-600 mt-4">Dies ist die Layout-Komponente als eigenständige Route.</p>
                 </div>
               )} />
+
               <Route><Redirect to="/" /></Route>
             </Switch>
           </Layout>
