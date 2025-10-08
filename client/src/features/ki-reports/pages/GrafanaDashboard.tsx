@@ -23,9 +23,9 @@ import {
   InformationCircleIcon,
   ChartBarIcon,
 } from "@heroicons/react/24/outline";
-import { GrafanaLogic, type GrafanaTab, type GrafanaPanel } from "@/components/GrafanaLogic";
-import { GrafanaDiagramme } from "@/components/GrafanaDiagramme";
-import { GrafanaReport } from "@/components/GrafanaReport";
+import { GrafanaLogic, type GrafanaTab, type GrafanaPanel } from "@/features/ki-reports/components/GrafanaLogic";
+import { GrafanaDiagramme } from "@/features/ki-reports/components/GrafanaDiagramme";
+import { GrafanaReport } from "@/features/ki-reports/components/GrafanaReport";
 import { SystemSchemaView } from "@/components/SystemSchemaView";
 
 interface GrafanaObject {

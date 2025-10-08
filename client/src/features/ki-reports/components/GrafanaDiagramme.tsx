@@ -5,7 +5,7 @@ import { ChartBarIcon, ShareIcon, FireIcon, ArrowPathIcon } from "@heroicons/rea
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { loadGrafanaConfig, buildGrafanaUrl } from "@/utils/grafanaConfig";
+import { loadGrafanaConfig, buildGrafanaUrl } from "@/features/ki-reports/components/grafanaConfig";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 
 interface StandardMeter {

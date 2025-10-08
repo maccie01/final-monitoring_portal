@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { buildGrafanaUrl } from "@/utils/grafanaConfig";
+import { buildGrafanaUrl } from "@/features/ki-reports/components/grafanaConfig";
 
 export default function Geraeteverwaltung() {
   const [id, setId] = useState('');

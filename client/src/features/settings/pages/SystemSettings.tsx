@@ -29,7 +29,7 @@ import { JsonConfigurationEditor } from "@/features/settings/components/JsonConf
 import { PortalJsonEditor } from "@/features/settings/components/PortalJsonEditor";
 import FallbackDatabaseAccess from "@/components/FallbackDatabaseAccess";
 import ApiManagement from "@/features/settings/pages/ApiManagement";
-import { buildGrafanaUrl } from "@/utils/grafanaConfig";
+import { buildGrafanaUrl } from "@/features/ki-reports/components/grafanaConfig";
 
 interface ThresholdConfig {
   id?: number;

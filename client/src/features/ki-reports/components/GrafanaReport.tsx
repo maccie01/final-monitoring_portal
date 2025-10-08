@@ -14,7 +14,7 @@ import {
   TrendingUp,
   RefreshCw
 } from "lucide-react";
-import { GrafanaLogic, type GrafanaTab, type GrafanaPanel } from "@/components/GrafanaLogic";
+import { GrafanaLogic, type GrafanaTab, type GrafanaPanel } from "@/features/ki-reports/components/GrafanaLogic";
 
 interface GrafanaReportProps {
   objectId: number;
