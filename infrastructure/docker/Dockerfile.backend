@@ -1,0 +1,38 @@
+# Multi-Stage Backend Dockerfile
+FROM node:20-alpine AS builder
+WORKDIR /app
+
+RUN apk add --no-cache python3 make g++
+
+COPY package*.json ./
+RUN npm ci && npm cache clean --force
+
+COPY server ./server
+COPY client ./client
+COPY tsconfig.json vite.config.ts tailwind.config.ts postcss.config.js ./
+
+RUN npm run build
+
+# Production stage
+FROM node:20-alpine
+WORKDIR /app
+
+RUN apk add --no-cache curl wget
+
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodejs -u 1001 && \
+    chown -R nodejs:nodejs /app
+
+COPY --chown=nodejs:nodejs package*.json ./
+RUN npm ci --only=production && npm cache clean --force
+
+COPY --from=builder --chown=nodejs:nodejs /app/dist ./dist
+COPY --chown=nodejs:nodejs .env.example ./.env
+
+USER nodejs
+EXPOSE 5000
+
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:5000/api/users || exit 1
+
+CMD ["node", "dist/index.js"]

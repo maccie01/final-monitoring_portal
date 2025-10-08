@@ -1,0 +1,31 @@
+# Multi-Stage Frontend Dockerfile
+FROM node:20-alpine AS builder
+WORKDIR /app
+
+RUN apk add --no-cache python3 make g++
+
+COPY package*.json ./
+RUN npm ci && npm cache clean --force
+
+COPY client ./client
+COPY server ./server
+COPY tsconfig.json vite.config.ts tailwind.config.ts postcss.config.js ./
+
+RUN npm run build
+
+# Production with Nginx
+FROM nginx:alpine
+
+RUN apk add --no-cache curl
+
+RUN rm -rf /usr/share/nginx/html/*
+
+COPY --from=builder /app/dist/public /usr/share/nginx/html
+COPY infrastructure/docker/nginx/nginx.conf /etc/nginx/nginx.conf
+
+EXPOSE 80
+
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost/health || exit 1
+
+CMD ["nginx", "-g", "daemon off;"]
