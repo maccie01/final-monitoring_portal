@@ -34,8 +34,8 @@ export default function LayoutStrawaTabs() {
   // Set active menu item based on URL pathname
   useEffect(() => {
     const pathname = location.split('?')[0];
-    
-    if (pathname === '/dashbord') {
+
+    if (pathname === '/dashboard') {
       setActiveMenuItem(0); // KPI Dashboard tab
     } else if (pathname === '/network-monitor' || pathname === '/temperatur-analyse') {
       setActiveMenuItem(1); // Netzwächter tab

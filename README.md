@@ -580,7 +580,7 @@ Die Anwendung unterstützt zwei UI-Modi:
 ### Hohe Priorität
 1. **storage.ts überprüfen (142KB)** - In Module aufteilen erwägen
 2. **energyController.ts überprüfen (43KB)** - Nach Funktionalität aufteilen erwägen
-3. **Routing-Tippfehler beheben** - `/dashbord` sollte `/dashboard` sein (App.tsx:99)
+3. **Routing-Tippfehler beheben** - RESOLVED: Changed `/dashbord` to `/dashboard`
 
 ### Mittlere Priorität
 1. **Geräteverwaltung konsolidieren** - `Devices.tsx` und `Geraeteverwaltung.tsx` existieren beide

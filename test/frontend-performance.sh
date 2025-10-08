@@ -215,7 +215,7 @@ test_critical_routes() {
     declare -A routes
     routes["/"]="Homepage"
     routes["/login"]="Login Page"
-    routes["/dashbord"]="Dashboard"
+    routes["/dashboard"]="Dashboard"
     routes["/maps"]="Maps"
     routes["/energy-data"]="Energy Data"
     routes["/objects"]="Objects Management"

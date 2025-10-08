@@ -203,7 +203,7 @@ test_route "/temperature-analysis" "Temperature Analysis Page" true
 test_route "/temperatur-analyse" "Temperature Analysis Page (German)" true
 
 # Test Monitoring Routes (authenticated)
-test_route "/dashbord" "Dashboard Page" true
+test_route "/dashboard" "Dashboard Page" true
 test_route "/maps" "Maps Page" true
 test_route "/network-monitor" "Network Monitor Page" true
 test_route "/performance-test" "Performance Test Page" true

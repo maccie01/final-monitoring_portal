@@ -288,7 +288,7 @@ app-version-4_netzwachter/
 #### `/client/src/pages/Dashboard.tsx`
 - **Purpose**: Main user dashboard
 - **Status**: ACTIVE
-- **Route**: `/dashbord` (note: typo in route)
+- **Route**: `/dashboard`
 - **Description**: Primary dashboard view for authenticated users
 
 #### `/client/src/pages/DbEnergyDataConfig.tsx`

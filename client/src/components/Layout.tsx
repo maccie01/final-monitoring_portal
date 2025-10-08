@@ -35,7 +35,7 @@ import { ReactNode, useState, useEffect } from "react";
 import UserSettingsModal from "@/features/users/components/UserSettingsModal";
 
 const navigationItems = [
-  { href: "/dashbord", label: "KPI Dashboard", icon: BarChart3, permission: "showDashboard" },
+  { href: "/dashboard", label: "KPI Dashboard", icon: BarChart3, permission: "showDashboard" },
   { href: "/maps", label: "Objekt-Karte", icon: MapPin, permission: "showMaps" },
   { href: "/network-monitor", label: "Netzwächter", icon: Network, permission: "showNetworkMonitor" },
   { href: "/efficiency", label: "Klassifizierung", icon: Leaf, permission: "showEfficiencyStrategy" },

@@ -96,7 +96,7 @@ function RouterMain() {
           <Layout>
             <Switch>
               {/* Monitoring Routes */}
-              <Route path="/dashbord" component={Dashboard} />
+              <Route path="/dashboard" component={Dashboard} />
               <Route path="/maps" component={Maps} />
               <Route path="/network-monitor" component={NetworkMonitor} />
               <Route path="/performance-test" component={PerformanceTest} />
