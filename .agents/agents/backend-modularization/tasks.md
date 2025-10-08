@@ -278,7 +278,142 @@ Extract the monolithic `server/storage.ts` file into 8 clean domain modules foll
 
 ## Integration Tasks
 
-### Task 9: Update Module Imports
+### Task 9: Logging Consistency Validation
+**Status**: Pending
+**Estimated**: 1 day
+
+**Critical**: Ensure ALL modules have consistent, production-ready logging.
+
+#### 9.1 Create Logging Utility (First)
+Create `server/utils/logger.ts`:
+```typescript
+export const logger = {
+  error(module: string, operation: string, error: any, context?: object) {
+    console.error(`[${module}] ${operation} failed:`, { ...context, error: error.message, stack: error.stack });
+  },
+
+  warn(module: string, message: string, context?: object) {
+    console.warn(`[${module}] ${message}`, context);
+  },
+
+  info(module: string, message: string, context?: object) {
+    console.info(`[${module}] ${message}`, context);
+  },
+
+  debug(module: string, message: string, context?: object) {
+    if (process.env.DEBUG) {
+      console.debug(`[${module}] ${message}`, context);
+    }
+  },
+
+  performance(module: string, operation: string, duration: number, threshold = 100) {
+    if (duration > threshold) {
+      console.warn(`[${module}] Slow operation (${duration}ms): ${operation}`);
+    }
+  },
+
+  security(event: string, context: object) {
+    console.info(`[SECURITY] ${event}`, context);
+  }
+};
+```
+
+#### 9.2 Audit All 8 Modules for Logging
+For each module, verify:
+
+**Required Logging**:
+1. **Error Logging**: All catch blocks MUST log
+   ```typescript
+   catch (error) {
+     logger.error('Users', 'createUser', error, { data });
+     throw error;
+   }
+   ```
+
+2. **Security Events**: Auth/authorization must be logged
+   ```typescript
+   logger.security('Login attempt', { username, success, ip });
+   logger.security('Unauthorized access', { userId, resource });
+   ```
+
+3. **Performance Logging**: Operations >100ms
+   ```typescript
+   const start = Date.now();
+   const result = await operation();
+   logger.performance('Users', 'getUsersByMandant', Date.now() - start);
+   ```
+
+4. **Business Events**: Important state changes
+   ```typescript
+   logger.info('Users', 'User created', { userId, mandantId });
+   logger.info('Energy', 'Report generated', { objectId, dateRange });
+   ```
+
+#### 9.3 Create Logging Audit Checklist
+Create `.agents/LOGGING-AUDIT.md`:
+```markdown
+## Logging Consistency Audit - Backend Modules
+
+### Auth Module
+- [ ] All catch blocks log errors with context
+- [ ] Login attempts logged (success/failure)
+- [ ] Logout events logged
+- [ ] Password validation failures logged
+- [ ] Session creation/destruction logged
+
+### Users Module
+- [ ] All catch blocks log errors
+- [ ] User creation logged
+- [ ] User updates logged (with field changes)
+- [ ] User deletion logged
+- [ ] Password changes logged
+- [ ] Unauthorized access attempts logged
+
+### Objects Module
+- [ ] All catch blocks log errors
+- [ ] Object creation logged
+- [ ] Object updates logged
+- [ ] Object deletion logged
+- [ ] Search operations >100ms logged
+
+### Energy Module
+- [ ] All catch blocks log errors
+- [ ] Energy data queries >100ms logged
+- [ ] Aggregation operations logged
+- [ ] Report generation logged
+
+### Temperature Module
+- [ ] All catch blocks log errors
+- [ ] Temperature data import logged
+- [ ] Analysis operations logged
+
+### Monitoring Module
+- [ ] All catch blocks log errors
+- [ ] Health check failures logged
+- [ ] Performance metrics logged
+
+### KI Reports Module
+- [ ] All catch blocks log errors
+- [ ] Report generation logged
+- [ ] Report updates logged
+
+### Settings Module
+- [ ] All catch blocks log errors
+- [ ] Configuration changes logged
+- [ ] Feature flag toggles logged
+```
+
+#### 9.4 Fix Logging Issues
+Go through each module and:
+1. Replace all `console.error/warn/info` with `logger.*`
+2. Add missing error logging in catch blocks
+3. Add security event logging
+4. Add performance logging for slow operations
+5. Ensure all logs include contextual information
+
+**Commit**: `feat(logging): standardize logging across all 8 modules`
+
+### Task 10: Update Module Imports
 **Status**: Pending
 **Estimated**: 1 day
 
@@ -288,13 +423,13 @@ Update all files that import from storage.ts to use the new modules:
 - Server middleware (3 files)
 - Test files (20+ files)
 
-### Task 10: Update server/index.ts
+### Task 11: Update server/index.ts
 **Status**: Pending
 **Estimated**: 0.5 days
 
 Register all new module routes in the main server file.
 
-### Task 11: Delete/Minimize storage.ts
+### Task 12: Delete/Minimize storage.ts
 **Status**: Pending
 **Estimated**: 0.5 days
 

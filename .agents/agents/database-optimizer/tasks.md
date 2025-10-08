@@ -426,28 +426,133 @@ async getPerformanceMetrics(req: Request, res: Response) {
 
 ---
 
-## Task 12: Final Verification & Documentation (Day 7)
+## Task 12: Logging Consistency Validation (Day 7)
 
-### 12.1 Run Performance Tests
+### 12.1 Audit Logging Standards
+**Status**: Pending
+
+Check all modules for consistent logging patterns:
+
+**Required Logging Standards**:
+1. **Error Logging**: All catch blocks must log errors with context
+   ```typescript
+   catch (error) {
+     console.error('[ModuleName] Operation failed:', { operation, params, error });
+     throw error;
+   }
+   ```
+
+2. **Performance Logging**: Slow queries (>100ms) must be logged
+   ```typescript
+   const start = Date.now();
+   const result = await query();
+   const duration = Date.now() - start;
+   if (duration > 100) {
+     console.warn(`[DB] Slow query (${duration}ms):`, queryName);
+   }
+   ```
+
+3. **Security Events**: Authentication/authorization events must be logged
+   ```typescript
+   console.info('[Auth] Login attempt:', { username, success, ip });
+   console.warn('[Auth] Unauthorized access attempt:', { userId, resource });
+   ```
+
+4. **Cache Events**: Cache hits/misses should be logged for monitoring
+   ```typescript
+   console.debug('[Cache] Hit:', cacheKey);
+   console.debug('[Cache] Miss:', cacheKey);
+   ```
+
+### 12.2 Create Logging Audit Report
+**Status**: Pending
+
+Scan all modules and create `LOGGING-AUDIT.md`:
+```markdown
+## Logging Consistency Audit
+
+### Auth Module
+- Error logging: CONSISTENT
+- Performance logging: MISSING (add to validateUser)
+- Security logging: CONSISTENT
+- Issues: None
+
+### Users Module
+- Error logging: CONSISTENT
+- Performance logging: PARTIAL (missing in getUsersByMandant)
+- Security logging: CONSISTENT
+- Issues: 2 catch blocks missing context
+
+### Energy Module
+- Error logging: INCONSISTENT (some catches silent)
+- Performance logging: MISSING
+- Security logging: N/A
+- Issues: 5 catch blocks need logging
+
+...
+```
+
+### 12.3 Fix Logging Inconsistencies
+**Status**: Pending
+
+For each module with issues:
+1. Add missing error logging
+2. Add performance logging for slow operations
+3. Standardize log message format
+4. Add contextual information (userId, objectId, etc.)
+
+### 12.4 Create Logging Utility
+**Status**: Pending
+
+```typescript
+// server/utils/logger.ts
+export const logger = {
+  error(module: string, operation: string, error: any, context?: object) {
+    console.error(`[${module}] ${operation} failed:`, { ...context, error });
+  },
+
+  warn(module: string, message: string, context?: object) {
+    console.warn(`[${module}] ${message}`, context);
+  },
+
+  info(module: string, message: string, context?: object) {
+    console.info(`[${module}] ${message}`, context);
+  },
+
+  performance(module: string, operation: string, duration: number, threshold = 100) {
+    if (duration > threshold) {
+      console.warn(`[${module}] Slow operation (${duration}ms): ${operation}`);
+    }
+  }
+};
+```
+
+**Commit**: `feat(logging): standardize logging across all modules`
+
+---
+
+## Task 13: Final Verification & Documentation (Day 7)
+
+### 13.1 Run Performance Tests
 ```bash
 npm run test:performance
 npm run benchmark
 ```
 
-### 12.2 Measure Improvements
+### 13.2 Measure Improvements
 Compare before/after metrics:
 - Average query time
 - P95/P99 query times
 - Cache hit ratio
 - Database connection usage
 
-### 12.3 Create Migration Script
+### 13.3 Create Migration Script
 ```sql
 -- migrations/001_add_indexes.sql
 -- All CREATE INDEX statements in correct order
 ```
 
-### 12.4 Document Optimizations
+### 13.4 Document Optimizations
 Create `DATABASE-OPTIMIZATION-RESULTS.md`:
 ```markdown
 ## Performance Improvements

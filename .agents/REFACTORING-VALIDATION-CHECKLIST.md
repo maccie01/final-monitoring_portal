@@ -397,6 +397,38 @@ GET  /api/auth/user                - Get current user session
 
 ---
 
+## 11. Logging Consistency
+
+### 11.1 Logging Standards
+- [ ] All modules use consistent logging format
+- [ ] Error logging includes context (module, operation, params)
+- [ ] Security events logged (login, logout, unauthorized access)
+- [ ] Performance logging for slow operations (>100ms)
+- [ ] Business events logged (user created, object updated, report generated)
+
+### 11.2 Backend Module Logging
+- [ ] **Auth Module**: Login attempts, password failures, session events logged
+- [ ] **Users Module**: User CRUD operations logged with context
+- [ ] **Objects Module**: Object CRUD logged, search operations logged
+- [ ] **Energy Module**: Energy queries >100ms logged, aggregations logged
+- [ ] **Temperature Module**: Temperature data import logged
+- [ ] **Monitoring Module**: Health check failures logged
+- [ ] **KI Reports Module**: Report generation logged
+- [ ] **Settings Module**: Configuration changes logged
+
+### 11.3 Logging Utility
+- [ ] `server/utils/logger.ts` created and used consistently
+- [ ] All `console.error/warn/info` replaced with logger
+- [ ] Contextual information included (userId, objectId, mandantId)
+- [ ] Stack traces included in error logs
+
+### 11.4 Audit Report
+- [ ] LOGGING-AUDIT.md created with module-by-module analysis
+- [ ] All catch blocks have proper error logging
+- [ ] No silent failures (all errors logged)
+
+---
+
 ## 📊 Testing Metrics
 
 ### Coverage Goals
@@ -406,6 +438,7 @@ GET  /api/auth/user                - Get current user session
 - [ ] **CRUD Operations**: Create, Read, Update, Delete tested
 - [ ] **Data Visualization**: Charts and graphs render
 - [ ] **Security**: Rate limiting, auth, authorization enforced
+- [ ] **Logging**: All modules log consistently
 
 ### Performance Benchmarks
 - [ ] Page load time < 3 seconds
