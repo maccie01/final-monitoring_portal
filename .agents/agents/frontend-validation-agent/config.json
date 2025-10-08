@@ -1,0 +1,32 @@
+{
+  "name": "Frontend Validation Agent",
+  "description": "Validates all frontend feature modules for load performance, rendering, and API integration",
+  "priority": "P0",
+  "estimated_duration": "0.5 weeks",
+  "git": {
+    "branch": "feature/frontend-validation",
+    "create_branch": true
+  },
+  "dependencies": [],
+  "context": {
+    "focus_areas": [
+      "client/src/features/",
+      "test/",
+      "docs/"
+    ],
+    "related_files": [
+      "test/quick-validation.sh",
+      "client/src/App.tsx",
+      "docs/FRONTEND-ARCHITECTURE.md"
+    ]
+  },
+  "task_breakdown": [
+    "Create comprehensive validation test script",
+    "Test all 8 feature modules (Auth, Users, Objects, Energy, Temperature, Monitoring, KI Reports, Settings)",
+    "Measure performance metrics for each page",
+    "Validate API integrations",
+    "Generate validation report",
+    "Document any issues found",
+    "Provide optimization recommendations"
+  ]
+}
