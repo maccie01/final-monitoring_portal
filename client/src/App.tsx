@@ -20,7 +20,7 @@ import Logbook from "@/pages/Logbook";
 import UserManagement from "@/features/users/pages/UserManagement";
 import EnergyData from "@/pages/EnergyData";
 import GrafanaDashboard from "@/pages/GrafanaDashboard";
-import ObjectManagement from "@/pages/ObjectManagement";
+import ObjectManagement from "@/features/objects/pages/ObjectManagement";
 import EfficiencyAnalysis from "@/pages/EfficiencyAnalysis";
 import NetworkMonitor from "@/pages/NetworkMonitor";
 import SystemSettings from "@/pages/SystemSettings";

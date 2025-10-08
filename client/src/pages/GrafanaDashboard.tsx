@@ -5,7 +5,7 @@ import { useAuth } from "@/features/auth/hooks/useAuth";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import ObjectListLayout from "@/components/ObjectListLayout";
+import ObjectListLayout from "@/features/objects/components/ObjectListLayout";
 import {
   Pencil,
   Info,
@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import { KIEnergyAnalysis } from "@/components/KI_energy";
 import { KIEnergyJahrWrapper } from "@/components/KI_energy_jahr_wrapper";
-import ObjektinfoContent from "@/components/ObjektinfoContent";
+import ObjektinfoContent from "@/features/objects/components/ObjektinfoContent";
 import {
   ViewColumnsIcon,
   PresentationChartLineIcon,

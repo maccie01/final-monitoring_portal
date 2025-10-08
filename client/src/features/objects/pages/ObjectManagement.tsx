@@ -37,8 +37,8 @@ import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { isUnauthorizedError } from "@/lib/authUtils";
 import { useAuth } from "@/features/auth/hooks/useAuth";
-import { createFilterOptions, filterObjects, ObjectGroup } from "@/components/ObjectFilterAPI";
-import { 
+import { createFilterOptions, filterObjects, ObjectGroup } from "@/features/objects/components/ObjectFilterAPI";
+import {
   Info,
   Flame,
   PlusIcon,
@@ -55,7 +55,7 @@ import {
 } from "lucide-react";
 import { PresentationChartLineIcon } from "@heroicons/react/24/outline";
 import { z } from "zod";
-import ObjektinfoContent from "@/components/ObjektinfoContent";
+import ObjektinfoContent from "@/features/objects/components/ObjektinfoContent";
 
 
 

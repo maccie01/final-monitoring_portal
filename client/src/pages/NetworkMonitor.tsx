@@ -39,7 +39,7 @@ import {
   WifiIcon as OfflineIcon
 } from "@heroicons/react/24/outline";
 import { Thermometer, Leaf, Maximize2, Minimize2, Brain, WifiOff, Info } from "lucide-react";
-import ObjektinfoContent from "../components/ObjektinfoContent";
+import ObjektinfoContent from "@/features/objects/components/ObjektinfoContent";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useMutation } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
@@ -48,7 +48,7 @@ import { de } from "date-fns/locale";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useLocation, useRoute } from "wouter";
 import { GrafanaDiagramme } from "@/components/GrafanaDiagramme";
-import { NetzView } from "@/components/NetzView";
+import { NetzView } from "@/features/objects/components/NetzView";
 import { KIEnergyAnalysisNetz } from "@/components/KI_energy_netz";
 
 
