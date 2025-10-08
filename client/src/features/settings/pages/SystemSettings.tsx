@@ -21,14 +21,14 @@ import {
 import { Thermometer, Settings, BarChart3, Pencil, Trash2, Code2, Filter, Database, Server, Download, Edit, Save, Upload, Shield, Copy, ArrowLeftRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
-import PortalConfigCard from "@/components/PortalConfigCard";
-import SystemPortalSetup from "@/components/SystemPortalSetup";
-import CollapsiblePortalCards from "@/components/CollapsiblePortalCards";
+import PortalConfigCard from "@/features/settings/components/PortalConfigCard";
+import SystemPortalSetup from "@/features/settings/components/SystemPortalSetup";
+import CollapsiblePortalCards from "@/features/settings/components/CollapsiblePortalCards";
 import CurrentDatabaseConnection from "@/components/CurrentDatabaseConnection";
-import { JsonConfigurationEditor } from "@/components/JsonConfigurationEditor";
-import { PortalJsonEditor } from "@/components/PortalJsonEditor";
+import { JsonConfigurationEditor } from "@/features/settings/components/JsonConfigurationEditor";
+import { PortalJsonEditor } from "@/features/settings/components/PortalJsonEditor";
 import FallbackDatabaseAccess from "@/components/FallbackDatabaseAccess";
-import ApiManagement from "@/pages/ApiManagement";
+import ApiManagement from "@/features/settings/pages/ApiManagement";
 import { buildGrafanaUrl } from "@/utils/grafanaConfig";
 
 interface ThresholdConfig {

@@ -1,0 +1,21 @@
+{
+  "agent_id": "settings-feature-agent",
+  "name": "Settings Feature Agent",
+  "version": "1.0.0",
+  "description": "Extract settings feature: System settings, API management, device config",
+  "priority": "P1",
+  "estimated_duration_weeks": 0.15,
+  "source_document": "prompt.md",
+  "dependencies": {
+    "blocks_on": [],
+    "reason": "Independent - only touches settings files",
+    "must_wait_for_merge": false
+  },
+  "git": {
+    "branch": "feature/settings-module",
+    "base_branch": "feature/frontend-modules",
+    "commit_prefix": "feat(frontend)",
+    "pr_title": "Frontend: Extract Settings Feature Module",
+    "pr_labels": ["frontend", "settings", "P1"]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "agent_id": "ki-reports-feature-agent",
+  "name": "KI Reports Feature Agent",
+  "version": "1.0.0",
+  "description": "Extract KI reports feature: Grafana components and reporting",
+  "priority": "P1",
+  "estimated_duration_weeks": 0.1,
+  "source_document": "prompt.md",
+  "dependencies": {
+    "blocks_on": [],
+    "reason": "Independent - only touches KI reports files",
+    "must_wait_for_merge": false
+  },
+  "git": {
+    "branch": "feature/ki-reports-module",
+    "base_branch": "feature/frontend-modules",
+    "commit_prefix": "feat(frontend)",
+    "pr_title": "Frontend: Extract KI Reports Feature Module",
+    "pr_labels": ["frontend", "ki-reports", "P1"]
+  }
+}

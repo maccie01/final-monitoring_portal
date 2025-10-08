@@ -19,7 +19,7 @@ import UserSettings from "@/features/users/pages/UserSettings";
 import Logbook from "@/pages/Logbook";
 import UserManagement from "@/features/users/pages/UserManagement";
 import EnergyData from "@/features/energy/pages/EnergyData";
-import GrafanaDashboard from "@/features/ki-reports/pages/GrafanaDashboard";
+import GrafanaDashboard from "@/pages/GrafanaDashboard";
 import ObjectManagement from "@/features/objects/pages/ObjectManagement";
 import EfficiencyAnalysis from "@/features/energy/pages/EfficiencyAnalysis";
 import NetworkMonitor from "@/features/monitoring/pages/NetworkMonitor";

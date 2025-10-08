@@ -1,0 +1,21 @@
+{
+  "agent_id": "monitoring-feature-agent",
+  "name": "Monitoring Feature Agent",
+  "version": "1.0.0",
+  "description": "Extract monitoring feature: Dashboard, NetworkMonitor, PerformanceTest, Maps pages",
+  "priority": "P1",
+  "estimated_duration_weeks": 0.1,
+  "source_document": "prompt.md",
+  "dependencies": {
+    "blocks_on": [],
+    "reason": "Independent - only touches monitoring files",
+    "must_wait_for_merge": false
+  },
+  "git": {
+    "branch": "feature/monitoring-module",
+    "base_branch": "feature/frontend-modules",
+    "commit_prefix": "feat(frontend)",
+    "pr_title": "Frontend: Extract Monitoring Feature Module",
+    "pr_labels": ["frontend", "monitoring", "P1"]
+  }
+}
