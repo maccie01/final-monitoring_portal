@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
-import Dashboard from "@/pages/Dashboard";
-import NetworkMonitor from "@/pages/NetworkMonitor";
+import Dashboard from "@/features/monitoring/pages/Dashboard";
+import NetworkMonitor from "@/features/monitoring/pages/NetworkMonitor";
 import EfficiencyAnalysis from "@/features/energy/pages/EfficiencyAnalysis";
-import Maps from "@/pages/Maps";
-import GrafanaDashboard from "@/pages/GrafanaDashboard";
-import SystemSettings from "@/pages/SystemSettings";
+import Maps from "@/features/monitoring/pages/Maps";
+import GrafanaDashboard from "@/features/ki-reports/pages/GrafanaDashboard";
+import SystemSettings from "@/features/settings/pages/SystemSettings";
 import UserSettings from "@/features/users/pages/UserSettings";
 import User from "@/features/users/pages/User";
 import UserManagement from "@/features/users/pages/UserManagement";
