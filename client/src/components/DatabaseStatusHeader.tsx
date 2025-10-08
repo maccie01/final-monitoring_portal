@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Database, X } from "lucide-react";
-import { getStatusIcon } from "./shared/energy-utils";
+import { getStatusIcon } from "@/features/energy/components/shared/energy-utils";
 import { Button } from "@/components/ui/button";
 
 interface DatabaseStatus {

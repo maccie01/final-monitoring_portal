@@ -20,7 +20,7 @@ import {
   X,
   Settings
 } from "lucide-react";
-import { getStatusIcon, getStatusColor } from "./shared/energy-utils";
+import { getStatusIcon, getStatusColor } from "@/features/energy/components/shared/energy-utils";
 import { api } from "@/lib/api-utils";
 
 // Portal-Konfigurationen
