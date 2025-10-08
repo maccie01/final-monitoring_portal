@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronRight, AlertTriangle, XCircle, CheckCircle2, Search, Brain, Menu, X, Building2, Printer } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts";
 import { Link } from "wouter";
-import TemperatureEfficiencyChart from "@/components/TemperatureEfficiencyChart";
+import TemperatureEfficiencyChart from "@/features/temperature/components/TemperatureEfficiencyChart";
 import EfficiencyDistributionCard from "@/features/energy/components/EfficiencyDistributionCard";
 
 interface ObjectEfficiency {

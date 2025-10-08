@@ -173,7 +173,7 @@ const GrafanaContentEmbedded = ({ objectId }: { objectId: number }) => {
   );
 };
 
-import "../components/TempAnalysisTable.css";
+import "@/features/temperature/components/TempAnalysisTable.css";
 
 export default function NetworkMonitor() {
   const { toast } = useToast();

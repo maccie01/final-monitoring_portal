@@ -24,7 +24,7 @@ import ObjectManagement from "@/features/objects/pages/ObjectManagement";
 import EfficiencyAnalysis from "@/features/energy/pages/EfficiencyAnalysis";
 import NetworkMonitor from "@/pages/NetworkMonitor";
 import SystemSettings from "@/pages/SystemSettings";
-import TemperatureAnalysis from "@/pages/TemperatureAnalysis";
+import TemperatureAnalysis from "@/features/temperature/pages/TemperatureAnalysis";
 import AdminDashboard from "@/pages/AdminDashboard";
 import ApiManagement from "@/pages/ApiManagement";
 import DbEnergyDataConfig from "@/features/energy/pages/DbEnergyDataConfig";

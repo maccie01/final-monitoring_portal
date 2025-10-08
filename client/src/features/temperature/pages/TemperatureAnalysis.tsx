@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Thermometer, MapPin } from "lucide-react";
-import TemperatureEfficiencyChart from "@/components/TemperatureEfficiencyChart";
+import TemperatureEfficiencyChart from "@/features/temperature/components/TemperatureEfficiencyChart";
 
 // InfoText-Komponente für dynamische Texte aus der Datenbank
 function InfoText({ category, keyName, children }: { category: string; keyName: string; children: React.ReactNode }) {
