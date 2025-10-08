@@ -45,7 +45,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useLocation, useRoute } from "wouter";
 import { GrafanaDiagramme } from "@/components/GrafanaDiagramme";
 import { NetzView } from "@/components/NetzView";

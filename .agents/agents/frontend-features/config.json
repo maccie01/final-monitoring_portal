@@ -1,0 +1,84 @@
+{
+  "agent_id": "frontend-features-agent",
+  "name": "Frontend Features Agent",
+  "version": "1.0.0",
+  "description": "Extracts 24 pages and 54 components into 8 feature-based modules aligned with backend",
+
+  "priority": "P1",
+  "estimated_duration_weeks": 1,
+  "actual_duration_hours": null,
+
+  "dependencies": {
+    "blocks_on": [],
+    "reason": "No dependencies - only touches client/ files",
+    "must_wait_for_merge": false
+  },
+
+  "git": {
+    "branch": "feature/frontend-modules",
+    "base_branch": "main",
+    "commit_prefix": "feat(frontend)",
+    "pr_title": "Frontend Features: Extract 8 Feature Modules",
+    "pr_labels": ["frontend", "refactoring", "P1"]
+  },
+
+  "target_structure": {
+    "base_path": "client/src/features",
+    "feature_pattern": {
+      "pages": "{feature}/pages/",
+      "components": "{feature}/components/",
+      "hooks": "{feature}/hooks/",
+      "api": "{feature}/api/{feature}Api.ts"
+    }
+  },
+
+  "source_document": ".agents/agents/frontend-features/tasks.md",
+  "tasks_file": "tasks.md",
+  "prompt_file": "prompt.md",
+
+  "verification": {
+    "before_commit": [
+      "npm run build",
+      "npm run type-check"
+    ],
+    "after_feature_extraction": [
+      "npm run build",
+      "manual route verification"
+    ],
+    "final_verification": [
+      "npm run build",
+      "npm run type-check",
+      "verify all routes work"
+    ]
+  },
+
+  "success_criteria": {
+    "features_created": 8,
+    "pages_organized": 24,
+    "components_organized": 54,
+    "api_clients_created": 8,
+    "build_successful": true,
+    "no_regressions": "All routes work"
+  },
+
+  "monitoring": {
+    "report_interval_minutes": 30,
+    "metrics": [
+      "features_extracted",
+      "files_moved",
+      "imports_updated"
+    ]
+  },
+
+  "tools": [
+    "Read",
+    "Write",
+    "Edit",
+    "Bash",
+    "Grep",
+    "Glob"
+  ],
+
+  "autonomy_level": "high",
+  "approval_required_for": []
+}

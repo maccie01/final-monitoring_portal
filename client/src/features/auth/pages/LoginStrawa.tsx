@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Brain, BarChart3, TrendingUp, Flame, Gauge } from "lucide-react";
 import strawaLogo from "@/components/strawa-logo.png";
 import DeviceRegistration from "@/components/deviceanmeldung";
-import LoginModal from "@/components/LoginModal";
+import LoginModal from "@/features/auth/components/LoginModal";
 
 export default function LoginStrawa() {
   const [showLoginModal, setShowLoginModal] = useState(false);

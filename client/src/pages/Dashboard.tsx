@@ -31,7 +31,7 @@ import ExportDialog from "@/components/ExportDialog";
 import EfficiencyDistributionCard from "@/components/EfficiencyDistributionCard";
 import { useState } from "react";
 import { useLocation } from "wouter";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 
 export default function Dashboard() {
   const [, setLocation] = useLocation();
